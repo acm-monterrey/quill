@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 21.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+	 viewBox="0 0 124.9 154.1" style="enable-background:new 0 0 124.9 154.1;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#662D91;}
+</style>
 <g>
 	<g>
-		<polygon fill="#473899" points="332.6,124.5 332.6,240.7 303.5,240.7 303.5,124.5 143.7,124.5 143.7,473.3 303.5,473.3 303.5,357
-			332.6,357 332.6,473.3 492.4,473.3 492.4,124.5 		"/>
-		<polygon fill="#473899" points="521.5,473.3 695.9,124.5 870.3,473.3 		"/>
 		<g>
-			<polygon fill="#473899" points="521.2,876.3 521.2,527.6 870,527.6 768.3,701.9 870,876.3 			"/>
-			<path fill="#473899" d="M419.5,701.9l68.2-107.4c-34.1-49.3-91-81.5-155.4-81.5c-104.3,0-188.9,84.6-188.9,188.9
-				c0,104.3,84.6,188.9,188.9,188.9c64.4,0,121.3-32.3,155.4-81.5L419.5,701.9z"/>
+			<g>
+				<g>
+					<path class="st0" d="M0.1,0v154.1l62.4-16.6l62.4,16.6V0H0.1z M59.3,111.9h-8V43.1h-9.6v68.8h-7.2V26.3h7.2v11.2h9.6V26.3h8
+						C59.3,26.3,59.3,111.9,59.3,111.9z M90.5,111.9h-8.8V38.4l-4.8,5l-4.8-5v73.5h-7.2V26.3h7.2l4.9,5l4.9-5h8.5v85.6
+						C90.4,111.9,90.5,111.9,90.5,111.9z"/>
+				</g>
+			</g>
 		</g>
+		<polyline class="st0" points="91.5,24.7 89.3,24.7 89.3,114.1 91.5,114.1 		"/>
 	</g>
-	<path fill="#473899" d="M993,1000H6V0h987V1000z M45,967h908V33H45V967z"/>
 </g>
 </svg>
