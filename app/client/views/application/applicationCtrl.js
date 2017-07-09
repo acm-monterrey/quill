@@ -46,7 +46,14 @@ angular.module('reg')
       }
 
       function _updateUser(e){
-        UserService.updateResume(Session.getUserId(), angular.element('#resume-file').val());
+        var file = angular.element('#resume-file')[0].files[0];
+
+        if(file.size > 5000000) {
+            sweetAlert("Your file is too big :(");
+            return;
+        }
+
+        UserService.updateResume(Session.getUserId(), file);
         UserService
           .updateProfile(Session.getUserId(), $scope.user.profile)
           .success(function(data){

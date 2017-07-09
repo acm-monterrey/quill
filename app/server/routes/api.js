@@ -51,8 +51,7 @@ module.exports = function(router) {
     UserController.getByToken(token, function(err, user){
 
       if (err || !user) {
-        return next();
-        return res.status(400).send(err);
+        return res.status(500).send(err);
       }
 
       if (user._id == userId || user.admin){
