@@ -46,6 +46,7 @@ angular.module('reg')
       }
 
       function _updateUser(e){
+        UserService.updateResume(Session.getUserId(), angular.element('#resume-file').val());
         UserService
           .updateProfile(Session.getUserId(), $scope.user.profile)
           .success(function(data){

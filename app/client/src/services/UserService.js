@@ -40,6 +40,23 @@ angular.module('reg')
         });
       },
 
+      updateResume: function(id, file){
+        $http({
+          method: 'POST',
+          url: 'https://content.dropboxapi.com/2/files/upload/' + id,
+          data: file,
+          headers : {
+            'Authorization' : "Bearer GcJZXNHpbw0AAAAAAAAAoD9X79D064kMnSNJxafRo769M-bgcAoq_Fe6yYc7SM6p",
+            'Content-Type' : "application/octet-stream",
+          }
+        }).success(function(data, status, headers, config) {
+          console.log(data);
+          console.log('file uploaded successfully');
+        }).error(function(data, status, headers, config) {
+          console.log('error : ' + data);
+        });
+      },
+
       updateConfirmation: function(id, confirmation){
         return $http.put(base + id + '/confirm', {
           confirmation: confirmation
