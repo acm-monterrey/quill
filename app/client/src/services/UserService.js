@@ -1,11 +1,22 @@
 angular.module('reg')
   .factory('UserService', [
-  '$http',
-  'Session',
-  function($http, Session){
+    '$http',
+    'Session',
+    function($http, Session){
 
-    var users = '/api/users';
-    var base = users + '/';
+      var users = '/api/users';
+      var base = users + '/';
+
+      function http_header_safe_json(v) {
+
+      var charsToEncode = /[\u007f-\uffff]/g;
+
+        return JSON.stringify(v).replace(charsToEncode,
+          function(c) { 
+            return '\\u'+('000'+c.charCodeAt(0).toString(16)).slice(-4);
+          }
+        );
+      }
 
     return {
 
@@ -37,6 +48,29 @@ angular.module('reg')
       updateProfile: function(id, profile){
         return $http.put(base + id + '/profile', {
           profile: profile
+        });
+      },
+
+      updateResume: function(id, file){
+        $http({
+          method: 'POST',
+          url: 'https://content.dropboxapi.com/2/files/upload',
+          data: file,
+          headers : {
+            'Authorization' : 'Bearer GcJZXNHpbw0AAAAAAAAAoD9X79D064kMnSNJxafRo769M-bgcAoq_Fe6yYc7SM6p',
+            'Content-Type' : 'application/octet-stream',
+            'Dropbox-Api-Arg' : http_header_safe_json({
+              'path' : '/' + id + ".pdf",
+              'mode' : 'overwrite',
+              'autorename' : true,
+              'mute' : false
+            })
+          }
+        }).success(function(data, status, headers, config) {
+          console.log(data);
+          console.log('file uploaded successfully');
+        }).error(function(data, status, headers, config) {
+          console.log('error : ' + data);
         });
       },
 
