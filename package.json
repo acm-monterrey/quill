@@ -1,5 +1,5 @@
-{
   "name": "hackmit-reg",
+{
   "description": "mean stack registration system",
   "version": "0.0.1",
   "private": "true",
@@ -30,6 +30,7 @@
     "nodemailer-smtp-transport": "^1.0.3",
     "passport-local": "^1.0.0",
     "request": "^2.60.0",
+    "nodemon": "^1.2.1",
     "underscore": "^1.8.3",
     "validator": "^3.40.1"
   },
