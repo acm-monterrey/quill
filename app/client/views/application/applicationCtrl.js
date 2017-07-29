@@ -48,12 +48,14 @@ angular.module('reg')
       function _updateUser(e){
         var file = angular.element('#resume-file')[0].files[0];
 
-        if(file.size > 5000000) {
+        if(file && file.size > 5000000) {
             sweetAlert("Your file is too big :(");
             return;
         }
 
-        UserService.updateResume(Session.getUserId(), file);
+        if(file){
+          UserService.updateResume(Session.getUserId(), file);
+        }
         UserService
           .updateProfile(Session.getUserId(), $scope.user.profile)
           .success(function(data){
