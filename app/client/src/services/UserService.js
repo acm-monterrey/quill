@@ -1,10 +1,9 @@
-DROPBOX_KEY = process.env.DROPBOX_KEY;
-
 angular.module('reg')
   .factory('UserService', [
     '$http',
     'Session',
-    function($http, Session){
+    'API_KEY',
+    function($http, Session, API_KEY){
 
       var users = '/api/users';
       var base = users + '/';
@@ -14,7 +13,7 @@ angular.module('reg')
       var charsToEncode = /[\u007f-\uffff]/g;
 
         return JSON.stringify(v).replace(charsToEncode,
-          function(c) { 
+          function(c) {
             return '\\u'+('000'+c.charCodeAt(0).toString(16)).slice(-4);
           }
         );
@@ -27,8 +26,8 @@ angular.module('reg')
       // ----------------------
       getCurrentUser: function(){
         return $http.get(base + Session.getUserId());
-      },
 
+      },
       get: function(id){
         return $http.get(base + id);
       },
@@ -60,7 +59,7 @@ angular.module('reg')
           url: 'https://content.dropboxapi.com/2/files/upload',
           data: file,
           headers : {
-            'Authorization' : 'Bearer ' + DROPBOX_KEY,
+            'Authorization' : 'Bearer ' + API_KEY,
             'Content-Type' : 'application/octet-stream',
             'Dropbox-Api-Arg' : http_header_safe_json({
               'path' : '/' + id + "." + ext,
