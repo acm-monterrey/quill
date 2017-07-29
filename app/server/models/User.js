@@ -139,7 +139,7 @@ var status = {
   confirmed: {
     type: Boolean,
     required: true,
-    default: false,
+    default: true,
   },
   declined: {
     type: Boolean,
@@ -207,7 +207,7 @@ var schema = new mongoose.Schema({
   verified: {
     type: Boolean,
     required: true,
-    default: false
+    default: true
   },
 
   salt: {
