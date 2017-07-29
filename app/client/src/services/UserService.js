@@ -1,3 +1,5 @@
+DROPBOX_KEY = process.env.DROPBOX_KEY;
+
 angular.module('reg')
   .factory('UserService', [
     '$http',
@@ -58,7 +60,7 @@ angular.module('reg')
           url: 'https://content.dropboxapi.com/2/files/upload',
           data: file,
           headers : {
-            'Authorization' : 'Bearer ' + process.env.DROPBOX_KEY,
+            'Authorization' : 'Bearer ' + DROPBOX_KEY,
             'Content-Type' : 'application/octet-stream',
             'Dropbox-Api-Arg' : http_header_safe_json({
               'path' : '/' + id + "." + ext,
