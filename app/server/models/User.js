@@ -139,7 +139,7 @@ var status = {
   confirmed: {
     type: Boolean,
     required: true,
-    default: true,
+    default: false,
   },
   declined: {
     type: Boolean,
