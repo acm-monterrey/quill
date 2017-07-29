@@ -50,6 +50,14 @@ var profile = {
     max: 1500
   },
 
+  degree: {
+    type: String,
+    require: true,
+    enum: {
+      values: ['HS', "U", "G"],
+    }
+  },
+
   // Optional info for demographics
   gender: {
     type: String,

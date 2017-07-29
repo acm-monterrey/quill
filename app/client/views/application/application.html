@@ -27,12 +27,22 @@
                    ng-model="user.profile.name">
           </div>
 
-          <div class="field" ng-show="autoFilledSchool">
+          <div class="field">
             <label> School </label>
-            <input class="ui input"
-                   disabled="disabled"
-                   ng-show="autoFilledSchool"
-                   ng-model="user.profile.school">
+            <select
+               name="school"
+               ng-model="user.profile.school">
+              <option value="">Select you School</option>
+              <option value="Tecnológico de Monterrey Campus Monterrey">Tecnológico de Monterrey Campus Monterrey</option>
+              <option value="Tecnológico de Monterrey Campus Guadalajara">Tecnológico de Monterrey Campus Guadalajara</option>
+              <option value="Tecnológico de Monterrey Campus Puebla">Tecnológico de Monterrey Campus Puebla</option>
+              <option value="Tecnológico de Monterrey Campus Ciudad de México">Tecnológico de Monterrey Campus Ciudad de México</option>
+              <option value="Tecnológico de Monterrey Campus Santa Fé">Tecnológico de Monterrey Campus Santa Fé</option>
+              <option value="Tecnológico de Monterrey Campus Laguna">Tecnológico de Monterrey Campus Laguna</option>
+              <option value="Tecnológico de Monterrey Campus San Luis">Tecnológico de Monterrey Campus San Luis</option>
+              <option value="Universidad de Monterrey">Universidad de Monterrey</option>
+              <option value="Otro">Otro</option>
+            </select>
           </div>
 
           <div class="field" ng-show="!autoFilledSchool">
@@ -43,7 +53,7 @@
           </div>
 
           <div class="field">
-            <label>Graduation Year</label>
+            <label> Graduation Year </label>
             <select
                name="year"
                ng-model="user.profile.graduationYear">
@@ -71,6 +81,17 @@
           </div>
 
           <div class="field">
+            <label>Degree</label>
+            <select
+               name="degree"
+               ng-model="user.profile.degree">
+              <option value="HS">High School</option>
+              <option value="U">Undergraduate/College</option>
+              <option value="G">Graduate</option>
+            </select>
+          </div>
+
+          <div class="field">
             <label>I would describe myself as a...</label>
             <input type="text"
                    placeholder="Designer, Data Scientist, iOS Wizard, Hacker Extraordinaire"
@@ -86,12 +107,12 @@
           </div>
           <div>
             <form action="">
-              <input type="checkbox" name="firstHack" value="FirstHack" ng-model="user.profile.firstHack">This is my first hackathon
+              <input type="checkbox" name="firstHack" value="FirstHack" ng-model="user.profile.firstHack"> This is my first hackathon
             </form>
           </div>
 
           <div class="field">
-            <label>Upload your resume</label>
+            <label> Upload your resume </label>
             <input type="file" id="resume-file"/>
           </div>
           <br>
