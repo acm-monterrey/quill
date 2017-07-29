@@ -32,6 +32,12 @@ var profile = {
     }
   },
 
+  firstHack: {
+    type: Boolean,
+    required: true,
+  default:false,
+  },
+
   description: {
     type: String,
     min: 0,
