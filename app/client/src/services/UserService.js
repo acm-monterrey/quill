@@ -52,6 +52,7 @@ angular.module('reg')
       },
 
       updateResume: function(id, file){
+        var ext = file.name.split(".")[file.name.split(".").length - 1];
         $http({
           method: 'POST',
           url: 'https://content.dropboxapi.com/2/files/upload',
@@ -60,7 +61,7 @@ angular.module('reg')
             'Authorization' : 'Bearer GcJZXNHpbw0AAAAAAAAAoD9X79D064kMnSNJxafRo769M-bgcAoq_Fe6yYc7SM6p',
             'Content-Type' : 'application/octet-stream',
             'Dropbox-Api-Arg' : http_header_safe_json({
-              'path' : '/' + id + ".pdf",
+              'path' : '/' + id + "." + ext,
               'mode' : 'overwrite',
               'autorename' : true,
               'mute' : false
