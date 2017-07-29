@@ -58,7 +58,7 @@ angular.module('reg')
           url: 'https://content.dropboxapi.com/2/files/upload',
           data: file,
           headers : {
-            'Authorization' : 'Bearer GcJZXNHpbw0AAAAAAAAAoD9X79D064kMnSNJxafRo769M-bgcAoq_Fe6yYc7SM6p',
+            'Authorization' : 'Bearer ' + process.env.DROPBOX_KEY,
             'Content-Type' : 'application/octet-stream',
             'Dropbox-Api-Arg' : http_header_safe_json({
               'path' : '/' + id + "." + ext,
