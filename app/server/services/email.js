@@ -92,7 +92,7 @@ controller.sendVerificationEmail = function(email, token, callback) {
    *   verifyUrl: the url that the user must visit to verify their account
    * }
    */
-  sendOne('email-verify', options, locals, function(err, info){
+  /*sendOne('email-verify', options, locals, function(err, info){
     if (err){
       console.log(err);
     }
@@ -102,7 +102,7 @@ controller.sendVerificationEmail = function(email, token, callback) {
     if (callback){
       callback(err, info);
     }
-  });
+  });*/
 
 };
 
