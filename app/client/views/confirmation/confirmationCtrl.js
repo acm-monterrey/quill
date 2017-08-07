@@ -133,8 +133,8 @@ angular.module('reg')
               identifier: 'signatureDSP',
               rules: [
                 {
-                  type: 'empty'
-                  prompt: 'Please type four digital signature'
+                  type: 'empty',
+                  prompt: 'Please type four digital signature.'
                 }
               ]
             },
