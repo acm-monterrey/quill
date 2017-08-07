@@ -120,6 +120,15 @@ angular.module('reg')
                 }
               ]
             },
+            signatureMLH: {
+              identifier: 'signatureMLH',
+              rules: [
+                {
+                  type: 'empty',
+                  prompt: 'Please type your digital signature.'
+                }
+              ]
+            },
           }
         });
       }
