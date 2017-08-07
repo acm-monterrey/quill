@@ -659,6 +659,7 @@ UserController.admitUser = function(id, user, callback){
       },
       callback);
   });
+  Mailer.sendUserAdmitted(user.email);
 };
 
 /**

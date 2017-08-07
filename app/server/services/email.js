@@ -185,4 +185,39 @@ controller.sendPasswordChangedEmail = function(email, callback){
 
 };
 
+/**
+ *  Send mail when user is confirmed.
+ * @param  {[type]}   email    [description]
+ * @param  {Function} callback [description]
+*/
+controller.sendUserAdmitted = function(email){
+
+  var options = {
+    to: email,
+    subject: "[HACKMTY] - HackMTY admittance!"
+  };
+
+  var locals = {
+    title: 'Congratulations!',
+    body: 'You have been admited to 2017 HackMTY. Please log in into your account and complete your profile information.',
+  };
+
+  /**
+   * Eamil-verify takes a few template values:
+   * {
+   *   verifyUrl: the url that the user must visit to verify their account
+   * }
+   */
+  sendOne('email-basic', options, locals, function(err, info){
+    if (err){
+      console.log(err);
+    }
+    if (info){
+      console.log(info.message);
+    }
+  });
+
+};
+
+
 module.exports = controller;
