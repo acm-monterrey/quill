@@ -112,6 +112,7 @@ var confirmation = {
   signaturePhotoRelease: String,
   signatureCodeOfConduct: String,
   signatureMLH: String,
+  signatureDSP: String,
 };
 
 var status = {

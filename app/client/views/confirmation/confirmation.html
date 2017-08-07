@@ -196,7 +196,18 @@
             <p>
             By signing with my name below I confirm that I have read the code of conduct provided by the MLH.
             </p>
-            <input type="text" name="signatureMLH" placeholder="Your full legal name">
+            <input type="text" name="signatureMLH" placeholder="Your full legal name" ng-model="user.confirmation.signatureMLH">
+          </div>
+
+          <div class="field">
+            <label > Data Sharing Notice</label>
+            <a
+               target="_blank"
+              href="https://github.com/MLH/mlh-policies/blob/master/data-sharing.md">Data Sharing Notice</a>
+            <p>
+            By signing this I confirm that I agree with the Data Sharing notice
+            </p>
+            <input type="text" name="signatureDataSharing" placeholder="Your full legal name" ng-model="user.confirmation.signatureDSP">
           </div>
 
           <br>
