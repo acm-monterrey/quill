@@ -129,7 +129,7 @@ angular.module('reg')
                 }
               ]
             },
-            signatureDSP {
+            signatureDSP: {
               identifier: 'signatureDSP',
               rules: [
                 {
