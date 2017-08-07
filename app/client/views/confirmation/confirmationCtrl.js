@@ -129,6 +129,15 @@ angular.module('reg')
                 }
               ]
             },
+            signatureDSP {
+              identifier: 'signatureDSP',
+              rules: [
+                {
+                  type: 'empty'
+                  prompt: 'Please type four digital signature'
+                }
+              ]
+            },
           }
         });
       }
