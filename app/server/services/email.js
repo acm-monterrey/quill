@@ -194,7 +194,7 @@ controller.sendUserAdmitted = function(email){
 
   var options = {
     to: email,
-    subject: "[HACKMTY] - HackMTY admittance!"
+    subject: "[HackMTY Action Required] - HackMTY admittance!"
   };
 
   var locals = {
