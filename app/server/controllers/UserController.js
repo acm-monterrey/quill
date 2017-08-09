@@ -659,7 +659,9 @@ UserController.admitUser = function(id, user, callback){
       },
       callback);
   });
-  Mailer.sendUserAdmitted(user.email);
+  User.findById({_id: id}, function(err, user){
+    Mailer.sendUserAdmitted(user.email);
+  });
 };
 
 /**
