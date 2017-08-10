@@ -660,6 +660,7 @@ UserController.admitUser = function(id, user, callback){
       callback);
   });
   User.findById({_id: id}, function(err, user){
+    console.log(user);
     Mailer.sendUserAdmitted(user.email);
   });
 };
