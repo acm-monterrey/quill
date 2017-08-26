@@ -45,6 +45,21 @@
       Admin
     </div>
 
+    <div
+      ui-sref-active="active"
+      ui-sref="app.workshops"
+      ng-show="!currentUser.status.declined"
+      class="item">
+      Workshops
+    </div>
+
+    <div
+      ui-sref-active="active"
+      ui-sref="app.challenges"
+      ng-show="!currentUser.status.declined"
+      class="item">
+      Challenges
+    </div>
   </div>
 
   <div class="item"
