@@ -98,6 +98,38 @@ angular.module('reg')
           }
         }
       })
+      .state('app.workshops', {
+        url: "/workshops",
+        templateUrl: "views/workshops/workshops.html",
+        controller: 'workshopsCtrl',
+        data: {
+          requireVerified: true
+        },
+        resolve: {
+          currentUser: function(UserService){
+            return UserService.getCurrentUser();
+          },
+          settings: function(SettingsService){
+            return SettingsService.getPublicSettings();
+          }
+        }
+      })
+      .state('app.challenges', {
+        url: "/challenges",
+        templateUrl: "views/challenges/challenges.html",
+        controller: 'challengesCtrl',
+        data: {
+          requireVerified: true
+        },
+        resolve: {
+          currentUser: function(UserService){
+            return UserService.getCurrentUser();
+          },
+          settings: function(SettingsService){
+            return SettingsService.getPublicSettings();
+          }
+        }
+      })
       .state('app.admin', {
         views: {
           '': {
