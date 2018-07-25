@@ -128,7 +128,7 @@ var status = {
   admitted: {
     type: Boolean,
     required: true,
-    default: true,
+    default: false,
   },
   admittedBy: {
     type: String,
@@ -137,12 +137,11 @@ var status = {
       'Invalid Email',
     ],
     select: false,
-    default: 'hello@hackmty.com'
   },
   confirmed: {
     type: Boolean,
     required: true,
-    default: true,
+    default: false,
   },
   declined: {
     type: Boolean,
