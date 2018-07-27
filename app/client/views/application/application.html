@@ -51,12 +51,11 @@
                name="year"
                ng-model="user.profile.graduationYear">
               <option value="">Graduation Year</option>
-              <option value="2017">2017</option>
-              <option value="2018">2018</option>
               <option value="2019">2019</option>
               <option value="2020">2020</option>
               <option value="2021">2021</option>
               <option value="2022">2022</option>
+              <option value="2023">2023</option>
             </select>
           </div>
 
@@ -105,8 +104,10 @@
           </div>
 
           <div class="field">
+            <!-- <textarea ng-model="user.profile.cv"> -->
             <label> Upload your resume </label>
-            <input type="file" id="resume-file"/>
+            <input type="file" id="resume-file"/ >
+             <label> {{user.profile.cv}} </label>
           </div>
           <br>
 

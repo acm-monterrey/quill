@@ -55,6 +55,8 @@ angular.module('reg')
 
         if(file){
           UserService.updateResume(Session.getUserId(), file);
+          $scope.user.profile.cv = file.name;
+          console.log($scope.user.profile.cv);
         }
         UserService
           .updateProfile(Session.getUserId(), $scope.user.profile)

@@ -96,11 +96,28 @@
           <div class="divided title"> Skills & Accomplishments </div>
 
           <div class="field">
-            <label> What are you studying? </label>
-            <input type="text"
-                   name="study"
-                   placeholder="Computer Science, Product Design, Basket Weaving, etc."
-                   ng-model="user.confirmation.major">
+                   <select
+               name="year"
+               ng-model="user.confirmation.major">
+              <option value="">Major</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Business Administration">Business Administration</option>
+              <option value="Biochemestry">Biochemestry</option>
+              <option value="Business informatics">Business informatics</option>
+              <option value="Chemical Engineering">Chemical Engineering</option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Accounting">Accounting</option>
+              <option value="Electrical Engineering">Electrical Engineering</option>
+              <option value="Mechanical Engineering">Mechanical Engineering</option>
+              <option value="Robotics">Robotics</option>
+              <option value="Environmental Engineering">Environmental Engineering</option>
+              <option value="Physics">Physics</option>
+              <option value="Industrial Engineering">Industrial Engineering</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Bioengineering">Bioengineering</option>
+              <option value="Mecatronics">Mecatronics</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
 
           <div class="field">
@@ -188,8 +205,8 @@
 
           <div class="field">
             <label> MLH Code of Conduct</label>
-            <a 
-              target="_blank" 
+            <a
+              target="_blank"
               href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">
               MLH Code of Conduct
             </a>

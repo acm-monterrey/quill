@@ -66,6 +66,10 @@ var profile = {
     }
   },
 
+  cv: {
+    type: String,
+  }
+
 };
 
 // Only after confirmed
