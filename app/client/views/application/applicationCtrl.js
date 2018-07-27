@@ -27,10 +27,6 @@ angular.module('reg')
 
       $scope.regIsClosed = Date.now() > Settings.data.timeClose;
 
-      function checkResume() {
-        if($scope.user.profile.cv)
-      }
-
       /**
        * TODO: JANK WARNING
        */
