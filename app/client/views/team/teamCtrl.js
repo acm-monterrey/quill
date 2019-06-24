@@ -30,16 +30,20 @@ angular.module('reg')
       }
 
       $scope.joinTeam = function(){
-        UserService
-          .joinOrCreateTeam($scope.code)
-          .success(function(user){
-            $scope.error = null;
-            $scope.user = user;
-            _populateTeammates();
-          })
-          .error(function(res){
-            $scope.error = res.message;
-          });
+        if($scope.code && $scope.code != ''){
+          UserService
+            .joinOrCreateTeam($scope.code)
+            .success(function(user){
+              $scope.error = null;
+              $scope.user = user;
+              _populateTeammates();
+            })
+            .error(function(res){
+              $scope.error = res.message;
+            });
+        } else {
+          $scope.error = "Please enter a team name"
+        }
       };
 
       $scope.leaveTeam = function(){
