@@ -331,7 +331,9 @@ module.exports = function(router) {
    */
   router.put('/settings/confirm-by', isAdmin, function(req, res){
     var time = req.body.time;
-    SettingsController.updateField('timeConfirm', time, defaultResponse(req, res));
+    UserController.updateConfirmBy( time, function() {
+      SettingsController.updateField('timeConfirm', time, defaultResponse(req, res));
+    });
   });
 
   /**

@@ -337,39 +337,44 @@ UserController.updateProfileById = function (id, profile, callback){
  */
 UserController.updateConfirmationById = function (id, confirmation, callback){
 
-  User.findById(id, function(err, user){
-
-    if(err || !user){
-      return callback(err);
+  Settings.getRegistrationTimes(function(err, times){
+    if(err){
+      return callback(err)
     }
 
-    // Make sure that the user followed the deadline, but if they're already confirmed
-    // that's okay.
-    if (Date.now() >= user.status.confirmBy && !user.status.confirmed){
-      return callback({
-        message: "You've missed the confirmation deadline."
-      });
-    }
-
-    // You can only confirm acceptance if you're admitted and haven't declined.
-    User.findOneAndUpdate({
-      '_id': id,
-      'verified': true,
-      'status.admitted': true,
-      'status.declined': {$ne: true}
-    },
-      {
-        $set: {
-          'lastUpdated': Date.now(),
-          'confirmation': confirmation,
-          'status.confirmed': true,
-        }
-      }, {
-        new: true
+    User.findById(id, function(err, user){
+  
+      if(err || !user){
+        return callback(err);
+      }
+  
+      // Make sure that the user followed the deadline, but if they're already confirmed
+      // that's okay.
+      if (Date.now() >= times.timeConfirm && !user.status.confirmed){
+        return callback({
+          message: "You've missed the confirmation deadline."
+        });
+      }
+  
+      // You can only confirm acceptance if you're admitted and haven't declined.
+      User.findOneAndUpdate({
+        '_id': id,
+        'verified': true,
+        'status.admitted': true,
+        'status.declined': {$ne: true}
       },
-      callback);
-
-  });
+        {
+          $set: {
+            'lastUpdated': Date.now(),
+            'confirmation': confirmation,
+            'status.confirmed': true,
+          }
+        }, {
+          new: true
+        },
+        callback);
+    });
+  })
 };
 
 /**
@@ -720,4 +725,14 @@ UserController.getStats = function(callback){
   return callback(null, Stats.getUserStats());
 };
 
+UserController.updateConfirmBy = function(timeConfirm, callback){
+  User.updateMany({
+    verified:true,
+    'status.admitted': true
+  },
+  {
+    'status.confirmBy':timeConfirm
+  },
+  callback);
+}
 module.exports = UserController;
