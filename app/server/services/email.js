@@ -12,7 +12,7 @@ var EMAIL_USER = process.env.EMAIL_USER;
 var EMAIL_PASS = process.env.EMAIL_PASS;
 var EMAIL_PORT = process.env.EMAIL_PORT;
 var EMAIL_CONTACT = process.env.EMAIL_CONTACT;
-var EMAIL_HEADER_IMAGE = process.env.EMAIL_HEADER_IMAGE;
+var EMAIL_HEADER_IMAGE = '/assets/images/favicon.png';
 if(EMAIL_HEADER_IMAGE.indexOf("https") == -1){
   EMAIL_HEADER_IMAGE = ROOT_URL + EMAIL_HEADER_IMAGE;
 }
