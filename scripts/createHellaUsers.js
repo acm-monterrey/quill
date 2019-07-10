@@ -1,7 +1,7 @@
 // Connect to mongodb
 var mongoose        = require('mongoose');
-var database        = process.env.MONGODB_URI || { url: "mongodb://localhost:27017"};
-mongoose.connect(database.url);
+var database        = process.env.MONGODB_URI || "mongodb://localhost:27017"
+mongoose.connect(database);
 
 var UserController = require('../app/server/controllers/UserController');
 
