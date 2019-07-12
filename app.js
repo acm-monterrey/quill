@@ -12,6 +12,7 @@ var cookieParser    = require('cookie-parser');
 var mongoose        = require('mongoose');
 var port            = process.env.PORT || 3000;
 var database        = process.env.DATABASE || process.env.MONGODB_URI || "mongodb://localhost:27017";
+mongoose.Promise = Promise;
 
 var settingsConfig  = require('./config/settings');
 var adminConfig     = require('./config/admin');
