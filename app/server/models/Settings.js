@@ -9,6 +9,11 @@ var validator = require('validator');
  *
  * @type {mongoose}
  */
+var geolocation = {
+  latitude: 0,
+  longitude: 0
+};
+
 var schema = new mongoose.Schema({
   status: String,
   timeOpen: {
@@ -37,6 +42,23 @@ var schema = new mongoose.Schema({
   confirmationText: {
     type: String
   },
+  checkInOpen: {
+    type: Number,
+    default: 0
+  },
+  teamSizeAccepted: {
+    type: Number,
+    default: 4
+  },
+  hackLocation: geolocation,
+  maxTableCount: {
+    type: Number,
+    default: 100
+  },
+  currentTableCount: {
+    type: Number,
+    default: 0
+  }
 });
 
 /**
