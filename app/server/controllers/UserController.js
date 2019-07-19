@@ -640,8 +640,12 @@ UserController.resetPassword = function(token, password, callback){
   });
 };
 
+/**
+ * Logic for checking if the user's current location matches the hacks
+ * location so that the user can checkin
+ * @param {Function} callback [description]
+ */
 UserController.checkInByCurrentLocation = function(callback) {
-  // Logic for location checkin
   callback();
 }
 
