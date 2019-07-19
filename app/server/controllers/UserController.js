@@ -640,6 +640,25 @@ UserController.resetPassword = function(token, password, callback){
   });
 };
 
+UserController.checkInByCurrentLocation = function(callback) {
+  // Logic for location checkin
+  callback();
+}
+
+/**
+ * Adds the schema's newly added fields to the records that do not contain it
+ * @param  {Function} callback [description]
+ */
+UserController.updateRecordsWithMissingFields = function(callback) {
+  var userSchema = User.schema.obj;
+
+  User.update({ 'status.tableNumber': {$exists: false} },
+    { $set: {
+      'status.tableNumber': userSchema.status.tableNumber.default,
+    }}, { multi: true })
+    .exec(callback);
+}
+
 /**
  * [ADMIN ONLY]
  *
@@ -716,19 +735,6 @@ UserController.checkOutById = function(id, user, callback){
   callback);
 };
 
-/**
- * Adds the schema's newly added fields to the records that do not contain it
- * @param  {Function} callback [description]
- */
-UserController.updateRecordsWithMissingFields = function(callback) {
-  var userSchema = User.schema.obj;
-
-  User.update({ 'status.tableNumber': {$exists: false} },
-    { $set: {
-      'status.tableNumber': userSchema.status.tableNumber.default,
-    }}, { multi: true })
-    .exec(callback);
-}
 
 /**
  * [ADMIN ONLY]
