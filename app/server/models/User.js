@@ -166,6 +166,10 @@ var status = {
   reimbursementGiven: {
     type: Boolean,
     default: false
+  },
+  tableNumber: {
+    type: Number,
+    default: -1
   }
 };
 
