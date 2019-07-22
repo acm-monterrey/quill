@@ -402,11 +402,12 @@ module.exports = function(router) {
   });
 
   /**
-   * [Karla]
+   * [ADMIN/OWNER]
    * Edits the hack's allowed team size
    */
   router.put('/settings/teamSizeAccepted', isAdmin, function(req, res) {
-
+    var teamSize = req.body.teamSizeAccepted;
+    SettingsController.updateTeamSize(teamSize, defaultResponse(req, res));
   });
 
   /**

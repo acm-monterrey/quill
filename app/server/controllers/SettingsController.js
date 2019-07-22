@@ -122,4 +122,19 @@ SettingsController.updateCheckInStartTime = function(checkInOpen, callback) {
   .exec(callback);
 
 }
+
+/**
+ * Updates the max/min accepted team size
+ * @param  {Function} callback [description]
+*/
+SettingsController.updateTeamSize = function(teamSizeAccepted, callback) {
+
+  Settings.findOneAndUpdate({},{ 
+      $set: {
+        teamSizeAccepted: teamSizeAccepted,
+      }
+  }, { new: true})
+  .exec(callback);
+
+}
 module.exports = SettingsController;
