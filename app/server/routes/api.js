@@ -398,7 +398,7 @@ module.exports = function(router) {
    */
   router.put('/settings/checkInStart', isAdmin, function(req, res) {
     var checkInOpen = req.body.checkInOpen;
-    SettingsController.updateCheckInStartTime(checkInOpen, defaultResponse(req, res));
+    SettingsController.updateField('checkInOpen',checkInOpen, defaultResponse(req, res));
   });
 
   /**
@@ -407,7 +407,7 @@ module.exports = function(router) {
    */
   router.put('/settings/teamSizeAccepted', isAdmin, function(req, res) {
     var teamSize = req.body.teamSizeAccepted;
-    SettingsController.updateTeamSize(teamSize, defaultResponse(req, res));
+    SettingsController.updateField('teamSizeAccepted', teamSize, defaultResponse(req, res));
   });
 
   /**
@@ -419,11 +419,12 @@ module.exports = function(router) {
   });
 
   /**
-   * [Karla]
+   * [ADMIN/OWNER]
    * Edits the maximum amount of users per table
    */
   router.put('/settings/maxTableAmount', isAdmin, function(req, res) {
-
+    var maxTableCount = req.body.maxTableCount;
+    SettingsController.updateField('maxTableCount', maxTableCount, defaultResponse(req, res));
   });
 
 };

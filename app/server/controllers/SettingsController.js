@@ -108,33 +108,4 @@ SettingsController.updateRecordsWithMissingFields = function(callback) {
     .exec(callback);
 }
 
-/**
- * Updates the checkin start time
- * @param  {Function} callback [description]
-*/
-SettingsController.updateCheckInStartTime = function(checkInOpen, callback) {
-
-  Settings.findOneAndUpdate({},{ 
-      $set: {
-        checkInOpen: checkInOpen,
-      }
-  }, { new: true})
-  .exec(callback);
-
-}
-
-/**
- * Updates the max/min accepted team size
- * @param  {Function} callback [description]
-*/
-SettingsController.updateTeamSize = function(teamSizeAccepted, callback) {
-
-  Settings.findOneAndUpdate({},{ 
-      $set: {
-        teamSizeAccepted: teamSizeAccepted,
-      }
-  }, { new: true})
-  .exec(callback);
-
-}
 module.exports = SettingsController;
