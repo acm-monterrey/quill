@@ -108,4 +108,18 @@ SettingsController.updateRecordsWithMissingFields = function(callback) {
     .exec(callback);
 }
 
+/**
+ * Updates the checkin start time
+ * @param  {Function} callback [description]
+*/
+SettingsController.updateCheckInStartTime = function(checkInOpen, callback) {
+
+  Settings.findOneAndUpdate({},{ 
+      $set: {
+        checkInOpen: checkInOpen,
+      }
+  }, { new: true})
+  .exec(callback);
+
+}
 module.exports = SettingsController;

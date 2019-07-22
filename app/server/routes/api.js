@@ -242,7 +242,7 @@ module.exports = function(router) {
   });
 
   /**
-   * [OWNER/ADMIN]
+   * [Karla]
    * Function that checks the current location of the user and if it matches the
    * hack's location, then the user can check-in
    */
@@ -253,7 +253,7 @@ module.exports = function(router) {
   });
 
   /**
-   * [OWNER/ADMIN]
+   * [Karla]
    * Function that assigns the next available table for the team
    */
   router.post('/users/:id/confirmed', isOwnerOrAdmin, function(req, res) {
@@ -393,15 +393,16 @@ module.exports = function(router) {
   });
 
   /**
-   * [ADMIN]
+   * [ADMIN/OWNER]
    * Edits the hack's start time
    */
-  router.put('/settings/startTime', isAdmin, function(req, res) {
-
+  router.put('/settings/checkInStart', isAdmin, function(req, res) {
+    var checkInOpen = req.body.checkInOpen;
+    SettingsController.updateCheckInStartTime(checkInOpen, defaultResponse(req, res));
   });
 
   /**
-   * [ADMIN]
+   * [Karla]
    * Edits the hack's allowed team size
    */
   router.put('/settings/teamSizeAccepted', isAdmin, function(req, res) {
@@ -409,7 +410,7 @@ module.exports = function(router) {
   });
 
   /**
-   * [ADMIN]
+   * [Karla]
    * Edits the hack's location
    */
   router.put('/settings/hackLocation', isAdmin, function(req, res) {
@@ -417,7 +418,7 @@ module.exports = function(router) {
   });
 
   /**
-   * [ADMIN]
+   * [Karla]
    * Edits the maximum amount of users per table
    */
   router.put('/settings/maxTableAmount', isAdmin, function(req, res) {
