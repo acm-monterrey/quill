@@ -422,7 +422,7 @@ module.exports = function(router) {
    * [ADMIN/OWNER]
    * Edits the maximum amount of users per table
    */
-  router.put('/settings/maxTableAmount', isAdmin, function(req, res) {
+  router.put('/settings/maxTableCount', isAdmin, function(req, res) {
     var maxTableCount = req.body.maxTableCount;
     SettingsController.updateField('maxTableCount', maxTableCount, defaultResponse(req, res));
   });
