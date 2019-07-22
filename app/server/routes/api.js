@@ -397,7 +397,7 @@ module.exports = function(router) {
    * Edits the hack's start time
    */
   router.put('/settings/checkInStart', isAdmin, function(req, res) {
-    var checkInOpen = req.body.checkInOpen;
+    var checkInOpen = req.body.checkInStart;
     SettingsController.updateField('checkInOpen',checkInOpen, defaultResponse(req, res));
   });
 
@@ -411,11 +411,18 @@ module.exports = function(router) {
   });
 
   /**
-   * [Karla]
+   * [ADMIN/OWNER]
    * Edits the hack's location
    */
   router.put('/settings/hackLocation', isAdmin, function(req, res) {
+    var locationLatitude = req.body.latitude;
+    var locationLongitude = req.body.longitude;
 
+    var hackLocation = {
+      latitude : locationLatitude,
+      longitude: locationLongitude
+    };
+    SettingsController.updateField('hackLocation', hackLocation, defaultResponse(req, res));
   });
 
   /**
