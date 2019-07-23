@@ -242,6 +242,28 @@ module.exports = function(router) {
   });
 
   /**
+   * [Karla]
+   * Function that checks the current location of the user and if it matches the
+   * hack's location, then the user can check-in
+   */
+  router.post('/users/:id/checkin/location', isOwnerOrAdmin, function(req, res) {
+    var id = req.params.id;
+    var user = req.user;
+    UserController.checkInByCurrentLocation(defaultResponse(req, res));
+  });
+
+  /**
+   * [Karla]
+   * Function that assigns the next available table for the team
+   */
+  router.post('/users/:id/confirmed', isOwnerOrAdmin, function(req, res) {
+    var id = req.params.id;
+    console.log(req);
+    var user = req.user;
+    UserController.assignNextAvailableTable();
+  });
+
+  /**
    * Admit a user. ADMIN ONLY, DUH
    *
    * Also attaches the user who did the admitting, for liabaility.
@@ -371,6 +393,45 @@ module.exports = function(router) {
   router.put('/settings/whitelist', isAdmin, function(req, res){
     var emails = req.body.emails;
     SettingsController.updateWhitelistedEmails(emails, defaultResponse(req, res));
+  });
+
+  /**
+   * [ADMIN/OWNER]
+   * Edits the hack's start time
+   */
+  router.put('/settings/checkInStart', isAdmin, function(req, res) {
+    var checkInOpen = req.body.checkInStart;
+    SettingsController.updateField('checkInOpen',checkInOpen, defaultResponse(req, res));
+  });
+
+  /**
+   * [ADMIN/OWNER]
+   * Edits the hack's allowed team size
+   */
+  router.put('/settings/teamSizeAccepted', isAdmin, function(req, res) {
+    var teamSizeAccepted = req.body.teamSizeAccepted;
+    SettingsController.updateField('teamSizeAccepted', teamSizeAccepted, defaultResponse(req, res));
+  });
+
+  /**
+   * [ADMIN/OWNER]
+   * Edits the hack's location
+   */
+  router.put('/settings/hackLocation', isAdmin, function(req, res) {
+    var latitude = req.body.latitude;
+    var longitude = req.body.longitude;
+    var hackLocation = { latitude, longitude };
+    
+    SettingsController.updateField('hackLocation', hackLocation, defaultResponse(req, res));
+  });
+
+  /**
+   * [ADMIN/OWNER]
+   * Edits the maximum amount of users per table
+   */
+  router.put('/settings/maxTableCount', isAdmin, function(req, res) {
+    var maxTableCount = req.body.maxTableCount;
+    SettingsController.updateField('maxTableCount', maxTableCount, defaultResponse(req, res));
   });
 
 };

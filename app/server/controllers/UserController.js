@@ -641,6 +641,36 @@ UserController.resetPassword = function(token, password, callback){
 };
 
 /**
+ * Logic for checking if the user's current location matches the hacks
+ * location so that the user can checkin
+ * @param {Function} callback [description]
+ */
+UserController.checkInByCurrentLocation = function(callback) {
+  callback();
+}
+
+/**
+ * Adds the schema's newly added fields to the records that do not contain it
+ * @param  {Function} callback [description]
+ */
+UserController.updateRecordsWithMissingFields = function(callback) {
+  var userSchema = User.schema.obj;
+
+  User.update({ 'status.tableNumber': {$exists: false} },
+    { $set: {
+      'status.tableNumber': userSchema.status.tableNumber.default,
+    }}, { multi: true })
+    .exec(callback);
+}
+
+/**
+ * [Karla]
+ */
+UserController.assignNextAvailableTable = function(user, callback) {
+  // console.log(user,'\n\n!!!!');
+}
+
+/**
  * [ADMIN ONLY]
  *
  * Admit a user.
@@ -716,19 +746,6 @@ UserController.checkOutById = function(id, user, callback){
   callback);
 };
 
-/**
- * Adds the schema's newly added fields to the records that do not contain it
- * @param  {Function} callback [description]
- */
-UserController.updateRecordsWithMissingFields = function(callback) {
-  var userSchema = User.schema.obj;
-
-  User.update({ 'status.tableNumber': {$exists: false} },
-    { $set: {
-      'status.tableNumber': userSchema.status.tableNumber.default,
-    }}, { multi: true })
-    .exec(callback);
-}
 
 /**
  * [ADMIN ONLY]
