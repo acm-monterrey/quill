@@ -11,7 +11,7 @@ var user = { email: process.env.ADMIN_EMAIL };
 var fileName = 'accepted.txt';
 
 if(fs.existsSync(fileName)) {
-  var userArray = fs.readFileSync('accepted.txt').toString().split('\n');
+  var userArray = fs.readFileSync(fileName).toString().split('\n');
   var count = 0;
 
   userArray.forEach(function (id) {

@@ -664,6 +664,13 @@ UserController.updateRecordsWithMissingFields = function(callback) {
 }
 
 /**
+ * [Karla]
+ */
+UserController.assignNextAvailableTable = function(user, callback) {
+  // console.log(user,'\n\n!!!!');
+}
+
+/**
  * [ADMIN ONLY]
  *
  * Admit a user.

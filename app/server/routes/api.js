@@ -257,7 +257,10 @@ module.exports = function(router) {
    * Function that assigns the next available table for the team
    */
   router.post('/users/:id/confirmed', isOwnerOrAdmin, function(req, res) {
-
+    var id = req.params.id;
+    console.log(req);
+    var user = req.user;
+    UserController.assignNextAvailableTable();
   });
 
   /**
@@ -406,8 +409,8 @@ module.exports = function(router) {
    * Edits the hack's allowed team size
    */
   router.put('/settings/teamSizeAccepted', isAdmin, function(req, res) {
-    var teamSize = req.body.teamSizeAccepted;
-    SettingsController.updateField('teamSizeAccepted', teamSize, defaultResponse(req, res));
+    var teamSizeAccepted = req.body.teamSizeAccepted;
+    SettingsController.updateField('teamSizeAccepted', teamSizeAccepted, defaultResponse(req, res));
   });
 
   /**
@@ -415,13 +418,10 @@ module.exports = function(router) {
    * Edits the hack's location
    */
   router.put('/settings/hackLocation', isAdmin, function(req, res) {
-    var locationLatitude = req.body.latitude;
-    var locationLongitude = req.body.longitude;
-
-    var hackLocation = {
-      latitude : locationLatitude,
-      longitude: locationLongitude
-    };
+    var latitude = req.body.latitude;
+    var longitude = req.body.longitude;
+    var hackLocation = { latitude, longitude };
+    
     SettingsController.updateField('hackLocation', hackLocation, defaultResponse(req, res));
   });
 
