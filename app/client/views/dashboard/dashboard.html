@@ -1,6 +1,6 @@
 <div id="dashboard" class="page">
-  <div class="divided title">
-    Dashboard
+  <div class="divided title"> <!-- style should be in the css, cant find it -->
+      Welcomo to hackmty, {{ user.profile.name.substr(0, user.profile.name.indexOf(' ')) }}! 
   </div>
 
   <div class="ui stackable centered page grid">
@@ -235,4 +235,78 @@
 
     </div>
   </div>
+
+  <!-- Box fot the TeamOverview, new box with different title and no functionality implemented -->
+  <div class="ui stackable centered page grid">
+    <div class="column">
+      <div class="ui status segment">
+        <!-- Title of the box -->
+        <div class="small title">
+            Team Overview
+        </div>
+        <!-- Title of the team -->
+        <div>
+          <h4>
+            Mi Equipo
+          </h4>
+        </div>
+        <!-- ngFor to iterate between the teammates -->
+        <div class="team-list" style="width: 100%; text-align: left; display:inline-block;">
+          <p style="vertical-align: middle; float: left;">
+            <img ng-if="false" src="../../assets/images/cross.png">
+            <img ng-if="true"  src="../../assets/images/mark.png">
+          </p>
+          <p class="divided small team-member" style="padding-left: 30px; color: #473899;">
+            {{user.profile.name}}
+          </p>
+        </div>
+        <div class="team-list" style="width: 100%; text-align: left; display:inline-block;">
+          <p style="vertical-align: middle; float: left;">
+            <img ng-if="false" src="../../assets/images/cross.png">
+            <img ng-if="true"  src="../../assets/images/mark.png">
+          </p>
+          <p class="divided small team-member" style="padding-left: 30px;">
+            Carolina Peyrot
+          </p>
+        </div>
+        <div class="team-list" style="width: 100%; text-align: left; display:inline-block;">
+          <p style="vertical-align: middle; float: left;">
+            <img ng-if="true" src="../../assets/images/cross.png">
+            <img ng-if="false"  src="../../assets/images/mark.png">
+          </p>
+          <p class="divided small team-member" style="padding-left: 30px;">
+            Mariana Villanueva
+          </p>
+        </div>
+        <div class="team-list" style="width: 100%; text-align: left; display:inline-block;">
+          <p style="vertical-align: middle; float: left;">
+            <img ng-if="true" src="../../assets/images/cross.png">
+            <img ng-if="false"  src="../../assets/images/mark.png">
+          </p>
+          <p class="divided small team-member" style="padding-left: 30px;">
+            Noe Campos
+          </p>
+        </div>
+
+        <!-- Buttons -->
+        <div ng-if="false" class="ui primary button" style="margin-bottom: 24px;">
+          Check In
+        </div>
+
+        <div ng-if="false" class="ui primary button" style="margin-bottom: 24px; display: inline-block; background-color: #46414A;">
+          <img  src="../../assets/images/mark-white.png"height="19" width="19" style="float: left; padding-top: 2px;">
+          <p style="float: left; padding-left: 10px;">
+            Checked In
+          </p>
+        </div>
+
+        <div class="ui primary button" style="margin-bottom: 24px; width: 100%; margin: 0px;">
+          Everyone is check in your table is #34
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  
 </div>
