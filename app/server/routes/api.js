@@ -258,7 +258,6 @@ module.exports = function(router) {
    */
   router.post('/users/:id/confirmed', isOwnerOrAdmin, function(req, res) {
     var id = req.params.id;
-    console.log(req);
     var user = req.user;
     UserController.assignNextAvailableTable();
   });
@@ -399,8 +398,8 @@ module.exports = function(router) {
    * [ADMIN/OWNER]
    * Edits the hack's start time
    */
-  router.put('/settings/checkInStart', isAdmin, function(req, res) {
-    var checkInOpen = req.body.checkInStart;
+  router.put('/settings/checkInOpen', isAdmin, function(req, res) {
+    var checkInOpen = req.body.checkInOpen;
     SettingsController.updateField('checkInOpen',checkInOpen, defaultResponse(req, res));
   });
 
