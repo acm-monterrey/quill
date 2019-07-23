@@ -210,10 +210,14 @@ controller.sendUserAdmitted = function(email){
    */
   sendOne('email-basic', options, locals, function(err, info){
     if (err){
+      console.log("ERROR");
+      
       console.log(err);
     }
     if (info){
-      console.log(info.message);
+      console.log("SUCCESS");
+      
+      console.log(info);
     }
   });
 
