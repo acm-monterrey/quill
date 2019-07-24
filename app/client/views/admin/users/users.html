@@ -96,6 +96,7 @@
             <th>School</th>
             <th>Grad</th>
             <th>Team</th>
+            <th>Table</th>
             <th>V/S/A/C</th>
             <th></th>
             <th></th>
@@ -120,6 +121,8 @@
               {{user.profile.graduationYear}}
             </td>
             <td>{{user.teamCode}}</td>
+            <td ng-if="user.status.tableNumber != -1"> {{user.status.tableNumber}}</td>
+            <td ng-if="user.status.tableNumber == -1" class="collapsing">not assigned</td>
             <td
               class="collapsing">
 
