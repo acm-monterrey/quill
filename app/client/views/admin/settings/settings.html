@@ -212,3 +212,109 @@
     </div>
   </div>
 </div>
+
+<div class="ui stackable three column grid">
+  <!-- Check In Open settings -->
+  <div class="column">
+    <div
+            ng-class="{'loading': loading}"
+            class="ui red segment">
+      <div class="ui form">
+  
+        <div class="ui header">
+          Check In Open Editor
+        </div>
+  
+        <p>
+          Users will be able to check in at a certain time
+        </p>
+  
+        <div class="field">
+          <label>
+            Check In Opens at {{settings.checkInOpen}}
+          </label>
+          <input type="number" ng-model="settings.checkInOpen">
+        </div>
+  
+        <div class="ui field">
+          <div
+                  class="ui green button"
+                  ng-click="updateRegistrationTimes()">
+            Update
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Number of Tables settings -->
+  <div class="column">
+    <div
+            ng-class="{'loading': loading}"
+            class="ui red segment">
+      <div class="ui form">
+  
+        <div class="ui header">
+          Number of tables Editor
+        </div>
+  
+        <p>
+          Users will be able to check in at a certain time
+        </p>
+  
+        <div class="field">
+          <label>
+            The max number of tables available {{settings.maxTableCount}}
+          </label>
+          <input type="number"  ng-model="settings.maxTableCount">
+        </div>
+  
+        <div class="field">
+          <p>
+            there are {{settings.maxTableCount - settings.currentTableCount}} tables available
+          </p>
+        </div>
+  
+        <div class="ui field">
+          <div
+                  class="ui green button"
+                  ng-click="updateRegistrationTimes()">
+            Update
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Number of members settings -->
+  <div class="column">
+    <div
+            ng-class="{'loading': loading}"
+            class="ui red segment">
+      <div class="ui form">
+  
+        <div class="ui header">
+          Number of Members Editor
+        </div>
+  
+        <p>
+          Users will be able to form teams until a certain amount
+        </p>
+  
+        <div class="field">
+          <label>
+            The max number of members in a team is {{settings.teamSizeAccepted}}
+          </label>
+          <input type="number"  ng-model="settings.teamSizeAccepted">
+        </div>
+        
+        <div class="ui field">
+          <div
+                  class="ui green button"
+                  ng-click="updateRegistrationTimes()">
+            Update
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
