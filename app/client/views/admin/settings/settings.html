@@ -213,7 +213,7 @@
   </div>
 </div>
 
-<div class="ui stackable three column grid">
+<div class="ui stackable four column grid">
   <!-- Check In Open settings -->
   <div class="column">
     <div
@@ -239,7 +239,7 @@
         <div class="ui field">
           <div
                   class="ui green button"
-                  ng-click="updateRegistrationTimes()">
+                  ng-click="updateCheckInOpen()">
             Update
           </div>
         </div>
@@ -263,7 +263,7 @@
   
         <div class="field">
           <label>
-            The max number of tables available {{settings.maxTableCount}}
+            The max number of tables available is {{settings.maxTableCount}}
           </label>
           <input type="number"  ng-model="settings.maxTableCount">
         </div>
@@ -277,7 +277,7 @@
         <div class="ui field">
           <div
                   class="ui green button"
-                  ng-click="updateRegistrationTimes()">
+                  ng-click="updateMaxTableCount()">
             Update
           </div>
         </div>
@@ -309,7 +309,45 @@
         <div class="ui field">
           <div
                   class="ui green button"
-                  ng-click="updateRegistrationTimes()">
+                  ng-click="updateTeamSizeAccepted()">
+            Update
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Location of hack settings -->
+  <div class="column">
+    <div
+            ng-class="{'loading': loading}"
+            class="ui red segment">
+      <div class="ui form">
+  
+        <div class="ui header">
+          Location of hack Editor
+        </div>
+  
+        <p>
+         The location of the hack may very in the future
+        </p>
+  
+        <div class="field">
+          <label>
+            The Latitude {{settings.hackLocation.latitude}}
+          </label>
+          <input type="number"  ng-model="settings.hackLocation.latitude">
+        </div> 
+        <div class="field">
+          <label>
+            The Longitude {{settings.hackLocation.longitude}}
+          </label>
+          <input type="number"  ng-model="settings.hackLocation.longitude">
+        </div>
+        
+        <div class="ui field">
+          <div
+                  class="ui green button"
+                  ng-click="updateHackLocation()">
             Update
           </div>
         </div>
