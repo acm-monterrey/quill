@@ -42,6 +42,27 @@ angular.module('reg')
         return $http.put(base + 'confirmation', {
           text: text
         });
+      },
+      updateCheckInOpen: function(number){
+        return $http.put( base + 'checkInOpen', {
+          checkInOpen: number
+        })
+      },
+      updateTeamSizeAccepted: function (number) {
+        return $http.put( base + 'teamSizeAccepted', {
+          teamSizeAccepted: number
+        })
+      },
+      updateHackLocation: function (latitude, longitude) {
+        return $http.put( base + 'hackLocation', {
+          latitude: latitude,
+          longitude: longitude
+        })
+      },
+      updateMaxTableCount: function (number) {
+        return $http.put( base + 'maxTableCount', {
+          maxTableCount: number
+        })
       }
     };
 
