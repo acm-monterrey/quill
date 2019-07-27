@@ -3,6 +3,7 @@ var User = require('../models/User');
 var Settings = require('../models/Settings');
 var Mailer = require('../services/email');
 var Stats = require('../services/stats');
+var SettingsController = require('./SettingsController');
 
 var validator = require('validator');
 var moment = require('moment');
@@ -343,7 +344,6 @@ UserController.updateConfirmationById = function (id, confirmation, callback){
     }
 
     User.findById(id, function(err, user){
-  
       if(err || !user){
         return callback(err);
       }
@@ -447,7 +447,7 @@ UserController.getTeammates = function(id, callback){
       .find({
         teamCode: code
       })
-      .select('profile.name')
+      .select('profile.name status.checkedIn')
       .exec(callback);
   });
 };
@@ -664,10 +664,29 @@ UserController.updateRecordsWithMissingFields = function(callback) {
 }
 
 /**
+ * Returns if everyone in the team has checked in
+ * @param  {Function} callback [description]
+ */
+UserController.teamIsCompletelyCheckedIn = function(id, callback) {
+  this.getTeammates(id, function(err, teammates) {
+    if(err) return callback(err, teammates);
+
+    let everyoneIsCheckedIn = true;
+    teammates.forEach(function(member) {
+      if(!member.status.checkedIn) everyoneIsCheckedIn = false;
+    });
+
+    return callback({}, { complete: everyoneIsCheckedIn, teammates: teammates });
+  });
+}
+
+/**
  * [Karla]
  */
-UserController.assignNextAvailableTable = function(user, callback) {
-  // console.log(user,'\n\n!!!!');
+UserController.assignNextAvailableTable = function(id, callback) {
+  this.teamIsCompletelyCheckedIn(id, function(err, complete) {
+    console.log(complete);
+  });
 }
 
 /**
