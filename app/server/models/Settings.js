@@ -92,6 +92,17 @@ schema.statics.getRegistrationTimes = function(callback){
     });
 };
 
+/**
+ * Gets the last assigned table number.
+ * @param  {Function} callback [description]
+ */
+schema.statics.getCurrentTableCount = function(callback){
+  this
+   .findOne({})
+   .select({'currentTableCount': 1})
+   .exec(callback);
+};
+
 schema.statics.getPublicSettings = function(callback){
   this
     .findOne({})

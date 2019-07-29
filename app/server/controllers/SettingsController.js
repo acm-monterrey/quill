@@ -90,17 +90,6 @@ SettingsController.getPublicSettings = function(callback){
 };
 
 /**
- * Gets the last assigned table number.
- * @param  {Function} callback [description]
- */
-SettingsController.getCurrentTableCount = function(callback) {
-  Settings
-   .findOne({})
-   .select({'currentTableCount': 1})
-   .exec(callback);
-}
-
-/**
  * Adds the Setting's schema's newly added fields to the records
  * @param  {Function} callback [description]
  */
