@@ -89,6 +89,10 @@ SettingsController.getPublicSettings = function(callback){
   Settings.getPublicSettings(callback);
 };
 
+SettingsController.getSettings = function(callback){
+  Settings.getAllSettings(callback);
+};
+
 /**
  * Adds the Setting's schema's newly added fields to the records
  * @param  {Function} callback [description]

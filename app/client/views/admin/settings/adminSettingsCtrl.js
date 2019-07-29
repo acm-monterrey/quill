@@ -133,5 +133,50 @@ angular.module('reg')
             updateSettings(data);
           });
       };
+      
+      // CheckInOpen ---------------------------------------
+        $scope.updateCheckInOpen = function() {
+          var number = $scope.settings.checkInOpen;
+          SettingsService
+              .updateCheckInOpen(number)
+              .success(function(data){
+                  swal("Looks good!", "Check In Open Updated", "success");
+                  updateSettings(data);
+              });
+        };
+        
+        // Team Size to be accepted ------------------------
+        $scope.updateTeamSizeAccepted = function() {
+            var number = $scope.settings.teamSizeAccepted;
+            SettingsService
+                .updateTeamSizeAccepted(number)
+                .success(function(data){
+                    swal("Looks good!", "Team Size to be Accepted Updated", "success");
+                    updateSettings(data);
+                });
+        };
+        
+        // Location of the hack ----------------------------
+        $scope.updateHackLocation = function() {
+            var latitude = $scope.settings.hackLocation.latitude;
+            var longitude = $scope.settings.hackLocation.longitude;
+            SettingsService
+                .updateHackLocation(latitude, longitude)
+                .success(function(data) {
+                    swal("Looks good!", "Location of the Hack has been Updated", "success");
+                    updateSettings(data);
+                })
+        }
+        
+        // Max table count ---------------------------------
+        $scope.updateMaxTableCount = function() {
+            var number = $scope.settings.maxTableCount;
+            SettingsService
+                .updateMaxTableCount(number)
+                .success(function (data) {
+                    swal("Looks good!", "Max Number of Tables Updated", "success");
+                    updateSettings(data);
+                })
+        }
 
     }]);

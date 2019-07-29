@@ -2,9 +2,8 @@ require('dotenv').load({silent: true});
 
 // Connect to mongodb
 var mongoose        = require('mongoose');
-var database        = process.env.MONGODB_URI || "mongodb://localhost:27017"
+var database        = process.env.DATABASE || "mongodb://localhost:27017"
 mongoose.connect(database);
-
 var UserController = require('../app/server/controllers/UserController');
 
 var users = 100;
@@ -16,7 +15,6 @@ for (var i = 0; i < users; i++){
     UserController
       .createUser(username + i + '@school.edu', 'foobar', function(error, userData){
         if(error) reject(error);
-
         resolve("Successfully created: "+ i);
       });
   }))
