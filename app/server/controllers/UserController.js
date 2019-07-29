@@ -3,6 +3,7 @@ var User = require('../models/User');
 var Settings = require('../models/Settings');
 var Mailer = require('../services/email');
 var Stats = require('../services/stats');
+var SettingsController = require('../controllers/SettingsController');
 
 var validator = require('validator');
 var moment = require('moment');
@@ -689,7 +690,9 @@ UserController.teamCanBeAssignedTable = function(id, callback) {
 }
 
 /**
- * [Karla]
+ * Assigns the next available table to a team
+ * @param {[type]} id             User id
+ * @param {[Function]} callback  
  */
 UserController.assignNextAvailableTable = function(id, callback) {
   this.getTeammates(id, function(err, teammates){
@@ -702,12 +705,18 @@ UserController.assignNextAvailableTable = function(id, callback) {
 
     Settings.getCurrentTableCount(function(err, tableNumber){
       if(err) return callback(err, tableNumber);
+      let currentCount = tableNumber.currentTableCount + 1;
 
-      User
+      SettingsController.updateField('currentTableCount', currentCount, function( err, _){
+        if(err) return callback(err);
+
+        User
         .updateMany(
           { _id: { $in: ids } },
-          {$set: { 'status.tableNumber': tableNumber.currentTableCount+1 }},)
+          {$set: { 'status.tableNumber': currentCount }},)
         .exec(callback);
+      });
+
     });
   });
 }
