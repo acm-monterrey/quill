@@ -24,7 +24,6 @@ angular.module('reg')
         $scope.users = data.users;
         $scope.currentPage = data.page;
         $scope.pageSize = data.size;
-        console.log(data.users);
 
         var p = [];
         for (var i = 0; i < data.totalPages; i++){

@@ -20,7 +20,6 @@ angular.module('reg')
         settings.timeConfirm = new Date(settings.timeConfirm);
 
         $scope.settings = settings;
-        console.log($scope.settings);
       }
 
       // Whitelist --------------------------------------
