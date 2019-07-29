@@ -681,7 +681,7 @@ UserController.teamCanBeAssignedTable = function(id, callback) {
     Settings.getPublicSettings(function(err, settings){
       if(err) return callback(err, settings);
 
-      let canBeAssigned = numberCheckedIn === settings.teamSizeAccepted;
+      let canBeAssigned = numberCheckedIn >= settings.teamSizeAccepted;
       return callback({}, { assign: canBeAssigned, teammates: teammates });
     });
   });
