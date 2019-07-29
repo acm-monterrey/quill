@@ -168,8 +168,8 @@ var status = {
     default: false
   },
   tableNumber: {
-    type: Number,
-    default: -1
+    type: String,
+    default: 'Not asssigned'
   }
 };
 

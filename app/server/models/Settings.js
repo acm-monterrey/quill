@@ -10,8 +10,14 @@ var validator = require('validator');
  * @type {mongoose}
  */
 var geolocation = {
-  latitude: 0,
-  longitude: 0
+  latitude: {
+    type: Number,
+    default: 0
+  },
+  longitude: {
+    type: Number,
+    default: 0
+  }
 };
 
 var schema = new mongoose.Schema({
@@ -103,9 +109,15 @@ schema.statics.getCurrentTableCount = function(callback){
    .exec(callback);
 };
 
-schema.statics.getPublicSettings = function(callback){
+schema.statics.getAllSettings = function(callback){
   this
     .findOne({})
+    .exec(callback);
+}
+
+schema.statics.getPublicSettings = function(callback){
+  this
+    .findOne({}).select('-hackLocation -maxTableCount')
     .exec(callback);
 };
 

@@ -34,6 +34,27 @@ module.exports = function(router) {
 
     });
   }
+  
+  function checkAdmin(req, res, next){
+    
+    var token = getToken(req);
+    console.log('token :', token);
+    if(!token) return next();
+
+    UserController.getByToken(token, function(err, user){
+
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      if (user && user.admin){
+        req.admin = user;
+      }
+
+      return next();
+
+    });
+  }
 
   /**
    * [Users API Only]
@@ -306,8 +327,12 @@ module.exports = function(router) {
    *   confirmationText: String
    * }
    */
-  router.get('/settings', function(req, res){
-    SettingsController.getPublicSettings(defaultResponse(req, res));
+  router.get('/settings',checkAdmin, function(req, res){
+    if(req.admin) {
+      SettingsController.getSettings(defaultResponse(req,res));
+    } else {
+      SettingsController.getPublicSettings(defaultResponse(req, res));
+    }
   });
 
   /**
