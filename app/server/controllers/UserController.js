@@ -3,7 +3,6 @@ var User = require('../models/User');
 var Settings = require('../models/Settings');
 var Mailer = require('../services/email');
 var Stats = require('../services/stats');
-var SettingsController = require('./SettingsController');
 
 var validator = require('validator');
 var moment = require('moment');
@@ -664,19 +663,27 @@ UserController.updateRecordsWithMissingFields = function(callback) {
 }
 
 /**
- * Returns if everyone in the team has checked in
+ * Returns if the team can be assigned a table
  * @param  {Function} callback [description]
+ * @return JSON:
+ *        assign: Boolean if the team can be assigned a table or not
+ *        teammates: Id of the teammates
  */
-UserController.teamIsCompletelyCheckedIn = function(id, callback) {
+UserController.teamCanBeAssignedTable = function(id, callback) {
   this.getTeammates(id, function(err, teammates) {
     if(err) return callback(err, teammates);
 
-    let everyoneIsCheckedIn = true;
+    let numberCheckedIn = 0;
     teammates.forEach(function(member) {
-      if(!member.status.checkedIn) everyoneIsCheckedIn = false;
+      if(member.status.checkedIn) numberCheckedIn++;
     });
+    
+    Settings.getPublicSettings(function(err, settings){
+      if(err) return callback(err, settings);
 
-    return callback({}, { complete: everyoneIsCheckedIn, teammates: teammates });
+      let canBeAssigned = numberCheckedIn === settings.teamSizeAccepted;
+      return callback({}, { assign: canBeAssigned, teammates: teammates });
+    });
   });
 }
 
@@ -684,9 +691,7 @@ UserController.teamIsCompletelyCheckedIn = function(id, callback) {
  * [Karla]
  */
 UserController.assignNextAvailableTable = function(id, callback) {
-  this.teamIsCompletelyCheckedIn(id, function(err, complete) {
-    console.log(complete);
-  });
+  
 }
 
 /**
