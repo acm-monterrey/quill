@@ -665,7 +665,7 @@ UserController.updateRecordsWithMissingFields = function(callback) {
 /**
  * Returns if the team can be assigned a table
  * @param  {Function} callback [description]
- * @return JSON:
+ * @return Object
  *        assign: Boolean if the team can be assigned a table or not
  *        teammates: Id of the teammates
  */
@@ -691,7 +691,24 @@ UserController.teamCanBeAssignedTable = function(id, callback) {
  * [Karla]
  */
 UserController.assignNextAvailableTable = function(id, callback) {
-  
+  this.getTeammates(id, function(err, teammates){
+    if(err) return callback(err, teammates);
+
+    let ids = [];
+    teammates.forEach(function(team){
+      ids.push(team._id);
+    });
+
+    Settings.getCurrentTableCount(function(err, tableNumber){
+      if(err) return callback(err, tableNumber);
+
+      User
+        .updateMany(
+          { _id: { $in: ids } },
+          {$set: { 'status.tableNumber': tableNumber.currentTableCount+1 }},)
+        .exec(callback);
+    });
+  });
 }
 
 /**

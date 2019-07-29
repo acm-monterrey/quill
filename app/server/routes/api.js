@@ -258,8 +258,7 @@ module.exports = function(router) {
    */
   router.post('/users/:id/confirmed', isOwnerOrAdmin, function(req, res) {
     var id = req.params.id;
-    var user = req.user;
-    UserController.assignNextAvailableTable();
+    UserController.assignNextAvailableTable(id, defaultResponse(req, res));
   });
 
   /**
