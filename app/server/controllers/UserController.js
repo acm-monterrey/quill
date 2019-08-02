@@ -3,6 +3,7 @@ var User = require('../models/User');
 var Settings = require('../models/Settings');
 var Mailer = require('../services/email');
 var Stats = require('../services/stats');
+var SettingsController = require('../controllers/SettingsController');
 
 var validator = require('validator');
 var moment = require('moment');
@@ -344,7 +345,6 @@ UserController.updateConfirmationById = function (id, confirmation, callback){
     }
 
     User.findById(id, function(err, user){
-  
       if(err || !user){
         return callback(err);
       }
@@ -448,7 +448,7 @@ UserController.getTeammates = function(id, callback){
       .find({
         teamCode: code
       })
-      .select('profile.name')
+      .select('profile.name status.checkedIn')
       .exec(callback);
   });
 };
@@ -665,10 +665,60 @@ UserController.updateRecordsWithMissingFields = function(callback) {
 }
 
 /**
- * [Karla]
+ * Returns if the team can be assigned a table
+ * @param  {Function} callback [description]
+ * @return Object
+ *        assign: Boolean if the team can be assigned a table or not
+ *        teammates: Id of the teammates
  */
-UserController.assignNextAvailableTable = function(user, callback) {
-  // console.log(user,'\n\n!!!!');
+UserController.teamCanBeAssignedTable = function(id, callback) {
+  this.getTeammates(id, function(err, teammates) {
+    if(err) return callback(err, teammates);
+
+    let numberCheckedIn = 0;
+    teammates.forEach(function(member) {
+      if(member.status.checkedIn) numberCheckedIn++;
+    });
+    
+    Settings.getPublicSettings(function(err, settings){
+      if(err) return callback(err, settings);
+
+      let canBeAssigned = numberCheckedIn >= settings.teamSizeAccepted;
+      return callback({}, { assign: canBeAssigned, teammates: teammates });
+    });
+  });
+}
+
+/**
+ * Assigns the next available table to a team
+ * @param {[type]} id             User id
+ * @param {[Function]} callback  
+ */
+UserController.assignNextAvailableTable = function(id, callback) {
+  this.getTeammates(id, function(err, teammates){
+    if(err) return callback(err, teammates);
+
+    let ids = [];
+    teammates.forEach(function(team){
+      ids.push(team._id);
+    });
+
+    Settings.getCurrentTableCount(function(err, tableNumber){
+      if(err) return callback(err, tableNumber);
+      let currentCount = tableNumber.currentTableCount + 1;
+
+      SettingsController.updateField('currentTableCount', currentCount, function( err, _){
+        if(err) return callback(err);
+
+        User
+        .updateMany(
+          { _id: { $in: ids } },
+          {$set: { 'status.tableNumber': currentCount }},)
+        .exec(callback);
+      });
+
+    });
+  });
 }
 
 /**
