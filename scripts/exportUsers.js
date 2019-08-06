@@ -8,14 +8,14 @@ mongoose.connect(database);
 
 let schools = [
   // 'Tecnológico de Monterrey Campus Monterrey',
-  'Tecnológico de Monterrey Campus Guadalajara'
+  // 'Tecnológico de Monterrey Campus Guadalajara'
   // 'Tecnológico de Monterrey Campus Puebla',
   // 'Tecnológico de Monterrey Campus Ciudad de México',
   // 'Tecnológico de Monterrey Campus Santa Fé'
   // 'Tecnológico de Monterrey Campus Laguna',
   // 'Tecnológico de Monterrey Campus San Luis',
   // 'Universidad de Monterrey'
-
+  // 'Otro'
 ]
 
 let fields = [{
