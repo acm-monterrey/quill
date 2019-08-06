@@ -22,6 +22,9 @@ angular.module('reg')
 
       function updatePage(data){
         $scope.users = data.users;
+        $scope.users.forEach((user)=>{
+          user.status.checkInTimeDate = formatTime(user.status.checkInTime);
+        })
         $scope.currentPage = data.page;
         $scope.pageSize = data.size;
 
@@ -78,6 +81,8 @@ angular.module('reg')
               UserService
                 .checkIn(user._id)
                 .success(function(user){
+                  user.status.checkIntimeDate = formatTime(user.status.checkInTime);
+                  console.log('user AFTER CHECKIN :', user);
                   $scope.users[index] = user;
                   swal("Accepted", user.profile.name + ' has been checked in.', "success");
                 });
@@ -87,6 +92,7 @@ angular.module('reg')
           UserService
             .checkOut(user._id)
             .success(function(user){
+              console.log('user :', user);
               $scope.users[index] = user;
               swal("Accepted", user.profile.name + ' has been checked out.', "success");
             });

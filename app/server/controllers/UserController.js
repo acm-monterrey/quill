@@ -802,7 +802,8 @@ UserController.checkOutById = function(id, user, callback){
     verified: true
   },{
     $set: {
-      'status.checkedIn': false
+      'status.checkedIn': false,
+      'status.checkInTime': null
     }
   }, {
     new: true
