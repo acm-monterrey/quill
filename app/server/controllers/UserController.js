@@ -707,31 +707,6 @@ UserController.updateRecordsWithMissingFields = function(callback) {
 }
 
 /**
- * Returns if the team can be assigned a table
- * @param  {Function} callback [description]
- * @return Object
- *        assign: Boolean if the team can be assigned a table or not
- *        teammates: Id of the teammates
- */
-UserController.teamCanBeAssignedTable = function(id, callback) {
-  this.getTeammates(id, function(err, teammates) {
-    if(err) return callback(err, teammates);
-
-    let numberCheckedIn = 0;
-    teammates.forEach(function(member) {
-      if(member.status.checkedIn) numberCheckedIn++;
-    });
-    
-    Settings.getPublicSettings(function(err, settings){
-      if(err) return callback(err, settings);
-
-      let canBeAssigned = numberCheckedIn >= settings.teamSizeAccepted;
-      return callback({}, { assign: canBeAssigned, teammates: teammates });
-    });
-  });
-}
-
-/**
  * Assigns the next available table to a team
  * @param {[type]} id             User id
  * @param {[Function]} callback  
