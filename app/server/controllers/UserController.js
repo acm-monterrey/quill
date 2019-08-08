@@ -7,6 +7,8 @@ var SettingsController = require('../controllers/SettingsController');
 
 var validator = require('validator');
 var moment = require('moment');
+var turfdistance = require('@turf/distance');
+var point = require('turf-point');
 
 var UserController = {};
 
@@ -69,30 +71,19 @@ function canRegister(email, password, callback){
 }
 
 /**
- * [KARLA]
+ * Performs the needed operations to calculate the distance between
+ * the user's location and the hack's location. 
+ * @param {Object}  hackLocation latitude and longitude of the hack
+ * @param {Object}  userLocation latitude and longitude of the user
+ * @return {int}    dist         Distance between the two points in meters
  */
 function getDistanceInMetersFromHack(hackLocation, userLocation) {
-  let { hacklatitude, hacklongitude } = hackLocation;
-  let { userlatitude, userlongitude } = userLocation;
-
-  const radianUserLat = userlatitude * Math.PI / 180;
-  const radianHackLat = hacklatitude * Math.PI / 180;
-  const theta = userlongitude - hacklongitude;
-  const radianTheta = theta * Math.PI / 180;
-  
-  let dist = Math.sin(radianUserLat) * Math.sin(radianHackLat) 
-                      + Math.cos(radianUserLat) * Math.cos(radianHackLat) 
-                      * Math.cos(radianTheta);
-  
-  dist = dist > 1 ? 1 : dist;                    
-  dist = Math.acos(dist);
-  dist = dist * 180 / Math.PI;
-  dist = dist * 60 * 1.1515;
-  // Distance in km
-  dist = dist * 1.609344;
-  // Turning the distance into meters
-  dist = dist * 1000;
-  return dist;
+  var from = point(hackLocation);
+  var to = point(userLocation);
+  var options = { units: 'kilometers'};
+  var distance = turfdistance.default(from, to, options);
+  distance = distance * 1000;
+  return distance;
 }
 
 /**
@@ -686,9 +677,28 @@ UserController.resetPassword = function(token, password, callback){
  * location so that the user can checkin
  * @param {Function} callback [description]
  */
-UserController.checkInByCurrentLocation = function(location, callback) {
+UserController.checkInByCurrentLocation = function(id, coordinates, callback) {
   Settings.getAllSettings(function(err, settings) {
-    console.log(settings);
+    if(err) return callback(err);
+
+    var hackLocation = [ settings.hackLocation.longitude, settings.hackLocation.latitude ];
+    var userLocation = [ coordinates.longitude, coordinates.latitude ];
+    var distance = getDistanceInMetersFromHack(hackLocation, userLocation);
+    
+    if(distance <= 35) {
+      User.findOneAndUpdate({
+        _id: id,
+        verified: true
+      },{
+        $set: {
+          'status.checkedIn': true,
+          'status.checkInTime': Date.now()
+        }
+      }, { new: true }, callback);
+    }
+
+    User.findById(id, callback);
+
   });
 }
 
