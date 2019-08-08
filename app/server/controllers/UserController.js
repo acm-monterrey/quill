@@ -476,8 +476,21 @@ UserController.getTeammates = function(id, callback){
         teamCode: code
       })
       .select('profile.name status.checkedIn')
-      .exec(callback);
-  });
+      .exec((err, teammates) => {
+        if(err) return callback(err, teammates);
+        let numberCheckedIn = 0;
+        teammates.forEach(function(member) {
+          if(member.status.checkedIn) numberCheckedIn++;
+        });
+        
+        Settings.getPublicSettings(function(err, settings){
+          if(err) return callback(err, settings);
+
+          let canBeAssigned = numberCheckedIn >= settings.teamSizeAccepted;
+          return callback({}, { assign: canBeAssigned, teammates: teammates });
+        });
+      });
+    });
 };
 
 /**
@@ -735,14 +748,14 @@ UserController.assignNextAvailableTable = function(id, callback) {
     Settings.getCurrentTableCount(function(err, tableNumber){
       if(err) return callback(err, tableNumber);
       let currentCount = tableNumber.currentTableCount + 1;
-
+      currentCount = currentCount.toString();
       SettingsController.updateField('currentTableCount', currentCount, function( err, _){
         if(err) return callback(err);
 
         User
         .updateMany(
           { _id: { $in: ids } },
-          {$set: { 'status.tableNumber': currentCount }},)
+          {$set: { 'status.tableNumber': currentCount }})
         .exec(callback);
       });
 
