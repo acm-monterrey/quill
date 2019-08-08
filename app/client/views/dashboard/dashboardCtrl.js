@@ -14,7 +14,7 @@ angular.module('reg')
       var Settings = settings.data;
       var user = currentUser.data;
       $scope.user = user;
-
+      $scope.settings = Settings;
       $scope.DASHBOARD = DASHBOARD;
       
       for (var msg in $scope.DASHBOARD) {
