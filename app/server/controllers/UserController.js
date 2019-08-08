@@ -69,6 +69,33 @@ function canRegister(email, password, callback){
 }
 
 /**
+ * [KARLA]
+ */
+function getDistanceInMetersFromHack(hackLocation, userLocation) {
+  let { hacklatitude, hacklongitude } = hackLocation;
+  let { userlatitude, userlongitude } = userLocation;
+
+  const radianUserLat = userlatitude * Math.PI / 180;
+  const radianHackLat = hacklatitude * Math.PI / 180;
+  const theta = userlongitude - hacklongitude;
+  const radianTheta = theta * Math.PI / 180;
+  
+  let dist = Math.sin(radianUserLat) * Math.sin(radianHackLat) 
+                      + Math.cos(radianUserLat) * Math.cos(radianHackLat) 
+                      * Math.cos(radianTheta);
+  
+  dist = dist > 1 ? 1 : dist;                    
+  dist = Math.acos(dist);
+  dist = dist * 180 / Math.PI;
+  dist = dist * 60 * 1.1515;
+  // Distance in km
+  dist = dist * 1.609344;
+  // Turning the distance into meters
+  dist = dist * 1000;
+  return dist;
+}
+
+/**
  * Login a user given a token
  * @param  {String}   token    auth token
  * @param  {Function} callback args(err, token, user)
@@ -646,8 +673,10 @@ UserController.resetPassword = function(token, password, callback){
  * location so that the user can checkin
  * @param {Function} callback [description]
  */
-UserController.checkInByCurrentLocation = function(callback) {
-  callback();
+UserController.checkInByCurrentLocation = function(location, callback) {
+  Settings.getAllSettings(function(err, settings) {
+    console.log(settings);
+  });
 }
 
 /**
