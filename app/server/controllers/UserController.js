@@ -73,13 +73,13 @@ function canRegister(email, password, callback){
 /**
  * Performs the needed operations to calculate the distance between
  * the user's location and the hack's location. 
- * @param {Object}  hackLocation latitude and longitude of the hack
- * @param {Object}  userLocation latitude and longitude of the user
- * @return {int}    dist         Distance between the two points in meters
+ * @param {Array}  pointA  longitude and latitude of the hack
+ * @param {Array}  pointb  longitude and latitude of the user
+ * @return {int}    dist   Distance between the two points in meters
  */
-function getDistanceInMetersFromHack(hackLocation, userLocation) {
-  var from = point(hackLocation);
-  var to = point(userLocation);
+function getDistanceInMetersFromHack(pointA, pointB) {
+  var from = point(pointA);
+  var to = point(pointB);
   var options = { units: 'kilometers'};
   var distance = turfdistance.default(from, to, options);
   distance = distance * 1000;
@@ -697,8 +697,7 @@ UserController.checkInByCurrentLocation = function(id, coordinates, callback) {
       }, { new: true }, callback);
     }
 
-    User.findById(id, callback);
-
+    callback({message: "User is not within check-in range."});
   });
 }
 
