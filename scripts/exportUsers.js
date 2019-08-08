@@ -15,7 +15,7 @@ let schools = [
   // 'Tecnológico de Monterrey Campus Laguna',
   // 'Tecnológico de Monterrey Campus San Luis',
   // 'Universidad de Monterrey'
-  // 'Otro'
+  'Otro'
 ]
 
 let fields = [{
@@ -27,6 +27,9 @@ let fields = [{
 },{
   label: 'Status',
   value: 'status.name'
+},{
+  label: 'Team',
+  value: 'teamCode'
 },{
   label: 'Degree',
   value: 'profile.degree'
@@ -48,25 +51,35 @@ let opt = {
   fields,
   excelStrings: true
 }
-User.find({'profile.school': {$in: schools} }, (err, users) => {
-  if(err) return console.log('err :', err);
-  console.log('users.length :', users.length);
-  console.log('users[0] :', users[0]);
-
-  let u = users.map( user => {
-    return user.toJSON()
+User.find({
+    'profile.school': {$in: schools}, 
+    $or: [
+      {'status.admitted': true}, 
+      {'status.confirmed': true}
+    ] 
   })
-  
-  const parser = new Parser(opt);
-  const csv = parser.parse(u); 
-  
-  // console.log('u[0] :', u[0]);
-
-
-  fs.writeFile('foraneos.csv', csv,'ascii' ,(err)=>{
+  .sort({
+    teamCode: 'asc'
+  })
+  .exec((err, users) => {
     if(err) return console.log('err :', err);
-    console.log("Users written to foraneos.csv");
-    
-  })  
+    console.log('users.length :', users.length);
+    console.log('users[0] :', users[0]);
 
-})
+    let u = users.map( user => {
+      return user.toJSON()
+    })
+  
+    const parser = new Parser(opt);
+    const csv = parser.parse(u); 
+    
+    // console.log('u[0] :', u[0]);
+
+
+    fs.writeFile('foraneos.csv', csv,'ascii' ,(err)=>{
+      if(err) return console.log('err :', err);
+      console.log("Users written to foraneos.csv");
+      
+    })  
+
+  })
