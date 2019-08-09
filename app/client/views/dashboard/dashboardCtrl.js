@@ -17,11 +17,12 @@ angular.module('reg')
       $scope.settings = Settings;
       $scope.DASHBOARD = DASHBOARD;
       
+      // Show CheckInOpen Window ---------------------------------------
       var showCheckInOpen = false;
       var todayDate = new Date();
-      if(todayDate.getTime() >= Settings.checkInOpen) {
+      if ( todayDate.getTime() >= Settings.checkInOpen ) {
         showCheckInOpen = true;
-        //ask for team
+        _populateTeammates();
       }
       
       $scope.showCheckInOpen = showCheckInOpen;
@@ -114,5 +115,65 @@ angular.module('reg')
               });
         });
       };
+      
+      // Ask for location --------------------------------------------------
+      $scope.onCheckIn = function () {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+              ({ coords }) =>  {
+                const { latitude, longitude } = coords;
+                console.log(latitude, longitude);
+                UserService
+                    .makeCheckIn(latitude, longitude)
+                    .success(function (response) {
+                      console.log(response);
+                    });
+                //this.isCheckedIn = await axios.post('users/:id/checkin/location', {latitude, longitude});
+                /*
+                if ((isCheckedIn) ) {
+                  () => f;
+                  botonRegistro.toggleClass('hiddendiv');
+                  botonSalida.toggleClass('hiddendiv');
+                  console.log(status);
+                } else {
+                  alert('Lo sentimos, no puedes inicar sesión si no estás en la ubicacion del evento');
+                }
+                 */
+              });
+          // this.hasCurrentSession = false;
+        } else {
+          alert('Geolocation is not supported by this browser.');
+        }
+      };
+
+      // Ask for team mates ------------------------------------------------
+      function _populateTeammates() {
+        UserService
+            .getMyTeammates()
+            .success(function(users){
+              $scope.error = null;
+              $scope.teammates = users;
+              _askForTable(users);
+            });
+      }
+      
+      // Ask for table number ----------------------------------------------
+      function _askForTable(users) {
+        //if the users haven't been assing a table
+        if(!users.assign) {
+          for(let teammate of users.teammates) {
+            //if one of them hasn't checked in, quit
+            if(!teammate.status.checkedIn) {
+              return;
+            }
+          }
+        }
+        
+        UserService
+            .assingTable()
+            .function(function (user) {
+              $scope.user = user;
+            });
+      } 
 
     }]);

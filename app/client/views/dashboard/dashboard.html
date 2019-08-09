@@ -256,52 +256,36 @@
             <img ng-if="!user.status.checkedIn" src="../../assets/images/cross.png">
             <img ng-if="user.status.checkedIn"  src="../../assets/images/mark.png">
           </p>
-          <p class="divided small team-member" style="padding-left: 30px; color: #473899;">
+          <p class="divided small team-member" style="padding-top: 3px; padding-left: 30px; color: #473899;">
             {{user.profile.name}}
           </p>
         </div>
-        <div class="team-list" style="width: 100%; text-align: left; display:inline-block; margin-bottom: 0px;">
-          <p style="vertical-align: middle; float: left;">
-            <img ng-if="false" src="../../assets/images/cross.png">
-            <img ng-if="true"  src="../../assets/images/mark.png">
-          </p>
-          <p class="divided small team-member" style="padding-left: 30px;">
-            Carolina Peyrot
-          </p>
-        </div>
-        <div class="team-list" style="width: 100%; text-align: left; display:inline-block; margin-bottom: 0px;">
-          <p style="vertical-align: middle; float: left;">
-            <img ng-if="true" src="../../assets/images/cross.png">
-            <img ng-if="false"  src="../../assets/images/mark.png">
-          </p>
-          <p class="divided small team-member" style="padding-left: 30px;">
-            Mariana Villanueva
-          </p>
-        </div>
-        <div class="team-list" style="width: 100%; text-align: left; display:inline-block; margin-bottom: 0px;">
-          <p style="vertical-align: middle; float: left;">
-            <img ng-if="true" src="../../assets/images/cross.png">
-            <img ng-if="false"  src="../../assets/images/mark.png">
-          </p>
-          <p class="divided small team-member" style="padding-left: 30px;">
-            Noe Campos
-          </p>
+        <div ng-repeat="teammate in teammates.teammates">
+          <div class="team-list" style="width: 100%; text-align: left; display:inline-block; margin-bottom: 0px;" ng-if="teammate.profile.name != user.profile.name">
+            <p style="vertical-align: middle; float: left;">
+              <img ng-if="!teammate.status.checkedIn" src="../../assets/images/cross.png">
+              <img ng-if="teammate.status.checkedIn"  src="../../assets/images/mark.png">
+            </p>
+            <p class="divided small team-member" style="padding-top: 2px; padding-left: 30px;">
+              {{ teammate.profile.name }}
+            </p>
+          </div>
         </div>
 
         <!-- Buttons -->
-        <div ng-if="false" class="ui primary button" style="margin-bottom: 24px;">
+        <div ng-if="!user.status.checkedIn && !teammates.assing" class="ui primary button" style="margin-bottom: 24px;" ng-click="onCheckIn()">
           Check In
         </div>
 
-        <div ng-if="false" class="ui primary button" style="margin-bottom: 24px; display: inline-block; background-color: #46414A;">
+        <div ng-if="user.status.checkedIn && !teammates.assing" class="ui primary button" style="margin-bottom: 24px; display: inline-block; background-color: #46414A;">
           <img  src="../../assets/images/mark-white.png"height="19" width="19" style="float: left; padding-top: 2px;">
           <p style="float: left; padding-left: 10px;">
             Checked In
           </p>
         </div>
 
-        <div class="ui primary button" style="margin-bottom: 24px; width: 100%; margin: 0px;">
-          Everyone is check in your table is #34
+        <div ng-if="teammates.assing" class="ui primary button" style="margin-bottom: 24px; width: 100%; margin: 0px;">
+          Everyone is check in your table is #{{ user.status.tableNumber }}
         </div>
 
       </div>
