@@ -7,6 +7,8 @@ var SettingsController = require('../controllers/SettingsController');
 
 var validator = require('validator');
 var moment = require('moment');
+var turfdistance = require('@turf/distance');
+var point = require('turf-point');
 
 var UserController = {};
 
@@ -66,6 +68,22 @@ function canRegister(email, password, callback){
     });
 
   });
+}
+
+/**
+ * Performs the needed operations to calculate the distance between
+ * the user's location and the hack's location. 
+ * @param {Array}  pointA  longitude and latitude of the hack
+ * @param {Array}  pointb  longitude and latitude of the user
+ * @return {int}    dist   Distance between the two points in meters
+ */
+function getDistanceInMetersFromHack(pointA, pointB) {
+  var from = point(pointA);
+  var to = point(pointB);
+  var options = { units: 'kilometers'};
+  var distance = turfdistance.default(from, to, options);
+  distance = distance * 1000;
+  return distance;
 }
 
 /**
@@ -659,8 +677,28 @@ UserController.resetPassword = function(token, password, callback){
  * location so that the user can checkin
  * @param {Function} callback [description]
  */
-UserController.checkInByCurrentLocation = function(callback) {
-  callback();
+UserController.checkInByCurrentLocation = function(id, coordinates, callback) {
+  Settings.getAllSettings(function(err, settings) {
+    if(err) return callback(err);
+
+    var hackLocation = [ settings.hackLocation.longitude, settings.hackLocation.latitude ];
+    var userLocation = [ coordinates.longitude, coordinates.latitude ];
+    var distance = getDistanceInMetersFromHack(hackLocation, userLocation);
+    
+    if(distance <= 35) {
+      User.findOneAndUpdate({
+        _id: id,
+        verified: true
+      },{
+        $set: {
+          'status.checkedIn': true,
+          'status.checkInTime': Date.now()
+        }
+      }, { new: true }, callback);
+    }
+
+    callback({message: "User is not within check-in range."});
+  });
 }
 
 /**
@@ -675,31 +713,6 @@ UserController.updateRecordsWithMissingFields = function(callback) {
       'status.tableNumber': userSchema.status.tableNumber.default,
     }}, { multi: true })
     .exec(callback);
-}
-
-/**
- * Returns if the team can be assigned a table
- * @param  {Function} callback [description]
- * @return Object
- *        assign: Boolean if the team can be assigned a table or not
- *        teammates: Id of the teammates
- */
-UserController.teamCanBeAssignedTable = function(id, callback) {
-  this.getTeammates(id, function(err, teammates) {
-    if(err) return callback(err, teammates);
-
-    let numberCheckedIn = 0;
-    teammates.forEach(function(member) {
-      if(member.status.checkedIn) numberCheckedIn++;
-    });
-    
-    Settings.getPublicSettings(function(err, settings){
-      if(err) return callback(err, settings);
-
-      let canBeAssigned = numberCheckedIn >= settings.teamSizeAccepted;
-      return callback({}, { assign: canBeAssigned, teammates: teammates });
-    });
-  });
 }
 
 /**
