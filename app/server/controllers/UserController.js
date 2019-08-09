@@ -478,7 +478,7 @@ UserController.getTeammates = function(id, callback){
           if(err) return callback(err, settings);
 
           let canBeAssigned = numberCheckedIn >= settings.teamSizeAccepted;
-          return callback({}, { assign: canBeAssigned, teammates: teammates });
+          return callback(null, { assign: canBeAssigned, teammates: teammates });
         });
       });
     });

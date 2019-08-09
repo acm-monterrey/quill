@@ -10,12 +10,21 @@ angular.module('reg')
     'UserService',
     'EVENT_INFO',
     'DASHBOARD',
-    function($rootScope, $scope, $sce, currentUser, settings, Utils, AuthService, UserService, DASHBOARD){
+    function($rootScope, $scope, $sce, currentUser, settings, Utils, AuthService, UserService,EVENT_INFO, DASHBOARD){
       var Settings = settings.data;
       var user = currentUser.data;
       $scope.user = user;
       $scope.settings = Settings;
       $scope.DASHBOARD = DASHBOARD;
+      
+      var showCheckInOpen = false;
+      var todayDate = new Date();
+      if(todayDate.getTime() >= Settings.checkInOpen) {
+        showCheckInOpen = true;
+        //ask for team
+      }
+      
+      $scope.showCheckInOpen = showCheckInOpen;
       
       for (var msg in $scope.DASHBOARD) {
         if ($scope.DASHBOARD[msg].includes('[APP_DEADLINE]')) {
@@ -24,8 +33,9 @@ angular.module('reg')
         if ($scope.DASHBOARD[msg].includes('[CONFIRM_DEADLINE]')) {
           $scope.DASHBOARD[msg] = $scope.DASHBOARD[msg].replace('[CONFIRM_DEADLINE]', Utils.formatTime(user.status.confirmBy));
         }
-      }
 
+      }
+        
       // Is registration open?
       var regIsOpen = $scope.regIsOpen = Utils.isRegOpen(Settings);
 
@@ -33,6 +43,7 @@ angular.module('reg')
       var pastConfirmation = $scope.pastConfirmation = Utils.isAfter(user.status.confirmBy);
 
       $scope.dashState = function(status){
+          
         var user = $scope.user;
         switch (status) {
           case 'unverified':

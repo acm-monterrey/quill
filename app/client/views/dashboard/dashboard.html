@@ -3,7 +3,7 @@
       Welcomo to hackmty, {{ user.profile.name.substr(0, user.profile.name.indexOf(' ')) }}! 
   </div>
 
-  <div class="ui stackable centered page grid" ng-if="true">
+  <div class="ui stackable centered page grid" ng-if="!showCheckInOpen">
     <div class="column">
       <div class="ui status segment">
         <div class="small title">
@@ -237,7 +237,7 @@
   </div>
   
   <!-- Box fot the TeamOverview, new box with different title and no functionality implemented -->
-  <div class="ui stackable centered page grid" ng-if="false">
+  <div class="ui stackable centered page grid" ng-if="showCheckInOpen">
     <div class="column">
       <div class="ui status segment">
         <!-- Title of the box -->
