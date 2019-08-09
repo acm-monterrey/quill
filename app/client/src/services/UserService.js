@@ -86,8 +86,12 @@ angular.module('reg')
         return $http.post(base + id + '/decline');
       },
       
-      makeCheckIn: function(latitude, longtidue) {
-        return $http.post(base + Session.getUserId() + '/checkin/location ', { latitude: latitude, longtidue: longtidue});
+      makeCheckIn: function(latitude, longitude) {
+        coordinates = {
+          latitude: latitude,
+          longitude: longitude
+        };
+        return $http.post(base + Session.getUserId() + '/checkin/location ', { coordinates } );
       },
 
       // ------------------------

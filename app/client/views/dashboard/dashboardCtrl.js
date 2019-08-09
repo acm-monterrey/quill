@@ -123,22 +123,21 @@ angular.module('reg')
               ({ coords }) =>  {
                 const { latitude, longitude } = coords;
                 console.log(latitude, longitude);
-                UserService
+                var isCheckedIn = UserService
                     .makeCheckIn(latitude, longitude)
                     .success(function (response) {
                       console.log(response);
                     });
-                //this.isCheckedIn = await axios.post('users/:id/checkin/location', {latitude, longitude});
-                /*
                 if ((isCheckedIn) ) {
                   () => f;
+                  /*
                   botonRegistro.toggleClass('hiddendiv');
                   botonSalida.toggleClass('hiddendiv');
+                   */
                   console.log(status);
                 } else {
                   alert('Lo sentimos, no puedes inicar sesión si no estás en la ubicacion del evento');
                 }
-                 */
               });
           // this.hasCurrentSession = false;
         } else {
@@ -174,6 +173,6 @@ angular.module('reg')
             .function(function (user) {
               $scope.user = user;
             });
-      } 
-
+      }
+      
     }]);
