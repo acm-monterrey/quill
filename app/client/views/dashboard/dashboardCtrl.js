@@ -17,6 +17,8 @@ angular.module('reg')
       $scope.settings = Settings;
       $scope.DASHBOARD = DASHBOARD;
       
+      console.log(Settings);
+      
       // Show CheckInOpen Window ---------------------------------------
       var showCheckInOpen = false;
       var todayDate = new Date();
@@ -130,10 +132,9 @@ angular.module('reg')
                     });
                 if ((isCheckedIn) ) {
                   () => f;
-                  /*
+                  
                   botonRegistro.toggleClass('hiddendiv');
                   botonSalida.toggleClass('hiddendiv');
-                   */
                   console.log(status);
                 } else {
                   alert('Lo sentimos, no puedes inicar sesión si no estás en la ubicacion del evento');
@@ -159,20 +160,14 @@ angular.module('reg')
       // Ask for table number ----------------------------------------------
       function _askForTable(users) {
         //if the users haven't been assing a table
-        if(!users.assign) {
-          for(let teammate of users.teammates) {
-            //if one of them hasn't checked in, quit
-            if(!teammate.status.checkedIn) {
-              return;
-            }
-          }
+        if(!users.assign && users.teammates.length >= Settings.teamSizeAccepted) {
+
+            UserService
+                .assingTable()
+                .function(function (user) {
+                    $scope.user = user;
+                });
         }
-        
-        UserService
-            .assingTable()
-            .function(function (user) {
-              $scope.user = user;
-            });
       }
       
     }]);
