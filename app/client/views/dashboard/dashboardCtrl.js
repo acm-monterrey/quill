@@ -17,8 +17,6 @@ angular.module('reg')
       $scope.settings = Settings;
       $scope.DASHBOARD = DASHBOARD;
       
-      console.log(Settings);
-      
       // Show CheckInOpen Window ---------------------------------------
       var showCheckInOpen = false;
       var todayDate = new Date();
@@ -124,23 +122,13 @@ angular.module('reg')
           navigator.geolocation.getCurrentPosition(
               ({ coords }) =>  {
                 const { latitude, longitude } = coords;
-                console.log(latitude, longitude);
-                var isCheckedIn = UserService
+                UserService
                     .makeCheckIn(latitude, longitude)
                     .success(function (response) {
-                      console.log(response);
+                        swal('You are checked in');
+                        console.log(response);
                     });
-                if ((isCheckedIn) ) {
-                  () => f;
-                  
-                  botonRegistro.toggleClass('hiddendiv');
-                  botonSalida.toggleClass('hiddendiv');
-                  console.log(status);
-                } else {
-                  alert('Lo sentimos, no puedes inicar sesión si no estás en la ubicacion del evento');
-                }
               });
-          // this.hasCurrentSession = false;
         } else {
           alert('Geolocation is not supported by this browser.');
         }

@@ -695,9 +695,9 @@ UserController.checkInByCurrentLocation = function(id, coordinates, callback) {
           'status.checkInTime': Date.now()
         }
       }, { new: true }, callback);
+    }  else {
+      callback({message: "User is not within check-in range."});
     }
-
-    callback({message: "User is not within check-in range."});
   });
 }
 
