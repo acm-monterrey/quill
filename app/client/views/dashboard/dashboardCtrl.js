@@ -123,12 +123,16 @@ angular.module('reg')
               function(data) {
                 var coords = data.coords;
                 var latitude = coords.latitude;
+                var longitude = coords.longitude;
                 UserService
                     .makeCheckIn(latitude, longitude)
                     .success(function (user) {
                         swal('You are checked in');
                         $scope.user = user;
                         _populateTeammates();
+                    })
+                    .error(function(res){
+                      $scope.error = res.message;
                     });
               });
         } else {

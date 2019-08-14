@@ -2,7 +2,14 @@
   <div class="divided title"> <!-- style should be in the css, cant find it -->
       Welcomo to hackmty, {{ user.profile.name.split(' ')[0] }}! 
   </div>
-
+  <div class="ui stackable centered page grid">
+    <div class="column">
+      <div 
+      class="ui error message" ng-show="error">
+        {{error}}
+      </div>
+    </div>
+  </div>
   <div class="ui stackable centered page grid" ng-if="!showCheckInOpen">
     <div class="column">
       <div class="ui status segment">
@@ -273,7 +280,7 @@
         </div>
 
         <!-- Buttons -->
-        <div ng-if="!user.status.checkedIn && !teammates.assign" class="ui primary button" style="margin-bottom: 24px;" ng-click="onCheckIn()">
+        <div ng-if="!user.status.checkedIn && !teammates.assign && dashState('confirmed')" class="ui primary button" style="margin-bottom: 24px;" ng-click="onCheckIn()">
           Check In
         </div>
 
@@ -287,6 +294,12 @@
         <div ng-if="user.status.tableNumber != 'Not assigned'" class="ui primary button" style="margin-bottom: 24px; width: 100%; margin: 0px;">
           Everyone is checked in! Your table is #{{ user.status.tableNumber }}
         </div>
+
+        <div ng-if="!dashState('confirmed')" class="ui disabled button" style="margin-bottom: 24px; width: 100%; margin: 0px;">
+          You are not allowed to check in, sorry!
+        </div>
+
+
 
       </div>
 
