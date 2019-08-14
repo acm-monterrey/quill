@@ -54,6 +54,7 @@ SettingsController.updateRegistrationTimes = function(open, close, callback){
 
   if (close <= open){
     return callback({
+      showable: true,
       message: "Registration cannot close before or at exactly the same time it opens."
     });
   }

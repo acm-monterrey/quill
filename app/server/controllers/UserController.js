@@ -29,7 +29,7 @@ function endsWith(s, test){
 function canRegister(email, password, callback){
 
   if (!password || password.length < 6){
-    return callback({ message: "Password must be 6 or more characters."}, false);
+    return callback({ showable: true, message: "Password must be 6 or more characters."}, false);
   }
 
   // Check if its within the registration window.
@@ -42,12 +42,14 @@ function canRegister(email, password, callback){
 
     if (now < times.timeOpen){
       return callback({
+        showable: true,
         message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
       });
     }
 
     if (now > times.timeClose){
       return callback({
+        showable: true,
         message: "Sorry, registration is closed."
       });
     }
@@ -63,6 +65,7 @@ function canRegister(email, password, callback){
         }
       }
       return callback({
+        showable: true,
         message: "Not a valid educational email."
       }, false);
     });
@@ -107,12 +110,14 @@ UserController.loginWithPassword = function(email, password, callback){
 
   if (!password || password.length === 0){
     return callback({
+      showable: true,
       message: 'Please enter a password'
     });
   }
 
   if (!validator.isEmail(email)){
     return callback({
+      showable: true,
       message: 'Invalid email'
     });
   }
@@ -126,11 +131,13 @@ UserController.loginWithPassword = function(email, password, callback){
       }
       if (!user) {
         return callback({
+          showable: true,
           message: "We couldn't find you!"
         });
       }
       if (!user.checkPassword(password)) {
         return callback({
+          showable: true,
           message: "That's not the right password."
         });
       }
@@ -156,6 +163,7 @@ UserController.createUser = function(email, password, callback) {
 
   if (typeof email !== "string"){
     return callback({
+      showable: true,
       message: "Email must be a string."
     });
   }
@@ -179,6 +187,7 @@ UserController.createUser = function(email, password, callback) {
 
         if (user) {
           return callback({
+            showable: true,
             message: 'An account for this email already exists.'
           });
         } else {
@@ -305,7 +314,7 @@ UserController.updateProfileById = function (id, profile, callback){
   User.validateProfile(profile, function(err){
 
     if (err){
-      return callback({message: 'invalid profile'});
+      return callback({showable: true, message: 'invalid profile'});
     }
 
     // Check if its within the registration window.
@@ -318,12 +327,14 @@ UserController.updateProfileById = function (id, profile, callback){
 
       if (now < times.timeOpen){
         return callback({
+          showable: true,
           message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
         });
       }
 
       if (now > times.timeClose){
         return callback({
+          showable: true,
           message: "Sorry, registration is closed."
         });
       }
@@ -371,6 +382,7 @@ UserController.updateConfirmationById = function (id, confirmation, callback){
       // that's okay.
       if (Date.now() >= times.timeConfirm && !user.status.confirmed){
         return callback({
+          showable: true,
           message: "You've missed the confirmation deadline."
         });
       }
@@ -458,6 +470,7 @@ UserController.getTeammates = function(id, callback){
 
     if (!code){
       return callback({
+        showable: true,
         message: "You're not on a team."
       });
     }
@@ -494,12 +507,14 @@ UserController.createOrJoinTeam = function(id, code, callback){
 
   if (!code){
     return callback({
+      showable: true,
       message: "Please enter a team name."
     });
   }
 
   if (typeof code !== 'string') {
     return callback({
+      showable: true,
       message: "Get outta here, punk!"
     });
   }
@@ -512,6 +527,7 @@ UserController.createOrJoinTeam = function(id, code, callback){
     // Check to see if this team is joinable (< team max size)
     if (users.length >= maxTeamSize){
       return callback({
+        showable: true,
         message: "Team is full."
       });
     }
@@ -600,6 +616,7 @@ UserController.sendPasswordResetEmail = function(email, callback){
 UserController.changePassword = function(id, oldPassword, newPassword, callback){
   if (!id || !oldPassword || !newPassword){
     return callback({
+      showable: true,
       message: 'Bad arguments.'
     });
   }
@@ -621,6 +638,7 @@ UserController.changePassword = function(id, oldPassword, newPassword, callback)
         callback);
       } else {
         return callback({
+          showable: true,
           message: 'Incorrect password'
         });
       }
@@ -636,12 +654,14 @@ UserController.changePassword = function(id, oldPassword, newPassword, callback)
 UserController.resetPassword = function(token, password, callback){
   if (!password || !token){
     return callback({
+      showable: true,
       message: 'Bad arguments'
     });
   }
 
   if (password.length < 6){
     return callback({
+      showable: true,
       message: 'Password must be 6 or more characters.'
     });
   }
@@ -696,7 +716,7 @@ UserController.checkInByCurrentLocation = function(id, coordinates, callback) {
         }
       }, { new: true }, callback);
     }  else {
-      callback({message: "User is not within check-in range."});
+      callback({showable: true, message: "User is not within check-in range."});
     }
   });
 }
