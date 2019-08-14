@@ -91,7 +91,7 @@ angular.module('reg')
           latitude: latitude,
           longitude: longitude
         };
-        return $http.post(base + Session.getUserId() + '/checkin/location ', { coordinates } );
+        return $http.post(base + Session.getUserId() + '/checkin/location ', { coordinates:coordinates } );
       },
 
       // ------------------------

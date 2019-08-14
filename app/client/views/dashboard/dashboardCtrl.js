@@ -120,8 +120,9 @@ angular.module('reg')
       $scope.onCheckIn = function () {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
-              ({ coords }) =>  {
-                const { latitude, longitude } = coords;
+              function(data) {
+                var coords = data.coords;
+                var latitude = coords.latitude;
                 UserService
                     .makeCheckIn(latitude, longitude)
                     .success(function (user) {
