@@ -10,12 +10,22 @@ angular.module('reg')
     'UserService',
     'EVENT_INFO',
     'DASHBOARD',
-    function($rootScope, $scope, $sce, currentUser, settings, Utils, AuthService, UserService, DASHBOARD){
+    function($rootScope, $scope, $sce, currentUser, settings, Utils, AuthService, UserService,EVENT_INFO, DASHBOARD){
       var Settings = settings.data;
       var user = currentUser.data;
       $scope.user = user;
-
+      $scope.settings = Settings;
       $scope.DASHBOARD = DASHBOARD;
+      
+      // Show CheckInOpen Window ---------------------------------------
+      var showCheckInOpen = false;
+      var todayDate = new Date();
+      if ( todayDate.getTime() >= Settings.checkInOpen ) {
+        showCheckInOpen = true;
+        _populateTeammates();
+      }
+      
+      $scope.showCheckInOpen = showCheckInOpen;
       
       for (var msg in $scope.DASHBOARD) {
         if ($scope.DASHBOARD[msg].includes('[APP_DEADLINE]')) {
@@ -24,8 +34,9 @@ angular.module('reg')
         if ($scope.DASHBOARD[msg].includes('[CONFIRM_DEADLINE]')) {
           $scope.DASHBOARD[msg] = $scope.DASHBOARD[msg].replace('[CONFIRM_DEADLINE]', Utils.formatTime(user.status.confirmBy));
         }
-      }
 
+      }
+        
       // Is registration open?
       var regIsOpen = $scope.regIsOpen = Utils.isRegOpen(Settings);
 
@@ -33,6 +44,7 @@ angular.module('reg')
       var pastConfirmation = $scope.pastConfirmation = Utils.isAfter(user.status.confirmBy);
 
       $scope.dashState = function(status){
+          
         var user = $scope.user;
         switch (status) {
           case 'unverified':
@@ -103,5 +115,48 @@ angular.module('reg')
               });
         });
       };
+      
+      // Ask for location --------------------------------------------------
+      $scope.onCheckIn = function () {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+              ({ coords }) =>  {
+                const { latitude, longitude } = coords;
+                UserService
+                    .makeCheckIn(latitude, longitude)
+                    .success(function (user) {
+                        swal('You are checked in');
+                        $scope.user = user;
+                        _populateTeammates();
+                    });
+              });
+        } else {
+          alert('Geolocation is not supported by this browser.');
+        }
+      };
 
+      // Ask for team mates ------------------------------------------------
+      function _populateTeammates() {
+        UserService
+            .getMyTeammates()
+            .success(function(users){
+              $scope.error = null;
+              $scope.teammates = users;
+              _askForTable(users);
+            });
+      }
+      
+      // Ask for table number ----------------------------------------------
+      function _askForTable(users) {
+        //if the users haven't been assing a table
+        if(users.assign && user.status.tableNumber == 'Not assigned') {
+
+            UserService
+                .assingTable()
+                .success(function (user) {
+                    $scope.user = user;
+                });
+        }
+      }
+      
     }]);

@@ -1,5 +1,5 @@
 angular.module('reg')
-  .controller('DashboardCtrl', [
+  .controller('WorkshopsCtrl', [
     '$rootScope',
     '$scope',
     '$sce',

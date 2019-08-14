@@ -231,9 +231,9 @@
   
         <div class="field">
           <label>
-            Check In Opens at {{settings.checkInOpen}}
+            Check In Opens: {{ formatDate(settings.checkInOpen) }}
           </label>
-          <input type="number" ng-model="settings.checkInOpen">
+          <input type="datetime-local" ng-model="settings.checkInOpen">
         </div>
   
         <div class="ui field">

@@ -14,10 +14,10 @@ angular.module('reg')
 
       function updateSettings(settings){
         $scope.loading = false;
-         // Format the dates in settings.
         settings.timeOpen = new Date(settings.timeOpen);
         settings.timeClose = new Date(settings.timeClose);
         settings.timeConfirm = new Date(settings.timeConfirm);
+        settings.checkInOpen = new Date(settings.checkInOpen);
 
         $scope.settings = settings;
       }
@@ -136,9 +136,10 @@ angular.module('reg')
       
       // CheckInOpen ---------------------------------------
         $scope.updateCheckInOpen = function() {
-          var number = $scope.settings.checkInOpen;
+          var CheckInOpen = cleanDate($scope.settings.checkInOpen).getTime();
+          
           SettingsService
-              .updateCheckInOpen(number)
+              .updateCheckInOpen(CheckInOpen)
               .success(function(data){
                   swal("Looks good!", "Check In Open Updated", "success");
                   updateSettings(data);
