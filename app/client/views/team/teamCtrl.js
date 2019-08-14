@@ -19,9 +19,9 @@ angular.module('reg')
       function _populateTeammates() {
         UserService
           .getMyTeammates()
-          .success(function(users){
+          .success(function(data){
             $scope.error = null;
-            $scope.teammates = users;
+            $scope.teammates = data.teammates;
           });
       }
 
