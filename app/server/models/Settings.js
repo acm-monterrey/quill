@@ -50,7 +50,7 @@ var schema = new mongoose.Schema({
   },
   checkInOpen: {
     type: Number,
-    default: 0
+    default: Date.now() + 31104000000 
   },
   teamSizeAccepted: {
     type: Number,
