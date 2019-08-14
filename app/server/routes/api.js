@@ -38,7 +38,6 @@ module.exports = function(router) {
   function checkAdmin(req, res, next){
     
     var token = getToken(req);
-    console.log('token :', token);
     if(!token) return next();
 
     UserController.getByToken(token, function(err, user){
