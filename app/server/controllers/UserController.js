@@ -721,10 +721,12 @@ UserController.updateRecordsWithMissingFields = function(callback) {
  * @param {[Function]} callback  
  */
 UserController.assignNextAvailableTable = function(id, callback) {
-  this.getTeammates(id, function(err, teammates){
-    if(err) return callback(err, teammates);
-
+  this.getTeammates(id, function(err, data){
+    if(err) return callback(err, data);
+    
+    var teammates = data.teammates;
     let ids = [];
+    
     teammates.forEach(function(team){
       ids.push(team._id);
     });
@@ -739,8 +741,15 @@ UserController.assignNextAvailableTable = function(id, callback) {
         User
         .updateMany(
           { _id: { $in: ids } },
-          {$set: { 'status.tableNumber': currentCount }})
-        .exec(callback);
+          {$set: { 'status.tableNumber': currentCount }},
+        (err,update) => {
+          if(err) return callback(err, null);
+
+          User
+              .findById(id)
+              .select('profile.name status.checkedIn status.tableNumber')
+              .exec(callback);
+        });
       });
 
     });

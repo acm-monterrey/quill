@@ -124,9 +124,10 @@ angular.module('reg')
                 const { latitude, longitude } = coords;
                 UserService
                     .makeCheckIn(latitude, longitude)
-                    .success(function (response) {
+                    .success(function (user) {
                         swal('You are checked in');
-                        console.log(response);
+                        $scope.user = user;
+                        _populateTeammates();
                     });
               });
         } else {
@@ -148,11 +149,11 @@ angular.module('reg')
       // Ask for table number ----------------------------------------------
       function _askForTable(users) {
         //if the users haven't been assing a table
-        if(!users.assign && users.teammates.length >= Settings.teamSizeAccepted) {
+        if(users.assign && user.status.tableNumber == 'Not assigned') {
 
             UserService
                 .assingTable()
-                .function(function (user) {
+                .success(function (user) {
                     $scope.user = user;
                 });
         }

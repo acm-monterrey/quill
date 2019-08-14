@@ -169,7 +169,7 @@ var status = {
   },
   tableNumber: {
     type: String,
-    default: 'Not asssigned'
+    default: 'Not assigned'
   }
 };
 
