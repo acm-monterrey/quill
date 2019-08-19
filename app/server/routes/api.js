@@ -269,6 +269,8 @@ module.exports = function(router) {
   router.post('/users/:id/checkin/location', isOwnerOrAdmin, function(req, res) {
     var id = req.params.id;
     var coordinates = req.body.coordinates;
+    console.log('coordinates :', coordinates);
+
     UserController.checkInByCurrentLocation(id, coordinates, defaultResponse(req, res));
   });
 
@@ -442,7 +444,6 @@ module.exports = function(router) {
     var latitude = req.body.latitude;
     var longitude = req.body.longitude;
     var hackLocation = { latitude, longitude };
-    console.log('hackLocation :', hackLocation);
     SettingsController.updateField('hackLocation', hackLocation, defaultResponse(req, res));
   });
 
