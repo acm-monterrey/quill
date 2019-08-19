@@ -704,7 +704,7 @@ UserController.checkInByCurrentLocation = function(id, coordinates, callback) {
     var hackLocation = [ settings.hackLocation.longitude, settings.hackLocation.latitude ];
     var userLocation = [ coordinates.longitude, coordinates.latitude ];
     var distance = getDistanceInMetersFromHack(hackLocation, userLocation);
-    
+    console.log('distance :', distance);
     if(distance <= 35) {
       User.findOneAndUpdate({
         _id: id,
