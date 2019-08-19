@@ -442,7 +442,7 @@ module.exports = function(router) {
     var latitude = req.body.latitude;
     var longitude = req.body.longitude;
     var hackLocation = { latitude, longitude };
-    
+    console.log('hackLocation :', hackLocation);
     SettingsController.updateField('hackLocation', hackLocation, defaultResponse(req, res));
   });
 
