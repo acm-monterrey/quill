@@ -9,14 +9,15 @@ var validator = require('validator');
  *
  * @type {mongoose}
  */
+// Default location is Centro Estudiantil
 var geolocation = {
   latitude: {
     type: Number,
-    default: 0
+    default: -100.28980135917662
   },
   longitude: {
     type: Number,
-    default: 0
+    default: 25.64875132580549
   }
 };
 
