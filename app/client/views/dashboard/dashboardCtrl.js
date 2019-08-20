@@ -136,6 +136,11 @@ angular.module('reg')
                     .error(function(res){
                       $scope.error = res.message;
                     });
+              }, function(error) {
+                console.log('error :', error);
+                $scope.error = error
+              }, {
+                enableHighAccuracy: true
               });
         } else {
           alert('Geolocation is not supported by this browser.');
