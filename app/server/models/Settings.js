@@ -13,11 +13,11 @@ var validator = require('validator');
 var geolocation = {
   latitude: {
     type: Number,
-    default: -100.28980135917662
+    default: -100.28980940580368
   },
   longitude: {
     type: Number,
-    default: 25.64875132580549
+    default: 25.648884311130328
   }
 };
 
