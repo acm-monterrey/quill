@@ -746,32 +746,43 @@ UserController.assignNextAvailableTable = function(id, callback) {
     
     var teammates = data.teammates;
     let ids = [];
-    
+    let bAssigned = false;
     teammates.forEach(function(team){
+      if(team.status.tableNumber !== "Not assigned") bAssigned = true;
       ids.push(team._id);
     });
+    // Check if team already has table
+    if(bAssigned) return callback({showable:true, message: "El equipo ya tiene mesa asignada"})
 
     Settings.getCurrentTableCount(function(err, tableNumber){
       if(err) return callback(err, tableNumber);
       let currentCount = tableNumber.currentTableCount + 1;
       currentCount = currentCount.toString();
-      SettingsController.updateField('currentTableCount', currentCount, function( err, _){
+      User.find({
+        "status.tableNumber": currentCount
+      },
+      (err, alreadyAssignedUsers) => {
         if(err) return callback(err);
+        // Checks if another team doesnt already have that table, to prevent 2 or more teams in the same table
+        if(alreadyAssignedUsers.length > 0) return callback({ showable: true, message: "There was an error. Try Again"})
 
-        User
-        .updateMany(
-          { _id: { $in: ids } },
-          {$set: { 'status.tableNumber': currentCount }},
-        (err,update) => {
-          if(err) return callback(err, null);
-
+        SettingsController.updateField('currentTableCount', currentCount, function( err, _){
+          if(err) return callback(err);
+  
           User
-              .findById(id)
-              .select('profile.name status.checkedIn status.tableNumber')
-              .exec(callback);
+          .updateMany(
+            { _id: { $in: ids } },
+            {$set: { 'status.tableNumber': currentCount }},
+            (err,update) => {
+              if(err) return callback(err, null);
+  
+              User
+                .findById(id)
+                .select('profile.name status.checkedIn status.tableNumber')
+                .exec(callback);
+          });
         });
       });
-
     });
   });
 }

@@ -67,6 +67,8 @@ angular.module('reg')
               user.status.admitted &&
               !user.status.confirmed &&
               !user.status.declined;
+          case 'admitted':
+            return user.status.admitted && !user.status.declined;
           case 'confirmed':
             return user.status.admitted && user.status.confirmed && !user.status.declined;
           case 'declined':
@@ -134,6 +136,13 @@ angular.module('reg')
                     .error(function(res){
                       $scope.error = res.message;
                     });
+              }, function(error) {
+                console.log('error :', error);
+                $scope.error = error
+              },{
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 10000
               });
         } else {
           alert('Geolocation is not supported by this browser.');
