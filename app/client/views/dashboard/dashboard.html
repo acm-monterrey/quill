@@ -1,9 +1,16 @@
 <div id="dashboard" class="page">
-  <div class="divided title">
-    Dashboard
+  <div class="divided title"> <!-- style should be in the css, cant find it -->
+      Welcome to hackmty, {{ user.profile.name.split(' ')[0] }}! 
   </div>
-
   <div class="ui stackable centered page grid">
+    <div class="column">
+      <div 
+      class="ui error message" ng-show="error">
+        {{error}}
+      </div>
+    </div>
+  </div>
+  <div class="ui stackable centered page grid" ng-if="!showCheckInOpen">
     <div class="column">
       <div class="ui status segment">
         <div class="small title">
@@ -235,4 +242,68 @@
 
     </div>
   </div>
+  
+  <!-- Box fot the TeamOverview, new box with different title and no functionality implemented -->
+  <div class="ui stackable centered page grid" ng-if="showCheckInOpen">
+    <div class="column">
+      <div class="ui status segment">
+        <!-- Title of the box -->
+        <div class="small title">
+            Team Overview
+        </div>
+        <!-- Title of the team -->
+        <div>
+          <h4>
+            {{ user.teamCode }}
+          </h4>
+        </div>
+        <!-- ngFor to iterate between the teammates -->
+        <div class="team-list" style="width: 100%; text-align: left; display:inline-block; margin-bottom: 0px;">
+          <p style="vertical-align: middle; float: left;">
+            <img ng-if="!user.status.checkedIn" src="../../assets/images/cross.png">
+            <img ng-if="user.status.checkedIn"  src="../../assets/images/mark.png">
+          </p>
+          <p class="divided small team-member" style="padding-top: 3px; padding-left: 30px; color: #473899;">
+            {{user.profile.name}}
+          </p>
+        </div>
+        <div ng-repeat="teammate in teammates.teammates">
+          <div class="team-list" style="width: 100%; text-align: left; display:inline-block; margin-bottom: 0px;" ng-if="teammate.profile.name != user.profile.name">
+            <p style="vertical-align: middle; float: left;">
+              <img ng-if="!teammate.status.checkedIn" src="../../assets/images/cross.png">
+              <img ng-if="teammate.status.checkedIn"  src="../../assets/images/mark.png">
+            </p>
+            <p class="divided small team-member" style="padding-top: 2px; padding-left: 30px;">
+              {{ teammate.profile.name }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div ng-if="!user.status.checkedIn && !teammates.assign && dashState('admitted')" class="ui primary button" style="margin-bottom: 24px;" ng-click="onCheckIn()">
+          Check In
+        </div>
+
+        <div ng-if="user.status.checkedIn && !teammates.assign && user.status.tableNumber == 'Not assigned'" class="ui primary button" style="margin-bottom: 24px; display: inline-block; background-color: #46414A;">
+          <img  src="../../assets/images/mark-white.png"height="19" width="19" style="float: left; padding-top: 2px;">
+          <p style="float: left; padding-left: 10px;">
+            Checked In
+          </p>
+        </div>
+
+        <div ng-if="user.status.tableNumber != 'Not assigned'" class="ui primary button" style="margin-bottom: 24px; width: 100%; margin: 0px;">
+          Everyone is checked in! Your table is #{{ user.status.tableNumber }}
+        </div>
+
+        <div ng-if="!dashState('admitted')" class="ui disabled button" style="margin-bottom: 24px; width: 100%; margin: 0px;">
+          You are not allowed to check in, sorry!
+        </div>
+
+
+
+      </div>
+
+    </div>
+  </div>
+  
 </div>

@@ -85,6 +85,14 @@ angular.module('reg')
       declineAdmission: function(id){
         return $http.post(base + id + '/decline');
       },
+      
+      makeCheckIn: function(latitude, longitude) {
+        coordinates = {
+          latitude: latitude,
+          longitude: longitude
+        };
+        return $http.post(base + Session.getUserId() + '/checkin/location ', { coordinates:coordinates } );
+      },
 
       // ------------------------
       // Team
@@ -101,6 +109,10 @@ angular.module('reg')
 
       getMyTeammates: function(){
         return $http.get(base + Session.getUserId() + '/team');
+      },
+      
+      assingTable: function() {
+        return $http.post( base + Session.getUserId() + '/confirmed');
       },
 
       // -------------------------

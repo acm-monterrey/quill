@@ -14,10 +14,10 @@ angular.module('reg')
 
       function updateSettings(settings){
         $scope.loading = false;
-         // Format the dates in settings.
         settings.timeOpen = new Date(settings.timeOpen);
         settings.timeClose = new Date(settings.timeClose);
         settings.timeConfirm = new Date(settings.timeConfirm);
+        settings.checkInOpen = new Date(settings.checkInOpen);
 
         $scope.settings = settings;
       }
@@ -133,5 +133,51 @@ angular.module('reg')
             updateSettings(data);
           });
       };
+      
+      // CheckInOpen ---------------------------------------
+        $scope.updateCheckInOpen = function() {
+          var CheckInOpen = cleanDate($scope.settings.checkInOpen).getTime();
+          
+          SettingsService
+              .updateCheckInOpen(CheckInOpen)
+              .success(function(data){
+                  swal("Looks good!", "Check In Open Updated", "success");
+                  updateSettings(data);
+              });
+        };
+        
+        // Team Size to be accepted ------------------------
+        $scope.updateTeamSizeAccepted = function() {
+            var number = $scope.settings.teamSizeAccepted;
+            SettingsService
+                .updateTeamSizeAccepted(number)
+                .success(function(data){
+                    swal("Looks good!", "Team Size to be Accepted Updated", "success");
+                    updateSettings(data);
+                });
+        };
+        
+        // Location of the hack ----------------------------
+        $scope.updateHackLocation = function() {
+            var latitude = $scope.settings.hackLocation.latitude;
+            var longitude = $scope.settings.hackLocation.longitude;
+            SettingsService
+                .updateHackLocation(latitude, longitude)
+                .success(function(data) {
+                    swal("Looks good!", "Location of the Hack has been Updated", "success");
+                    updateSettings(data);
+                })
+        }
+        
+        // Max table count ---------------------------------
+        $scope.updateMaxTableCount = function() {
+            var number = $scope.settings.maxTableCount;
+            SettingsService
+                .updateMaxTableCount(number)
+                .success(function (data) {
+                    swal("Looks good!", "Max Number of Tables Updated", "success");
+                    updateSettings(data);
+                })
+        }
 
     }]);

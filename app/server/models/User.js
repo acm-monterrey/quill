@@ -166,6 +166,10 @@ var status = {
   reimbursementGiven: {
     type: Boolean,
     default: false
+  },
+  tableNumber: {
+    type: String,
+    default: 'Not assigned'
   }
 };
 
@@ -319,6 +323,7 @@ schema.statics.verifyTempAuthToken = function(token, callback){
 
     if (!payload.exp || Date.now() >= payload.exp * 1000){
       return callback({
+        showable: true,
         message: 'Token has expired.'
       });
     }

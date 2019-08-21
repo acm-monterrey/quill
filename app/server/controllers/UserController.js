@@ -3,9 +3,12 @@ var User = require('../models/User');
 var Settings = require('../models/Settings');
 var Mailer = require('../services/email');
 var Stats = require('../services/stats');
+var SettingsController = require('../controllers/SettingsController');
 
 var validator = require('validator');
 var moment = require('moment');
+var turfdistance = require('@turf/distance');
+var point = require('turf-point');
 
 var UserController = {};
 
@@ -26,7 +29,7 @@ function endsWith(s, test){
 function canRegister(email, password, callback){
 
   if (!password || password.length < 6){
-    return callback({ message: "Password must be 6 or more characters."}, false);
+    return callback({ showable: true, message: "Password must be 6 or more characters."}, false);
   }
 
   // Check if its within the registration window.
@@ -39,12 +42,14 @@ function canRegister(email, password, callback){
 
     if (now < times.timeOpen){
       return callback({
+        showable: true,
         message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
       });
     }
 
     if (now > times.timeClose){
       return callback({
+        showable: true,
         message: "Sorry, registration is closed."
       });
     }
@@ -60,11 +65,28 @@ function canRegister(email, password, callback){
         }
       }
       return callback({
+        showable: true,
         message: "Not a valid educational email."
       }, false);
     });
 
   });
+}
+
+/**
+ * Performs the needed operations to calculate the distance between
+ * the user's location and the hack's location. 
+ * @param {Array}  pointA  longitude and latitude of the hack
+ * @param {Array}  pointb  longitude and latitude of the user
+ * @return {int}    dist   Distance between the two points in meters
+ */
+function getDistanceInMetersFromHack(pointA, pointB) {
+  var from = point(pointA);
+  var to = point(pointB);
+  var options = { units: 'kilometers'};
+  var distance = turfdistance.default(from, to, options);
+  distance = distance * 1000;
+  return distance;
 }
 
 /**
@@ -88,12 +110,14 @@ UserController.loginWithPassword = function(email, password, callback){
 
   if (!password || password.length === 0){
     return callback({
+      showable: true,
       message: 'Please enter a password'
     });
   }
 
   if (!validator.isEmail(email)){
     return callback({
+      showable: true,
       message: 'Invalid email'
     });
   }
@@ -107,11 +131,13 @@ UserController.loginWithPassword = function(email, password, callback){
       }
       if (!user) {
         return callback({
+          showable: true,
           message: "We couldn't find you!"
         });
       }
       if (!user.checkPassword(password)) {
         return callback({
+          showable: true,
           message: "That's not the right password."
         });
       }
@@ -137,6 +163,7 @@ UserController.createUser = function(email, password, callback) {
 
   if (typeof email !== "string"){
     return callback({
+      showable: true,
       message: "Email must be a string."
     });
   }
@@ -160,6 +187,7 @@ UserController.createUser = function(email, password, callback) {
 
         if (user) {
           return callback({
+            showable: true,
             message: 'An account for this email already exists.'
           });
         } else {
@@ -228,6 +256,7 @@ UserController.getPage = function(query, callback){
     queries.push({ 'profile.name': re });
     queries.push({ 'teamCode': re });
     queries.push({ 'profile.school': re });
+    queries.push({ 'status.tableNumber': re})
 
     findQuery.$or = queries;
   }
@@ -285,7 +314,7 @@ UserController.updateProfileById = function (id, profile, callback){
   User.validateProfile(profile, function(err){
 
     if (err){
-      return callback({message: 'invalid profile'});
+      return callback({showable: true, message: 'invalid profile'});
     }
 
     // Check if its within the registration window.
@@ -298,12 +327,14 @@ UserController.updateProfileById = function (id, profile, callback){
 
       if (now < times.timeOpen){
         return callback({
+          showable: true,
           message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
         });
       }
 
       if (now > times.timeClose){
         return callback({
+          showable: true,
           message: "Sorry, registration is closed."
         });
       }
@@ -343,7 +374,6 @@ UserController.updateConfirmationById = function (id, confirmation, callback){
     }
 
     User.findById(id, function(err, user){
-  
       if(err || !user){
         return callback(err);
       }
@@ -352,6 +382,7 @@ UserController.updateConfirmationById = function (id, confirmation, callback){
       // that's okay.
       if (Date.now() >= times.timeConfirm && !user.status.confirmed){
         return callback({
+          showable: true,
           message: "You've missed the confirmation deadline."
         });
       }
@@ -439,6 +470,7 @@ UserController.getTeammates = function(id, callback){
 
     if (!code){
       return callback({
+        showable: true,
         message: "You're not on a team."
       });
     }
@@ -447,9 +479,22 @@ UserController.getTeammates = function(id, callback){
       .find({
         teamCode: code
       })
-      .select('profile.name')
-      .exec(callback);
-  });
+      .select('profile.name status.checkedIn')
+      .exec((err, teammates) => {
+        if(err) return callback(err, teammates);
+        let numberCheckedIn = 0;
+        teammates.forEach(function(member) {
+          if(member.status.checkedIn) numberCheckedIn++;
+        });
+        
+        Settings.getPublicSettings(function(err, settings){
+          if(err) return callback(err, settings);
+
+          let canBeAssigned = numberCheckedIn >= settings.teamSizeAccepted;
+          return callback(null, { assign: canBeAssigned, teammates: teammates });
+        });
+      });
+    });
 };
 
 /**
@@ -462,12 +507,14 @@ UserController.createOrJoinTeam = function(id, code, callback){
 
   if (!code){
     return callback({
+      showable: true,
       message: "Please enter a team name."
     });
   }
 
   if (typeof code !== 'string') {
     return callback({
+      showable: true,
       message: "Get outta here, punk!"
     });
   }
@@ -480,6 +527,7 @@ UserController.createOrJoinTeam = function(id, code, callback){
     // Check to see if this team is joinable (< team max size)
     if (users.length >= maxTeamSize){
       return callback({
+        showable: true,
         message: "Team is full."
       });
     }
@@ -568,6 +616,7 @@ UserController.sendPasswordResetEmail = function(email, callback){
 UserController.changePassword = function(id, oldPassword, newPassword, callback){
   if (!id || !oldPassword || !newPassword){
     return callback({
+      showable: true,
       message: 'Bad arguments.'
     });
   }
@@ -589,6 +638,7 @@ UserController.changePassword = function(id, oldPassword, newPassword, callback)
         callback);
       } else {
         return callback({
+          showable: true,
           message: 'Incorrect password'
         });
       }
@@ -604,12 +654,14 @@ UserController.changePassword = function(id, oldPassword, newPassword, callback)
 UserController.resetPassword = function(token, password, callback){
   if (!password || !token){
     return callback({
+      showable: true,
       message: 'Bad arguments'
     });
   }
 
   if (password.length < 6){
     return callback({
+      showable: true,
       message: 'Password must be 6 or more characters.'
     });
   }
@@ -639,6 +691,101 @@ UserController.resetPassword = function(token, password, callback){
       });
   });
 };
+
+/**
+ * Logic for checking if the user's current location matches the hacks
+ * location so that the user can checkin
+ * @param {Function} callback [description]
+ */
+UserController.checkInByCurrentLocation = function(id, coordinates, callback) {
+  Settings.getAllSettings(function(err, settings) {
+    if(err) return callback(err);
+
+    var hackLocation = [ settings.hackLocation.longitude, settings.hackLocation.latitude ];
+    var userLocation = [ coordinates.longitude, coordinates.latitude ];
+    var distance = getDistanceInMetersFromHack(hackLocation, userLocation);
+    console.log('distance :', distance);
+    if(distance <= 35) {
+      User.findOneAndUpdate({
+        _id: id,
+        verified: true
+      },{
+        $set: {
+          'status.checkedIn': true,
+          'status.checkInTime': Date.now()
+        }
+      }, { new: true }, callback);
+    }  else {
+      callback({showable: true, message: "User is not within check-in range."});
+    }
+  });
+}
+
+/**
+ * Adds the schema's newly added fields to the records that do not contain it
+ * @param  {Function} callback [description]
+ */
+UserController.updateRecordsWithMissingFields = function(callback) {
+  var userSchema = User.schema.obj;
+
+  User.update({ 'status.tableNumber': {$exists: false} },
+    { $set: {
+      'status.tableNumber': userSchema.status.tableNumber.default,
+    }}, { multi: true })
+    .exec(callback);
+}
+
+/**
+ * Assigns the next available table to a team
+ * @param {[type]} id             User id
+ * @param {[Function]} callback  
+ */
+UserController.assignNextAvailableTable = function(id, callback) {
+  this.getTeammates(id, function(err, data){
+    if(err) return callback(err, data);
+    
+    var teammates = data.teammates;
+    let ids = [];
+    let bAssigned = false;
+    teammates.forEach(function(team){
+      if(team.status.tableNumber !== "Not assigned") bAssigned = true;
+      ids.push(team._id);
+    });
+    // Check if team already has table
+    if(bAssigned) return callback({showable:true, message: "El equipo ya tiene mesa asignada"})
+
+    Settings.getCurrentTableCount(function(err, tableNumber){
+      if(err) return callback(err, tableNumber);
+      let currentCount = tableNumber.currentTableCount + 1;
+      currentCount = currentCount.toString();
+      User.find({
+        "status.tableNumber": currentCount
+      },
+      (err, alreadyAssignedUsers) => {
+        if(err) return callback(err);
+        // Checks if another team doesnt already have that table, to prevent 2 or more teams in the same table
+        if(alreadyAssignedUsers.length > 0) return callback({ showable: true, message: "There was an error. Try Again"})
+
+        SettingsController.updateField('currentTableCount', currentCount, function( err, _){
+          if(err) return callback(err);
+  
+          User
+          .updateMany(
+            { _id: { $in: ids } },
+            {$set: { 'status.tableNumber': currentCount }},
+            (err,update) => {
+              if(err) return callback(err, null);
+  
+              User
+                .findById(id)
+                .select('profile.name status.checkedIn status.tableNumber')
+                .exec(callback);
+          });
+        });
+      });
+    });
+  });
+}
 
 /**
  * [ADMIN ONLY]

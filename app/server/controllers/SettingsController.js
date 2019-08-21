@@ -54,6 +54,7 @@ SettingsController.updateRegistrationTimes = function(open, close, callback){
 
   if (close <= open){
     return callback({
+      showable: true,
       message: "Registration cannot close before or at exactly the same time it opens."
     });
   }
@@ -88,5 +89,28 @@ SettingsController.getRegistrationTimes = function(callback){
 SettingsController.getPublicSettings = function(callback){
   Settings.getPublicSettings(callback);
 };
+
+SettingsController.getSettings = function(callback){
+  Settings.getAllSettings(callback);
+};
+
+/**
+ * Adds the Setting's schema's newly added fields to the records
+ * @param  {Function} callback [description]
+ */
+
+SettingsController.updateRecordsWithMissingFields = function(callback) {
+  var settingSchema = Settings.schema.obj;
+
+  Settings.update({},
+    { $set: {
+        checkInOpen: settingSchema.checkInOpen.default,
+        teamSizeAccepted: settingSchema.teamSizeAccepted.default,
+        hackLocation: settingSchema.hackLocation,
+        maxTableCount: settingSchema.maxTableCount.default,
+        currentTableCount: settingSchema.currentTableCount.default
+    }}, { multi: true })
+    .exec(callback);
+}
 
 module.exports = SettingsController;

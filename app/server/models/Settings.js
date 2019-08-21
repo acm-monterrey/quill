@@ -9,6 +9,18 @@ var validator = require('validator');
  *
  * @type {mongoose}
  */
+// Default location is Centro Estudiantil
+var geolocation = {
+  latitude: {
+    type: Number,
+    default: -100.28980940580368
+  },
+  longitude: {
+    type: Number,
+    default: 25.648884311130328
+  }
+};
+
 var schema = new mongoose.Schema({
   status: String,
   timeOpen: {
@@ -37,6 +49,23 @@ var schema = new mongoose.Schema({
   confirmationText: {
     type: String
   },
+  checkInOpen: {
+    type: Number,
+    default: Date.now() + 31104000000 
+  },
+  teamSizeAccepted: {
+    type: Number,
+    default: 4
+  },
+  hackLocation: geolocation,
+  maxTableCount: {
+    type: Number,
+    default: 100
+  },
+  currentTableCount: {
+    type: Number,
+    default: 0
+  }
 });
 
 /**
@@ -70,9 +99,26 @@ schema.statics.getRegistrationTimes = function(callback){
     });
 };
 
-schema.statics.getPublicSettings = function(callback){
+/**
+ * Gets the last assigned table number.
+ * @param  {Function} callback [description]
+ */
+schema.statics.getCurrentTableCount = function(callback){
+  this
+   .findOne({})
+   .select({'currentTableCount': 1})
+   .exec(callback);
+};
+
+schema.statics.getAllSettings = function(callback){
   this
     .findOne({})
+    .exec(callback);
+}
+
+schema.statics.getPublicSettings = function(callback){
+  this
+    .findOne({}).select('-hackLocation -maxTableCount')
     .exec(callback);
 };
 
