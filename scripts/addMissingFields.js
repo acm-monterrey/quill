@@ -8,9 +8,9 @@ mongoose.connect(database);
 var SettingsController = require('../app/server/controllers/SettingsController');
 var UserController = require('../app/server/controllers/UserController');
 
-SettingsController.updateRecordsWithMissingFields(function() {
-    console.log('Updated settings to include missing fields');
-})
+// SettingsController.updateRecordsWithMissingFields(function() {
+//     console.log('Updated settings to include missing fields');
+// })
 
 UserController.updateRecordsWithMissingFields(function() {
     console.log('Updated user records to include missing fields');
