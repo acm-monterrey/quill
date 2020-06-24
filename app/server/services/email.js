@@ -4,6 +4,7 @@ var smtpTransport = require('nodemailer-smtp-transport');
 
 var templatesDir = path.join(__dirname, '../templates');
 var emailTemplates = require('email-templates');
+const { RSA_NO_PADDING } = require('constants');
 
 var ROOT_URL = process.env.ROOT_URL;
 
@@ -20,14 +21,17 @@ if(EMAIL_HEADER_IMAGE.indexOf("https") == -1){
 var NODE_ENV = process.env.NODE_ENV;
 
 var options = {
-  host: EMAIL_HOST,
-  port: EMAIL_PORT,
-  secure: true,
+  // host: EMAIL_HOST,
+  // port: EMAIL_PORT,
+  // secure: true,
+  service: 'Gmail',
   auth: {
     user: EMAIL_USER,
-    pass: EMAIL_PASS
+    pass: EMAIL_PASS,
   }
 };
+
+console.log('options :>> ', options);
 
 var transporter = nodemailer.createTransport(smtpTransport(options));
 
