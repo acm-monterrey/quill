@@ -20,7 +20,11 @@ var adminConfig     = require('./config/admin');
 var app             = express();
 
 // Connect to mongodb
-mongoose.connect(database);
+mongoose.connect(database, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+});
 
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -34,7 +38,7 @@ app.use(methodOverride());
 if(process.env.NODE_ENV === 'production'){
   app.use(function(req, res, next) {
     // The 'x-forwarded-proto' check is for Heroku
-    if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
+    if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "dev") {
       return res.redirect('https://' + req.get('host') + req.url);
     }
     next();

@@ -22,55 +22,65 @@ gulp.task('default', function(){
   console.log('yo. use gulp watch or something');
 });
 
-gulp.task('js', function () {
+const js = function () {
   if (environment !== 'dev'){
     // Minify for non-development
-    gulp.src(['app/client/src/**/*.js', 'app/client/views/**/*.js'])
+    return gulp.src(['app/client/src/**/*.js', 'app/client/views/**/*.js'])
       .pipe(sourcemaps.init())
-        .pipe(concat('app.js'))
-        .pipe(ngAnnotate())
-        .on('error', swallowError)
-        .pipe(uglify())
-      .pipe(gulp.dest('app/client/build'));
+      .pipe(concat('app.js'))
+      .pipe(ngAnnotate())
+      .on('error', swallowError)
+      .pipe(uglify())
+      .pipe(gulp.dest('app/client/build'))
+      
   } else {
-    gulp.src(['app/client/src/**/*.js', 'app/client/views/**/*.js'])
+    return gulp.src(['app/client/src/**/*.js', 'app/client/views/**/*.js'])
       .pipe(sourcemaps.init())
-        .pipe(concat('app.js'))
-        .pipe(ngAnnotate())
-        .on('error', swallowError)
+      .pipe(concat('app.js'))
+      .pipe(ngAnnotate())
+      .on('error', swallowError)
       .pipe(sourcemaps.write())
       .pipe(gulp.dest('app/client/build'));
   }
 
-});
+}
+gulp.task('js', js);
 
-gulp.task('sass', function () {
-  gulp.src('app/client/stylesheets/site.scss')
+const sassF = function () {
+  return gulp.src('app/client/stylesheets/site.scss')
     .pipe(sass())
-      .on('error', sass.logError)
+    .on('error', sass.logError)
     .pipe(minifyCss())
     .pipe(gulp.dest('app/client/build'));
-});
+}
+gulp.task('sass', sassF);
 
-gulp.task('build', ['js', 'sass'], function(){
+gulp.task('build', gulp.series('js', 'sass', function(done){
   // Yup, build the js and sass.
-});
+  done()
+}));
 
-gulp.task('watch', ['js', 'sass'], function () {
+gulp.task('watch', gulp.parallel('js', 'sass', function () {
   gulp
-    .watch('app/client/src/**/*.js', ['js']);
+    .watch('app/client/src/**/*.js', js);
   gulp
-    .watch('app/client/views/**/*.js', ['js']);
+    .watch('app/client/views/**/*.js', js);
   gulp
-    .watch('app/client/stylesheets/**/*.scss', ['sass']);
-});
+    .watch('app/client/stylesheets/**/*.scss', sassF);
+}));
 
-gulp.task('server', ['watch'], function(){
-  nodemon({
+gulp.task('server', gulp.parallel('watch', function(cb){
+  let started = false;
+  return nodemon({
     script: 'app.js',
     env: { 'NODE_ENV': process.env.NODE_ENV || 'DEV' },
     watch: [
       'app/server'
     ]
+  }).on('start', () => {
+    if(!started) {
+      cb();
+      started = true;
+    }
   });
-});
+}));
