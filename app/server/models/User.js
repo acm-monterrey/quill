@@ -374,7 +374,7 @@ schema.statics.validateProfile = function(profile, cb){
     profile.school.length > 0 &&
     ['2023','2022','2021','2020', '2024', '2025'].indexOf(profile.graduationYear) > -1 &&
     ['M', 'F', 'O', 'N'].indexOf(profile.gender) > -1 &&
-    validDiscriminator
+    validDiscriminator && profile.discordUsername.length >= 7
     ));
 };
 

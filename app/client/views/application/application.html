@@ -29,7 +29,9 @@
           
           <div ng-if='!checkInActive' class="field">
             <label> Discord username</label>
+            <span> Remember to include your 4 digit code! (#1234)</span>
             <input type="text"
+                   placeholder="myAwesomeUsername#1234"
                    name="discordUsername"
                    ng-model="user.profile.discordUsername">
           </div>

@@ -68,8 +68,8 @@ angular.module('reg')
             validDiscriminator = false;
           }
         }
-        
-        if(!validDiscriminator && discordUsername.length >= 7) {
+        console.log('discordUsername.length :>> ', discordUsername.length);
+        if(!validDiscriminator || discordUsername.length < 7) {
           sweetAlert("uh oh!", "Your Discord username does not have the correct format, please include your discriminator (#1234)", "error")
           return;
         }
