@@ -29,6 +29,17 @@ angular.module('reg')
           });
       }
 
+      $scope.graduationYears = function() {
+        var graduationYears = []
+        const today = new Date();
+        const thisYear = today.getFullYear();
+        for (var i = 0; i < 6; i++) {
+          graduationYears[i] = thisYear+i;
+        }
+        console.log('graduationYears :>> ', graduationYears);
+        return graduationYears;
+      }();
+
 
       $scope.updateProfile = function(){
         UserService

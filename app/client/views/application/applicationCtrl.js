@@ -153,7 +153,14 @@ angular.module('reg')
         });
       }
 
+      $scope.graduationYears = []
+      const today = new Date();
+      const thisYear = today.getFullYear();
+      for (var i = 0; i < 6; i++) {
+        $scope.graduationYears[i] = thisYear+i;
+      }
 
+      console.log('$scope.graduationYears :>> ', $scope.graduationYears);
 
       $scope.submitForm = function(){
         if ($('.ui.form').form('is valid')){
