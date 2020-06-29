@@ -180,7 +180,6 @@ module.exports = function(router) {
   router.put('/users/:id/profile', isOwnerOrAdmin, function(req, res){
     var profile = req.body.profile;
     var id = req.params.id;
-
     UserController.updateProfileById(id, profile , defaultResponse(req, res));
   });
 
