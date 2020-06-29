@@ -1,6 +1,6 @@
 angular.module('reg')
     .constant('EVENT_INFO', {
-        NAME: 'HackMTY 2019',
+        NAME: 'HackMTY 2020',
     })
     .constant('DASHBOARD', {
         UNVERIFIED: 'You should have received an email asking you verify your email. Click the link in the email and you can start your application!',
