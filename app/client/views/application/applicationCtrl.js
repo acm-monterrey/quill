@@ -160,8 +160,6 @@ angular.module('reg')
         $scope.graduationYears[i] = thisYear+i;
       }
 
-      console.log('$scope.graduationYears :>> ', $scope.graduationYears);
-
       $scope.submitForm = function(){
         if ($('.ui.form').form('is valid')){
           _updateUser();
