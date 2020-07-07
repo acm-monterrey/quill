@@ -92,7 +92,70 @@
               <input type="text" ng-model="user.confirmation.hardware">
             </div>
           </div>
+          <br>
+          <div>
 
+            <div class="ui header">
+              Address Information
+            </div>
+
+            <p>
+              Where will you be located when participating in HackMTY?
+            </p>
+
+            <div class="field">
+              <label>Full Name</label>
+              <input type="text"
+                     name="name"
+                     ng-model="user.confirmation.address.name">
+            </div>
+
+            <div class="field">
+              <label> Address Line 1 - Street address, P.O. box, company name, c/o </label>
+              <input
+                type="text"
+                name="addressLine1"
+                ng-model="user.confirmation.address.line1">
+            </div>
+
+            <div class="field">
+              <label> Address Line 2 - Apartment, suite, unit, building, floor, etc. </label>
+              <input
+                type="text"
+                name="addressLine2"
+                ng-model="user.confirmation.address.line2">
+            </div>
+
+            <div class="four fields">
+              <div class="field">
+                <label> City </label>
+                <input
+                  type="text"
+                  name="city"
+                  ng-model="user.confirmation.address.city">
+              </div>
+              <div class="field">
+                <label> State/Province/Region </label>
+                <input
+                  type="text"
+                  name="state"
+                  ng-model="user.confirmation.address.state">
+              </div>
+              <div class="field">
+                <label> ZIP </label>
+                <input
+                  type="text"
+                  name="zip"
+                  ng-model="user.confirmation.address.zip">
+              </div>
+              <div class="field">
+                <label> Country </label>
+                <input
+                  type="text"
+                  name="country"
+                  ng-model="user.confirmation.address.country">
+              </div>
+            </div>
 
           <br>
           <br>
@@ -157,7 +220,7 @@
             To participate in HackMTY under normal terms you need to be at least 18 years old. But don´t worry if you are underage you can still participate by taking the following form signed by your partents or legal tutor the day of the event.
             </p>
             <p>
-            By signing with your name below you affirm that you are at least 18 years old or you will bring the signed form the day of the event.
+            By signing with your name below you affirm that you are at least 18 years old or that you will email the signed form to <strong>hello@hackmty.com</strong> with the subject "Liability Waiver - [YOUR FULL NAME]" prior to the event.
             </p>
             <input type="text"
                    name="signatureLiabilityWaiver"
@@ -208,30 +271,26 @@
           </div>
 
           <div class="field">
-            <label> MLH Code of Conduct</label>
-            <a
-              target="_blank"
-              href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">
-              MLH Code of Conduct
-            </a>
+            <label for="mlhCheckbox">MLH Code of Conduct, Data Sharing, and Terms & Conditions</label>
             <p>
-            By signing with my name below I confirm that I have read the code of conduct provided by the MLH.
+              <a
+                 target="_blank"
+                href="https://github.com/MLH/mlh-policies/blob/master/data-sharing.md">
+                Data Sharing Notice</a>
             </p>
-            <input type="text" name="signatureMLH" placeholder="Your full legal name" ng-model="user.confirmation.signatureMLH">
-          </div>
-
-          <div class="field">
-            <label > Data Sharing Notice</label>
-            <a
-               target="_blank"
-              href="https://github.com/MLH/mlh-policies/blob/master/data-sharing.md">
-              Data Sharing Notice</a>
             <p>
-            I authorize you to share my application/registration information for event administration, ranking, MLH administration, 
-            pre- and post-event informational e-mails, and occasional messages about hackathons in-line with the 
-            <a target="_blank" href="https://mlh.io/privacy">MLH Privacy Policy.</a> 
-            I further agree to the terms of both the <a target="_blank" href="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions/contest-terms.md">MLH Contest Terms and Conditions</a> and the <a target="_blank" href="https://mlh.io/privacy">MLH Privacy Policy.</a>            </p>
-            <input type="text" name="signatureDSP" placeholder="Your full legal name" ng-model="user.confirmation.signatureDSP">
+              I have read and agree to the <a target="_blank" href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">
+              MLH Code of Conduct</a>. I authorize you to share my application/registration 
+              information for event administration, ranking, MLH administration, pre- and post-event informational e-mails, 
+              and occasional messages about hackathons in-line with the <a target="_blank" href="https://mlh.io/privacy">MLH Privacy Policy.</a> 
+              I further agree to the terms of both the 
+              <a target="_blank" href="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions/contest-terms.md">MLH Contest Terms and Conditions</a> 
+              and the <a target="_blank" href="https://mlh.io/privacy">MLH Privacy Policy.</a>
+            </p>
+            <input type="text"
+              name="signatureLiabilityWaiver"
+              placeholder="Your Full Legal Name"
+              ng-model="user.confirmation.signatureMLH">
           </div>
 
           <br>
