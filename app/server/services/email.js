@@ -203,7 +203,7 @@ controller.sendUserAdmitted = function(email){
 
   var locals = {
     title: 'Congratulations!',
-    body: 'You have been admited to 2019 HackMTY. Please log in into your account and complete your profile information.',
+    body: 'You have been admitted to HackMTY 2020. Please log in into your account and complete your profile information.',
   };
 
   /**
