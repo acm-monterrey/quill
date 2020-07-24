@@ -60,6 +60,20 @@
         <input type="text" ng-model="selectedUser.teamCode" />
       </div>
 
+      <div class="field">
+        <label> Table Number </label>
+        <input type="text" ng-model="selectedUser.status.tableNumber">
+      </div>
+
+      <div class="field">
+        <div
+          ng-click="updateTable()"
+          class="ui positive right labeled icon button">
+          Update Table Number
+          <i class="checkmark icon"></i>
+        </div>
+      </div>
+
     </fieldset>
 
   </div>

@@ -36,7 +36,6 @@ angular.module('reg')
         for (var i = 0; i < 6; i++) {
           graduationYears[i] = thisYear+i;
         }
-        console.log('graduationYears :>> ', graduationYears);
         return graduationYears;
       }();
 
@@ -52,5 +51,15 @@ angular.module('reg')
             swal("Oops, you forgot something.");
           });
       };
+      $scope.updateTable = function() {
+        UserService.updateTable($scope.selectedUser.teamCode, $scope.selectedUser.status.tableNumber)
+        .success(function(data) {
+          swal("Updated!", "Table number updated.", "success");
+        })
+        .error(function(data) {
+          console.log('data :>> ', data);          
+          swal("Oops!", data.message, "error");
+        })
+      }
 
     }]);

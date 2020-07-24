@@ -801,6 +801,44 @@ UserController.assignNextAvailableTable = function(id, callback) {
 
 /**
  * [ADMIN ONLY]
+ * 
+ * Sets a specific table number for a team if it is available
+ * @param {String} teamCode
+ * @param {Number} tableNumber 
+ * @param {function} callback 
+ */
+UserController.assignSpecificTableNumber = function(teamCode, tableNumber, callback) {
+  // First validate number
+  if(isNaN(tableNumber)) {
+    return callback({
+      showable: true,
+      message: 'Table number is not a valid number'
+    })
+  }
+  // Then check if any other team has this table number.
+  User
+      .find({
+        'status.tableNumber': tableNumber,
+        teamCode: {$ne: teamCode}
+      }, (err, existingTableUsers) => {
+        if(err) return callback(err);
+        if(existingTableUsers.length > 0) {
+          return callback({
+            showable: true,
+            message: 'Table number is being used by team "' + existingTableUsers[0].teamCode + '"'
+          });
+        }
+        // Finally update team with new table number
+        User.updateMany({teamCode: teamCode}, 
+          {
+            'status.tableNumber': tableNumber
+          })
+          .exec(callback);
+      });
+} 
+
+/**
+ * [ADMIN ONLY]
  *
  * Admit a user.
  * @param  {String}   userId   User id of the admit

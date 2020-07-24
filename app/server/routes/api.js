@@ -281,6 +281,12 @@ module.exports = function(router) {
     UserController.assignNextAvailableTable(id, defaultResponse(req, res));
   });
 
+  router.put('/teams/:teamCode/table', isAdmin, function(req, res) {
+    var team = req.params.teamCode;
+    var number = parseInt(req.body.tableNumber);
+    UserController.assignSpecificTableNumber(team, number, defaultResponse(req,res));
+  })
+
   /**
    * Admit a user. ADMIN ONLY, DUH
    *

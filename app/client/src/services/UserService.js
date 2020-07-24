@@ -135,6 +135,11 @@ angular.module('reg')
         return $http.post(base + id + '/checkout');
       },
 
+      updateTable: function(teamCode, tableNumber) {
+        return $http.put('/api/teams/' + teamCode + '/table', {
+          tableNumber: tableNumber
+        })
+      }
     };
   }
   ]);
