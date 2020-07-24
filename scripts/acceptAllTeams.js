@@ -34,7 +34,17 @@ User.aggregate([
 
   console.log('filtered :>> ', filtered);
   User.find({teamCode: { $in: filtered}}, (err, users) => {
+  // User.find({email: 'hello@hackmty.com'}, (err, users) => {
     console.log('users :>> ', users);
     console.log('users.length :>> ', users.length);
+    const p = users.map(user => {
+      return new Promise((resolve, reject) => {
+        UserController.admitUser(user._id, {email: 'admitionScript@hackmty.com'}, function() {
+          resolve();
+        })
+      });
+    })
+    Promise.all(p)
+      .then(() => console.log('Sent!'))
   })
 })
