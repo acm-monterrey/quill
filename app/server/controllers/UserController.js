@@ -860,11 +860,15 @@ UserController.admitUser = function(id, user, callback){
       }, {
         new: true
       },
-      callback);
+      function(err, user) {
+        if(err) callback(err)
+        Mailer.sendUserAdmitted(user.email)
+        .then(success => callback(null, user))
+        .catch(error => callback(error))
+      });
   });
   User.findById({_id: id}, function(err, user){
     // console.log(user);
-    Mailer.sendUserAdmitted(user.email);
   });
 };
 

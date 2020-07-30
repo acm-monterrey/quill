@@ -195,34 +195,35 @@ controller.sendPasswordChangedEmail = function(email, callback){
  * @param  {Function} callback [description]
 */
 controller.sendUserAdmitted = function(email){
-
-  var options = {
-    to: email,
-    subject: "[HackMTY Action Required] - HackMTY admittance!"
-  };
-
-  var locals = {
-    title: 'Congratulations!',
-    body: 'You have been admitted to HackMTY 2020. Please log in into your account and complete your profile information.',
-  };
-
-  /**
-   * Eamil-verify takes a few template values:
-   * {
-   *   verifyUrl: the url that the user must visit to verify their account
-   * }
-   */
-  sendOne('email-basic', options, locals, function(err, info){
-    if (err){
-      console.log("ERROR");
-      
-      console.log(err);
-    }
-    if (info){
-      console.log("SUCCESS");
-      
-      console.log(info);
-    }
+  return new Promise((resolve, reject) => {
+    var options = {
+      to: email,
+      subject: "[HackMTY Action Required] - HackMTY admittance!"
+    };
+  
+    var locals = {
+      title: 'Congratulations!',
+      body: 'You have been admitted to HackMTY 2020. Please log in into your account and complete your profile information.',
+    };
+  
+    /**
+     * Eamil-verify takes a few template values:
+     * {
+     *   verifyUrl: the url that the user must visit to verify their account
+     * }
+     */
+    sendOne('email-basic', options, locals, function(err, info){
+      if (err){
+        console.log("ERROR");
+        
+        reject({message: 'Error with email', showable: true, fromEmailer: true, email, error: err});
+      }
+      if (info){
+        console.log("SUCCESS");
+        
+        resolve(info);
+      }
+  });
   });
 
 };
