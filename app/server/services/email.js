@@ -140,12 +140,15 @@ controller.sendPasswordResetEmail = function(email, token, callback) {
    */
   sendOne('email-link-action', options, locals, function(err, info){
     if (err){
+      console.log("ERROR");
       console.log(err);
     }
     if (info){
+      console.log('info :>> ', info);
       console.log(info.message);
     }
     if (callback){
+      console.log("success");
       callback(err, info);
     }
   });

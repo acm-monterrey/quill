@@ -61,10 +61,10 @@ async function admit(users) {
     UserController.admitUser(user._id, {email: 'admitionScript@hackmty.com'}, function(err) {
       if(err) {
         failed++;
-        if(fromEmailer) {
-          fs.appendFile('failed2.txt', error.email + '\t' + error.error + '\n', (err) => {
+        if(err.fromEmailer) {
+          fs.appendFile('failed.txt', error.email + '\t' + error.error + '\n', (err) => {
             if(err) return console.error(err);
-            fs.appendFile('resend2.txt', error.email + '\n', (err) => {
+            fs.appendFile('resend.txt', error.email + '\n', (err) => {
               if(err) return console.error(err);
             })
           })

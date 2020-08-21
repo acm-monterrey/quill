@@ -22,9 +22,11 @@ User.find({
   console.log('ids :', ids);
   let fullfilled = 0;
   let failed = 0;
-  users = fs.readFileSync('resend.txt').toString().split('\n')
-  if(users  && users.length > 0){
-    resend(users)
+  let emails = users.map(user => user.email);
+  // let emails = fs.readFileSync('resend.txt').toString().split('\n')
+  // console.log('emails :>> ', emails);
+  if(emails  && emails.length > 0){
+    resend(emails)
     /* let p = users.map( user => {
       return new Promise((resolve, reject) => {
         console.log('user.email :', user.email);
@@ -69,9 +71,9 @@ async function resend(emails) {
     } catch(error) {
       console.log('error :>> ', error);
       failed++;
-      fs.appendFile('failed2.txt', error.email + '\t' + error.error + '\n', (err) => {
+      fs.appendFile('failed.txt', error.email + '\t' + error.error + '\n', (err) => {
         if(err) return console.error(err);
-        fs.appendFile('resend2.txt', error.email + '\n', (err) => {
+        fs.appendFile('resend.txt', error.email + '\n', (err) => {
           if(err) return console.error(err);
         })
       })
