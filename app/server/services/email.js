@@ -231,5 +231,39 @@ controller.sendUserAdmitted = function(email){
 
 };
 
+controller.sendUserReminder = function(email){
+  return new Promise((resolve, reject) => {
+    var options = {
+      to: email,
+      subject: "[HackMTY Action Required] - Remind your team to confirm their spot!"
+    };
+  
+    var locals = {
+      title: 'Hello Hackers!',
+      body: 'We have noticed that someone in your team has confirmed, but someone else has not done so. Please help us out by confirming your spot ahead of time to have a better hacking experience!',
+    };
+  
+    /**
+     * Eamil-verify takes a few template values:
+     * {
+     *   verifyUrl: the url that the user must visit to verify their account
+     * }
+     */
+    sendOne('email-basic', options, locals, function(err, info){
+      if (err){
+        console.log("ERROR");
+        
+        reject({message: 'Error with email', showable: true, fromEmailer: true, email, error: err});
+      }
+      if (info){
+        console.log("SUCCESS");
+        
+        resolve(info);
+      }
+  });
+  });
+
+};
+
 
 module.exports = controller;
