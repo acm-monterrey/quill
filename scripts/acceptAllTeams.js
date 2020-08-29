@@ -22,7 +22,10 @@ User.aggregate([
     }
   }, {
     $match: {
-      count: 4,
+      count: {
+        $gte: 3,
+        $lte: 4,
+        },
     }
   }
 ], (err, data) => {
@@ -30,7 +33,8 @@ User.aggregate([
     return console.error(err);
   }
 
-  // console.log('data :>> ', data);
+  console.log('data.length :>> ', data.length);
+  console.log('data :>> ', data);
   const filtered = data.map(team => team._id);
 
   // console.log('filtered :>> ', filtered);
@@ -39,7 +43,7 @@ User.aggregate([
   // User.find({'status.admitted': true, 'status.confirmed': false}, (err, users) => {
     // console.log('users :>> ', users);
     console.log('users.length :>> ', users.length);
-    admit(users)
+    // admit(users)
     /* const p = users.map(user => {
       return new Promise((resolve, reject) => {
         UserController.admitUser(user._id, {email: 'admitionScript@hackmty.com'}, function() {
@@ -58,10 +62,10 @@ async function admit(users) {
   let count = 0;
   for(const user of users) {
 
-    UserController.admitUser(user._id, {email: 'admitionScript@hackmty.com'}, function(err) {
-      if(err) {
+    UserController.admitUser(user._id, {email: 'admitionScript@hackmty.com'}, function(error) {
+      if(error) {
         failed++;
-        if(err.fromEmailer) {
+        if(error.fromEmailer) {
           fs.appendFile('failed.txt', error.email + '\t' + error.error + '\n', (err) => {
             if(err) return console.error(err);
             fs.appendFile('resend.txt', error.email + '\n', (err) => {
