@@ -12,7 +12,6 @@ angular.module('reg')
 
       // Set up the user
       $scope.user = currentUser.data;
-
       // Is the student from MIT?
       $scope.isMitStudent = $scope.user.email.split('@')[1] == 'mit.edu';
 
@@ -20,7 +19,12 @@ angular.module('reg')
       if ($scope.isMitStudent){
         $scope.user.profile.adult = true;
       }
-
+      if(!["Tecnológico de Monterrey Campus Monterrey", "Tecnológico de Monterrey Campus Guadalajara","Tecnológico de Monterrey Campus Puebla","Tecnológico de Monterrey Campus Ciudad de México","Tecnológico de Monterrey Campus Santa Fé","Tecnológico de Monterrey Campus Laguna","Tecnológico de Monterrey Campus San Luis","Universidad de Monterrey"].includes($scope.user.profile.school)) {
+        $scope.user.profile.otherSchool = $scope.user.profile.school
+        $scope.user.profile.school = "Otro"
+      }
+      $scope.isOtherSchool = $scope.user.profile.school === "Otro";
+      
       // Populate the school dropdown
       populateSchools();
       _setupForm();
@@ -57,6 +61,10 @@ angular.module('reg')
           UserService.updateResume(Session.getUserId(), file);
           $scope.user.profile.cv = file.name;
           console.log($scope.user.profile.cv);
+        }
+
+        if($scope.isOtherSchool){
+          $scope.user.profile.school = $scope.user.profile.otherSchool
         }
         UserService
           .updateProfile(Session.getUserId(), $scope.user.profile)
@@ -128,9 +136,15 @@ angular.module('reg')
         });
       }
 
-
+      $scope.checkOtherSchool = function() {
+        $scope.isOtherSchool = $scope.user.profile.school === "Otro";
+        if(!$scope.isOtherSchool) {
+          $scope.user.profile.otherSchool = '';
+        }
+      }
 
       $scope.submitForm = function(){
+        console.log('check :>> ');
         if ($('.ui.form').form('is valid')){
           _updateUser();
         }
