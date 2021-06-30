@@ -31,7 +31,7 @@
             <label> School </label>
             <select
                name="school"
-               ng-model="user.profile.school">
+               ng-model="user.profile.school" ng-change="checkOtherSchool()">
               <option value="">Select you School</option>
               <option value="Tecnológico de Monterrey Campus Monterrey">Tecnológico de Monterrey Campus Monterrey</option>
               <option value="Tecnológico de Monterrey Campus Guadalajara">Tecnológico de Monterrey Campus Guadalajara</option>
@@ -44,6 +44,12 @@
               <option value="Otro">Otro</option>
             </select>
           </div>
+          <div class="field" ng-show="isOtherSchool">
+            <label for="otherSchool">School Name</label>
+            <input type="text"
+            name="otherSchool"
+            ng-model="user.profile.otherSchool">
+          </div>
 
           <div class="field">
             <label> Graduation Year </label>
@@ -51,12 +57,12 @@
                name="year"
                ng-model="user.profile.graduationYear">
               <option value="">Graduation Year</option>
-              <option value="2019">2019</option>
               <option value="2020">2020</option>
               <option value="2021">2021</option>
               <option value="2022">2022</option>
               <option value="2023">2023</option>
               <option value="2024">2024</option>
+              <option value="2025">2024</option>
             </select>
           </div>
 
