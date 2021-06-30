@@ -20,7 +20,7 @@
             <input type="tel"
                    name="phone"
                    ng-model="user.confirmation.phoneNumber"
-                   placeholder="(123) - 555 - 1234"
+                   placeholder="(81) - 8181 - 8181"
                    required>
           </div>
 
@@ -139,6 +139,27 @@
           <br>
 
           <div class="divided title">Legal</div>
+
+          <div class="field">
+            <label> Privacy Policy </label>
+            <p>
+              <a
+                target="_blank"
+                href="https://drive.google.com/file/d/1KYh_qCvjTwuvBDOnjGUhdjvssDPf9Ng-/view?usp=sharing">
+                Privacy Policy
+              </a>
+            </p>
+            <p>
+            To participate in HackMTY you must agree to our Privacy Policy, which describes how we treat your data.
+            </p>
+            <p>
+            By signing with your name below you affirm that you authorize the use of your personal data as described in the privacy policy.
+            </p>
+            <input type="text"
+                   name="signaturePrivacyPolicy"
+                   placeholder="Your Full Legal Name"
+                   ng-model="user.confirmation.signaturePrivacyPolicy">
+          </div>
 
           <div class="field">
             <label> Liability Waiver </label>
