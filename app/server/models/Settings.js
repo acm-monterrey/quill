@@ -53,6 +53,10 @@ var schema = new mongoose.Schema({
     type: Number,
     default: Date.now() + 31104000000 
   },
+  checkInActive: {
+    type: Boolean,
+    default: false,
+  },
   teamSizeAccepted: {
     type: Number,
     default: 4

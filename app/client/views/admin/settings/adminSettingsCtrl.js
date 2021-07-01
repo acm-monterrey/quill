@@ -46,9 +46,12 @@ angular.module('reg')
           return "Invalid Date";
         }
 
+        var timeZone = moment.tz.guess();
+        var timeZoneOffset = date.getTimezoneOffset();
+
         // Hack for timezone
         return moment(date).format('dddd, MMMM Do YYYY, h:mm a') +
-          " " + date.toTimeString().split(' ')[2];
+          " " + moment.tz.zone(timeZone).abbr(timeZoneOffset);
       };
 
       // Take a date and remove the seconds.

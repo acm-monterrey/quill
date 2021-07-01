@@ -1,6 +1,7 @@
+const today = new Date()
 angular.module('reg')
     .constant('EVENT_INFO', {
-        NAME: 'HackMTY 2019',
+        NAME: 'HackMTY '+ today.getFullYear(),
     })
     .constant('DASHBOARD', {
         UNVERIFIED: 'You should have received an email asking you verify your email. Click the link in the email and you can start your application!',
@@ -19,4 +20,4 @@ angular.module('reg')
     .constant('TEAM',{
         NO_TEAM_REG_CLOSED: 'Unfortunately, it\'s too late to enter the lottery with a team.\nHowever, you can still form teams on your own before or during the event!',
     })
-    .constant('API_KEY', 'GcJZXNHpbw0AAAAAAAAAoD9X79D064kMnSNJxafRo769M-bgcAoq_Fe6yYc7SM6p');
+    .constant('API_KEY', 'di0Tb_tcse8AAAAAAAAyrejVxheW7ipYkqJo5LBQej-6Vk2O8UYO5HThDI2KZtaA');

@@ -118,6 +118,8 @@ module.exports = function(router) {
                 });
               }
             );
+        } else if (err.showable){
+          return res.status(400).send(err);
         } else {
           console.log('err :', err);
           return res.status(500).send(err);
@@ -180,7 +182,6 @@ module.exports = function(router) {
   router.put('/users/:id/profile', isOwnerOrAdmin, function(req, res){
     var profile = req.body.profile;
     var id = req.params.id;
-
     UserController.updateProfileById(id, profile , defaultResponse(req, res));
   });
 
@@ -281,6 +282,12 @@ module.exports = function(router) {
     var id = req.params.id;
     UserController.assignNextAvailableTable(id, defaultResponse(req, res));
   });
+
+  router.put('/teams/:teamCode/table', isAdmin, function(req, res) {
+    var team = req.params.teamCode;
+    var number = parseInt(req.body.tableNumber);
+    UserController.assignSpecificTableNumber(team, number, defaultResponse(req,res));
+  })
 
   /**
    * Admit a user. ADMIN ONLY, DUH

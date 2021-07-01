@@ -20,7 +20,8 @@ angular.module('reg')
       // Show CheckInOpen Window ---------------------------------------
       var showCheckInOpen = false;
       var todayDate = new Date();
-      if ( todayDate.getTime() >= Settings.checkInOpen ) {
+
+      if ( Settings.checkInAvailable && todayDate.getTime() >= Settings.checkInOpen ) {
         showCheckInOpen = true;
         _populateTeammates();
       }
