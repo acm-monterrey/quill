@@ -18,9 +18,10 @@
             <input type="tel"
                    name="phone"
                    ng-model="user.confirmation.phoneNumber"
-                   placeholder="(123) - 555 - 1234"
+                   placeholder="(81) - 8181 - 8181"
                    required>
           </div>
+          
 
           <div ng-if='checkInActive'>
             <div class="field">
@@ -153,6 +154,38 @@
                   ng-model="user.confirmation.address.country">
               </div>
           </div> -->
+          <div class="field">
+            <label> What's your home address? (required) </label>
+            <p>
+              We need this to send you your possible prices and swag!
+            </p>
+            <input type="text"
+                   name="street-name"
+                   ng-model="user.confirmation.streetAddress"
+                   placeholder="Street and Number"
+                   required>
+            <input type="text"
+                   name="city-name"
+                   ng-model="user.confirmation.city"
+                   placeholder="City"
+                   required>
+            <input type="text"
+                   name="state"
+                   ng-model="user.confirmation.state"
+                   placeholder="State/Province"
+                   required>
+            <input type="text"
+                   name="zip-code"
+                   ng-model="user.confirmation.zip"
+                   placeholder="ZIP Code"
+                   required>
+            <input type="text"
+                   name="street-name"
+                   ng-model="user.confirmation.country"
+                   placeholder="Country"
+                   required>
+          </div>
+
 
           <br>
           <br>
@@ -203,6 +236,26 @@
           <br>
 
           <div class="divided title">Legal</div>
+
+          <div class="field">
+            <label> Privacy Policy </label>
+            <p>
+              <a
+                target="_blank"
+                href="https://drive.google.com/file/d/1KYh_qCvjTwuvBDOnjGUhdjvssDPf9Ng-/view?usp=sharing">
+                Privacy Policy
+              </a>
+            </p>
+            <p>
+            To participate in HackMTY you must agree to our Privacy Policy, which describes how we treat your data.
+            </p>
+            <p>
+            By writing my name below, I affirm that I have read and agree to the terms of the data sharing above. I authorize you to share my application/registration information for event administration, shipping details and further sponsorship contact.            </p>
+            <input type="text"
+                   name="signaturePrivacyPolicy"
+                   placeholder="Your Full Legal Name"
+                   ng-model="user.confirmation.signaturePrivacyPolicy">
+          </div>
 
           <div class="field">
             <label> Liability Waiver </label>

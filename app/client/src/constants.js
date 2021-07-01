@@ -1,6 +1,7 @@
+const today = new Date()
 angular.module('reg')
     .constant('EVENT_INFO', {
-        NAME: 'HackMTY 2020',
+        NAME: 'HackMTY '+ today.getFullYear(),
     })
     .constant('DASHBOARD', {
         UNVERIFIED: 'You should have received an email asking you verify your email. Click the link in the email and you can start your application!',

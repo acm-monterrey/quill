@@ -98,6 +98,15 @@ angular.module('reg')
                 }
               ]
             },
+            signaturePrivacy: {
+              identifier: 'signaturePrivacyPolicy',
+              rules: [
+                {
+                  type: 'empty',
+                  prompt: 'Please type your digital signature.'
+                }
+              ]
+            },
             signatureLiability: {
               identifier: 'signatureLiabilityWaiver',
               rules: [

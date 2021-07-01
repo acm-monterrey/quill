@@ -40,7 +40,7 @@
             <label> School </label>
             <select
                name="school"
-               ng-model="user.profile.school">
+               ng-model="user.profile.school" ng-change="checkOtherSchool()">
               <option value="">Select you School</option>
               <option value="Tecnológico de Monterrey Campus Monterrey">Tecnológico de Monterrey Campus Monterrey</option>
               <option value="Tecnológico de Monterrey Campus Guadalajara">Tecnológico de Monterrey Campus Guadalajara</option>
@@ -52,6 +52,12 @@
               <option value="Universidad de Monterrey">Universidad de Monterrey</option>
               <option value="Otro">Otro</option>
             </select>
+          </div>
+          <div class="field" ng-show="isOtherSchool">
+            <label for="otherSchool">School Name</label>
+            <input type="text"
+            name="otherSchool"
+            ng-model="user.profile.otherSchool">
           </div>
 
           <div class="field">
@@ -123,8 +129,9 @@
               Submit
             </button>
           </div>
-
         </fieldset>
+        <div class="ui error message"></div>
+          
       </div>
     </div>
   </div>

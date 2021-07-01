@@ -118,6 +118,8 @@ module.exports = function(router) {
                 });
               }
             );
+        } else if (err.showable){
+          return res.status(400).send(err);
         } else {
           console.log('err :', err);
           return res.status(500).send(err);

@@ -313,7 +313,6 @@ UserController.updateProfileById = function (id, profile, callback){
   // Validate the user profile, and mark the user as profile completed
   // when successful.
   User.validateProfile(profile, function(err){
-
     if (err){
       return callback({showable: true, message: 'invalid profile'});
     }
@@ -321,7 +320,7 @@ UserController.updateProfileById = function (id, profile, callback){
     // Check if its within the registration window.
     Settings.getRegistrationTimes(function(err, times){
       if (err) {
-        callback(err);
+        return callback(err);
       }
 
       var now = Date.now();
@@ -329,7 +328,7 @@ UserController.updateProfileById = function (id, profile, callback){
       if (now < times.timeOpen){
         return callback({
           showable: true,
-          message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
+          message: "Registration opens " + moment(times.timeOpen).fromNow() + "!"
         });
       }
 
