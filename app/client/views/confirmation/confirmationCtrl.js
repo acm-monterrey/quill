@@ -6,11 +6,16 @@ angular.module('reg')
     'currentUser',
     'Utils',
     'UserService',
-    function($scope, $rootScope, $state, currentUser, Utils, UserService){
+    'settings',
+    function($scope, $rootScope, $state, currentUser, Utils, UserService, settings){
 
       // Set up the user
       var user = currentUser.data;
       $scope.user = user;
+      
+      // Set up settings
+      var Settings = settings.data;
+      $scope.checkInActive = Settings.checkInActive;
 
       $scope.pastConfirmation = Date.now() > user.status.confirmBy;
 
@@ -135,15 +140,6 @@ angular.module('reg')
                 {
                   type: 'empty',
                   prompt: 'Please type your digital signature.'
-                }
-              ]
-            },
-            signatureDSP: {
-              identifier: 'signatureDSP',
-              rules: [
-                {
-                  type: 'empty',
-                  prompt: 'Please type four digital signature.'
                 }
               ]
             },

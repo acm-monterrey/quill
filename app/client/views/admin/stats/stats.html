@@ -211,18 +211,27 @@
       </div>
     </div>
     <div class="ui divider"></div>
+      <div class="ui header">
+        Graduation year
+      </div>
       <div class="ui list">
         <div class="item">
-          <strong>Fresh:</strong> {{stats.demo.year['2019']}} ({{stats.demo.year['2019'] / stats.total * 100 | number: 1}}%)
+          <strong>{{stats.years[0].year}}:</strong> {{stats.years[0].amount}} ({{stats.years[0].amount / stats.total * 100 | number: 1}}%)
         </div>
         <div class="item">
-          <strong>Soph:</strong> {{stats.demo.year['2018']}} ({{stats.demo.year['2018'] / stats.total * 100 | number: 1}}%)
+          <strong>{{stats.years[1].year}}:</strong> {{stats.years[1].amount}} ({{stats.years[1].amount / stats.total * 100 | number: 1}}%)
         </div>
         <div class="item">
-         <strong>Junior:</strong> {{stats.demo.year['2017']}} ({{stats.demo.year['2017'] / stats.total * 100 | number: 1}}%)
+         <strong>{{stats.years[2].year}}:</strong> {{stats.years[2].amount}} ({{stats.years[2].amount / stats.total * 100 | number: 1}}%)
         </div>
         <div class="item">
-          <strong>Senior:</strong> {{stats.demo.year['2016']}} ({{stats.demo.year['2016'] / stats.total * 100 | number: 1}}%)
+          <strong>{{stats.years[3].year}}:</strong> {{stats.years[3].amount}} ({{stats.years[3].amount / stats.total * 100 | number: 1}}%)
+        </div>
+        <div class="item">
+          <strong>{{stats.years[4].year}}:</strong> {{stats.years[4].amount}} ({{stats.years[4].amount / stats.total * 100 | number: 1}}%)
+        </div>
+        <div class="item">
+          <strong>{{stats.years[5].year}}:</strong> {{stats.years[5].amount}} ({{stats.years[5].amount / stats.total * 100 | number: 1}}%)
         </div>
       </div>
     <div class="ui divider"></div>

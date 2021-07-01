@@ -29,6 +29,16 @@ angular.module('reg')
           });
       }
 
+      $scope.graduationYears = function() {
+        var graduationYears = []
+        const today = new Date();
+        const thisYear = today.getFullYear();
+        for (var i = 0; i < 6; i++) {
+          graduationYears[i] = thisYear+i;
+        }
+        return graduationYears;
+      }();
+
 
       $scope.updateProfile = function(){
         UserService
@@ -41,5 +51,15 @@ angular.module('reg')
             swal("Oops, you forgot something.");
           });
       };
+      $scope.updateTable = function() {
+        UserService.updateTable($scope.selectedUser.teamCode, $scope.selectedUser.status.tableNumber)
+        .success(function(data) {
+          swal("Updated!", "Table number updated.", "success");
+        })
+        .error(function(data) {
+          console.log('data :>> ', data);          
+          swal("Oops!", data.message, "error");
+        })
+      }
 
     }]);

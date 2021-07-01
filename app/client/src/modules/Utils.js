@@ -15,9 +15,12 @@ angular.module('reg')
           }
 
           date = new Date(time);
+          var timeZone = moment.tz.guess();
+          var timeZoneOffset = date.getTimezoneOffset();
+
           // Hack for timezone
           return moment(date).format('dddd, MMMM Do YYYY, h:mm a') +
-            " " + date.toTimeString().split(' ')[2];
+            " " + moment.tz.zone(timeZone).abbr(timeZoneOffset);
 
         }
       };

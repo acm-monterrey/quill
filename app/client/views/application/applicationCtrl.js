@@ -30,7 +30,7 @@ angular.module('reg')
       _setupForm();
 
       $scope.regIsClosed = Date.now() > Settings.data.timeClose;
-
+      $scope.checkInActive = Settings.data.checkInActive;
       /**
        * TODO: JANK WARNING
        */
@@ -63,6 +63,21 @@ angular.module('reg')
           console.log($scope.user.profile.cv);
         }
 
+        const discordUsername = $scope.user.profile.discordUsername;
+        const discriminator = discordUsername.slice(-5);
+        const validDiscriminator = discriminator[0] === '#' ;
+
+        for (var i = 1; i<5 && validDiscriminator; i++) {
+          if(isNaN(parseInt(discriminator[i]))) {
+            validDiscriminator = false;
+          }
+        }
+        console.log('discordUsername.length :>> ', discordUsername.length);
+        if(!validDiscriminator || discordUsername.length < 7) {
+          sweetAlert("uh oh!", "Your Discord username does not have the correct format, please include your discriminator (#1234)", "error")
+          return;
+        }
+        
         if($scope.isOtherSchool){
           $scope.user.profile.school = $scope.user.profile.otherSchool
         }
@@ -78,8 +93,14 @@ angular.module('reg')
               $state.go('app.dashboard');
             });
           })
-          .error(function(res){
-            sweetAlert("Uh oh!", "Something went wrong.", "error");
+          .error(function(err){
+            console.log('err :>> ', err);
+            if(err.showable) {
+              sweetAlert("Uh oh!", err.message, "error");
+            } else {
+              sweetAlert("Uh oh!", "Something went wrong.", "error");
+            }
+            $scope.user.profile.school = "Otro"
           });
       }
 
@@ -93,6 +114,15 @@ angular.module('reg')
                 {
                   type: 'empty',
                   prompt: 'Please enter your name.'
+                }
+              ]
+            },
+            discordUsername: {
+              identifier: 'discordUsername',
+              rules: [
+                {
+                  type: 'empty',
+                  prompt: 'Please enter your Discord username.'
                 }
               ]
             },
@@ -136,6 +166,13 @@ angular.module('reg')
         });
       }
 
+      $scope.graduationYears = []
+      const today = new Date();
+      const thisYear = today.getFullYear();
+      for (var i = 0; i < 6; i++) {
+        $scope.graduationYears[i] = thisYear+i;
+      }
+
       $scope.checkOtherSchool = function() {
         $scope.isOtherSchool = $scope.user.profile.school === "Otro";
         if(!$scope.isOtherSchool) {
@@ -144,7 +181,6 @@ angular.module('reg')
       }
 
       $scope.submitForm = function(){
-        console.log('check :>> ');
         if ($('.ui.form').form('is valid')){
           _updateUser();
         }

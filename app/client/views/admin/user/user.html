@@ -60,6 +60,20 @@
         <input type="text" ng-model="selectedUser.teamCode" />
       </div>
 
+      <div class="field">
+        <label> Table Number </label>
+        <input type="text" ng-model="selectedUser.status.tableNumber">
+      </div>
+
+      <div class="field">
+        <div
+          ng-click="updateTable()"
+          class="ui positive right labeled icon button">
+          Update Table Number
+          <i class="checkmark icon"></i>
+        </div>
+      </div>
+
     </fieldset>
 
   </div>
@@ -110,10 +124,7 @@
           name="year"
           ng-model="selectedUser.profile.graduationYear">
           <option value="">Graduation Year</option>
-          <option value="2016">2016</option>
-          <option value="2017">2017</option>
-          <option value="2018">2018</option>
-          <option value="2019">2019</option>
+          <option ng-repeat='year in graduationYears' value="{{year}}">{{year}}</option>
         </select>
       </div>
 
@@ -197,27 +208,27 @@
 
       <div class="field">
         <label> Shirt Size </label>
-        <input type="text" ng-model="selectedUser.profile.shirtSize" />
+        <input type="text" ng-model="selectedUser.confirmation.shirtSize" />
       </div>
 
       <div class="field">
         <label> Major </label>
-        <input type="text" ng-model="selectedUser.profile.major" />
+        <input type="text" ng-model="selectedUser.confirmation.major" />
       </div>
 
       <div class="field">
         <label> Github </label>
-        <input type="url" ng-model="selectedUser.profile.github" />
+        <input type="url" ng-model="selectedUser.confirmation.github" />
       </div>
 
       <div class="field">
         <label> Website </label>
-        <input type="url" ng-model="selectedUser.profile.website" />
+        <input type="url" ng-model="selectedUser.confirmation.website" />
       </div>
 
       <div class="field">
         <label> Resume </label>
-        <input type="url" ng-model="selectedUser.profile.resume" />
+        <input type="url" ng-model="selectedUser.confirmation.resume" />
       </div>
 
       <div class="ui divider"></div>
@@ -313,7 +324,7 @@
       <div class="ui divider"></div>
 
       <div class="ui header">
-        Travel
+        Travel / Address
       </div>
 
       <div class="field">

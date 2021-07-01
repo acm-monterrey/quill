@@ -257,6 +257,7 @@ UserController.getPage = function(query, callback){
     queries.push({ 'teamCode': re });
     queries.push({ 'profile.school': re });
     queries.push({ 'status.tableNumber': re})
+    queries.push({ 'profile.discordUsername': re})
 
     findQuery.$or = queries;
   }
@@ -312,7 +313,6 @@ UserController.updateProfileById = function (id, profile, callback){
   // Validate the user profile, and mark the user as profile completed
   // when successful.
   User.validateProfile(profile, function(err){
-
     if (err){
       return callback({showable: true, message: 'invalid profile'});
     }
@@ -320,7 +320,7 @@ UserController.updateProfileById = function (id, profile, callback){
     // Check if its within the registration window.
     Settings.getRegistrationTimes(function(err, times){
       if (err) {
-        callback(err);
+        return callback(err);
       }
 
       var now = Date.now();
@@ -328,7 +328,7 @@ UserController.updateProfileById = function (id, profile, callback){
       if (now < times.timeOpen){
         return callback({
           showable: true,
-          message: "Registration opens in " + moment(times.timeOpen).fromNow() + "!"
+          message: "Registration opens " + moment(times.timeOpen).fromNow() + "!"
         });
       }
 
@@ -701,6 +701,9 @@ UserController.checkInByCurrentLocation = function(id, coordinates, callback) {
   Settings.getAllSettings(function(err, settings) {
     if(err) return callback(err);
 
+    if (!settings.checkInActive) {
+      callback({showable: true, message: 'Check-in is not active at this moment.'})
+    }
     var hackLocation = [ settings.hackLocation.longitude, settings.hackLocation.latitude ];
     var userLocation = [ coordinates.longitude, coordinates.latitude ];
     var distance = getDistanceInMetersFromHack(hackLocation, userLocation);
@@ -741,51 +744,97 @@ UserController.updateRecordsWithMissingFields = function(callback) {
  * @param {[Function]} callback  
  */
 UserController.assignNextAvailableTable = function(id, callback) {
-  this.getTeammates(id, function(err, data){
+  Settings.getAllSettings(function(err, settings) {
     if(err) return callback(err, data);
-    
-    var teammates = data.teammates;
-    let ids = [];
-    let bAssigned = false;
-    teammates.forEach(function(team){
-      if(team.status.tableNumber !== "Not assigned") bAssigned = true;
-      ids.push(team._id);
-    });
-    // Check if team already has table
-    if(bAssigned) return callback({showable:true, message: "El equipo ya tiene mesa asignada"})
 
-    Settings.getCurrentTableCount(function(err, tableNumber){
-      if(err) return callback(err, tableNumber);
-      let currentCount = tableNumber.currentTableCount + 1;
-      currentCount = currentCount.toString();
-      User.find({
-        "status.tableNumber": currentCount
-      },
-      (err, alreadyAssignedUsers) => {
-        if(err) return callback(err);
-        // Checks if another team doesnt already have that table, to prevent 2 or more teams in the same table
-        if(alreadyAssignedUsers.length > 0) return callback({ showable: true, message: "There was an error. Try Again"})
+    if (!settings.checkInActive) {
+      callback({showable: true, message: 'Check-in is not active at this moment.'})
+    }
 
-        SettingsController.updateField('currentTableCount', currentCount, function( err, _){
+    this.getTeammates(id, function(err, data){
+      if(err) return callback(err, data);
+      
+      var teammates = data.teammates;
+      let ids = [];
+      let bAssigned = false;
+      teammates.forEach(function(team){
+        if(team.status.tableNumber !== "Not assigned") bAssigned = true;
+        ids.push(team._id);
+      });
+      // Check if team already has table
+      if(bAssigned) return callback({showable:true, message: "El equipo ya tiene mesa asignada"})
+
+      Settings.getCurrentTableCount(function(err, tableNumber){
+        if(err) return callback(err, tableNumber);
+        let currentCount = tableNumber.currentTableCount + 1;
+        currentCount = currentCount.toString();
+        User.find({
+          "status.tableNumber": currentCount
+        },
+        (err, alreadyAssignedUsers) => {
           if(err) return callback(err);
-  
-          User
-          .updateMany(
-            { _id: { $in: ids } },
-            {$set: { 'status.tableNumber': currentCount }},
-            (err,update) => {
-              if(err) return callback(err, null);
-  
-              User
-                .findById(id)
-                .select('profile.name status.checkedIn status.tableNumber')
-                .exec(callback);
+          // Checks if another team doesnt already have that table, to prevent 2 or more teams in the same table
+          if(alreadyAssignedUsers.length > 0) return callback({ showable: true, message: "There was an error. Try Again"})
+
+          SettingsController.updateField('currentTableCount', currentCount, function( err, _){
+            if(err) return callback(err);
+    
+            User
+            .updateMany(
+              { _id: { $in: ids } },
+              {$set: { 'status.tableNumber': currentCount }},
+              (err,update) => {
+                if(err) return callback(err, null);
+    
+                User
+                  .findById(id)
+                  .select('profile.name status.checkedIn status.tableNumber')
+                  .exec(callback);
+            });
           });
         });
       });
     });
   });
 }
+
+/**
+ * [ADMIN ONLY]
+ * 
+ * Sets a specific table number for a team if it is available
+ * @param {String} teamCode
+ * @param {Number} tableNumber 
+ * @param {function} callback 
+ */
+UserController.assignSpecificTableNumber = function(teamCode, tableNumber, callback) {
+  // First validate number
+  if(isNaN(tableNumber)) {
+    return callback({
+      showable: true,
+      message: 'Table number is not a valid number'
+    })
+  }
+  // Then check if any other team has this table number.
+  User
+      .find({
+        'status.tableNumber': tableNumber,
+        teamCode: {$ne: teamCode}
+      }, (err, existingTableUsers) => {
+        if(err) return callback(err);
+        if(existingTableUsers.length > 0) {
+          return callback({
+            showable: true,
+            message: 'Table number is being used by team "' + existingTableUsers[0].teamCode + '"'
+          });
+        }
+        // Finally update team with new table number
+        User.updateMany({teamCode: teamCode}, 
+          {
+            'status.tableNumber': tableNumber
+          })
+          .exec(callback);
+      });
+} 
 
 /**
  * [ADMIN ONLY]
@@ -810,11 +859,15 @@ UserController.admitUser = function(id, user, callback){
       }, {
         new: true
       },
-      callback);
+      function(err, user) {
+        if(err) callback(err)
+        Mailer.sendUserAdmitted(user.email)
+        .then(success => callback(null, user))
+        .catch(error => callback(error))
+      });
   });
   User.findById({_id: id}, function(err, user){
     // console.log(user);
-    Mailer.sendUserAdmitted(user.email);
   });
 };
 
@@ -827,18 +880,25 @@ UserController.admitUser = function(id, user, callback){
  * @param  {Function} callback args(err, user)
  */
 UserController.checkInById = function(id, user, callback){
-  User.findOneAndUpdate({
-    _id: id,
-    verified: true
-  },{
-    $set: {
-      'status.checkedIn': true,
-      'status.checkInTime': Date.now()
+  Settings.getAllSettings(function(err, settings) {
+    if(err) return callback(err, data);
+
+    if (!settings.checkInActive) {
+      callback({showable: true, message: 'Check-in is not active at this moment.'})
     }
-  }, {
-    new: true
-  },
-  callback);
+    User.findOneAndUpdate({
+      _id: id,
+      verified: true
+    },{
+      $set: {
+        'status.checkedIn': true,
+        'status.checkInTime': Date.now()
+      }
+    }, {
+      new: true
+    },
+    callback);
+  });
 };
 
 /**
@@ -850,17 +910,24 @@ UserController.checkInById = function(id, user, callback){
  * @param  {Function} callback args(err, user)
  */
 UserController.checkOutById = function(id, user, callback){
-  User.findOneAndUpdate({
-    _id: id,
-    verified: true
-  },{
-    $set: {
-      'status.checkedIn': false
+  Settings.getAllSettings(function(err, settings) {
+    if(err) return callback(err, data);
+
+    if (!settings.checkInActive) {
+      callback({showable: true, message: 'Check-in is not active at this moment.'})
     }
-  }, {
-    new: true
-  },
-  callback);
+    User.findOneAndUpdate({
+      _id: id,
+      verified: true
+    },{
+      $set: {
+        'status.checkedIn': false
+      }
+    }, {
+      new: true
+    },
+    callback);
+  });
 };
 
 

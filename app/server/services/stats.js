@@ -19,10 +19,6 @@ function calculateStats(){
       },
       schools: {},
       year: {
-        '2016': 0,
-        '2017': 0,
-        '2018': 0,
-        '2019': 0,
       }
     },
 
@@ -74,6 +70,12 @@ function calculateStats(){
     checkedIn: 0
   };
 
+  const today = new Date();
+  const thisYear = today.getFullYear();
+
+  for (var i = 0; i < 6; i++) {
+    newStats.demo.year[thisYear + i] = 0;
+  }  
   User
     .find({})
     .exec(function(err, users){
