@@ -118,7 +118,8 @@ angular.module('reg')
               });
         });
       };
-      
+
+
       // Ask for location --------------------------------------------------
       $scope.onCheckIn = function () {
         if (navigator.geolocation) {
