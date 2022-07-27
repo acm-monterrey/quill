@@ -118,6 +118,7 @@ var confirmation = {
 
   notes: String,
 
+  signaturePrivacyPolicy: String,
   signatureLiability: String,
   signaturePhotoRelease: String,
   signatureCodeOfConduct: String,
