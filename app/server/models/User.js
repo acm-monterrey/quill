@@ -93,7 +93,7 @@ var confirmation = {
 
   major: String,
   github: String,
-  twitter: String,
+  linkedin: String,
   website: String,
   resume: String,
 
