@@ -67,11 +67,13 @@ angular.module('reg')
         const discriminator = discordUsername.slice(-5);
         const validDiscriminator = discriminator[0] === '#' ;
 
+        /*
         for (var i = 1; i<5 && validDiscriminator; i++) {
           if(isNaN(parseInt(discriminator[i]))) {
             validDiscriminator = false;
           }
         }
+         */
         console.log('discordUsername.length :>> ', discordUsername.length);
         if(!validDiscriminator || discordUsername.length < 7) {
           sweetAlert("uh oh!", "Your Discord username does not have the correct format, please include your discriminator (#1234)", "error")
