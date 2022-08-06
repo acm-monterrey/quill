@@ -13,12 +13,6 @@ var profile = {
     max: 100,
   },
 
-  discordUsername: {
-    type: String,
-    min: 1,
-    max: 50,
-  },
-
   adult: {
     type: Boolean,
     required: true,
@@ -360,23 +354,12 @@ schema.statics.getByToken = function(token, callback){
 };
 
 schema.statics.validateProfile = function(profile, cb){
-  const discriminator = profile.discordUsername.slice(-5)
-  const validDiscriminator = discriminator[0] === '#'
-  for (let i = 1; i<5 && validDiscriminator; i++) {
-    if(isNaN(parseInt(discriminator[i]))) {
-      validDiscriminator = false;
-    }
-  }
-  console.log('discriminator :>> ', discriminator);
-  console.log('validDiscriminator :>> ', validDiscriminator);
   return cb(!(
     profile.name.length > 0 &&
     profile.adult &&
     profile.school.length > 0 &&
-    ['2023','2022','2021','2020', '2024', '2025'].indexOf(profile.graduationYear) > -1 &&
-    ['M', 'F', 'O', 'N'].indexOf(profile.gender) > -1 &&
-    validDiscriminator && profile.discordUsername.length >= 7
-    ));
+    ['2023','2022','2021','2020', '2024', '2025','2026','2027'].indexOf(profile.graduationYear) > -1 &&
+    ['M', 'F', 'O', 'N'].indexOf(profile.gender) > -1));
 };
 
 //=========================================

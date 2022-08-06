@@ -257,7 +257,6 @@ UserController.getPage = function(query, callback){
     queries.push({ 'teamCode': re });
     queries.push({ 'profile.school': re });
     queries.push({ 'status.tableNumber': re})
-    queries.push({ 'profile.discordUsername': re})
 
     findQuery.$or = queries;
   }
