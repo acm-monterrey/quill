@@ -26,12 +26,21 @@
                    name="name"
                    ng-model="user.profile.name">
           </div>
-          
+
+          <div ng-if='!checkInActive' class="field">
+            <label> Discord username</label>
+            <span> Remember to include your 4 digit code! (#1234)</span>
+            <input type="text"
+                   placeholder="myAwesomeUsername#1234"
+                   name="discordUsername"
+                   ng-model="user.profile.discordUsername">
+          </div>
+
           <div class="field">
             <label> School </label>
             <select
-               name="school"
-               ng-model="user.profile.school" ng-change="checkOtherSchool()">
+                    name="school"
+                    ng-model="user.profile.school" ng-change="checkOtherSchool()">
               <option value="">Select you School</option>
               <option value="Tecnológico de Monterrey Campus Monterrey">Tecnológico de Monterrey Campus Monterrey</option>
               <option value="Tecnológico de Monterrey Campus Guadalajara">Tecnológico de Monterrey Campus Guadalajara</option>
@@ -47,25 +56,25 @@
           <div class="field" ng-show="isOtherSchool">
             <label for="otherSchool">School Name</label>
             <input type="text"
-            name="otherSchool"
-            ng-model="user.profile.otherSchool">
+                   name="otherSchool"
+                   ng-model="user.profile.otherSchool">
           </div>
 
           <div class="field">
             <label> Graduation Year </label>
             <select
-               name="year"
-               ng-model="user.profile.graduationYear">
+                    name="year"
+                    ng-model="user.profile.graduationYear">
               <option value="">Graduation Year</option>
-                <option ng-repeat='year in graduationYears' value="{{year}}">{{year}}</option>
+              <option ng-repeat='year in graduationYears' value="{{year}}">{{year}}</option>
             </select>
           </div>
 
           <div class="field">
             <label>Gender</label>
             <select
-               name="gender"
-               ng-model="user.profile.gender">
+                    name="gender"
+                    ng-model="user.profile.gender">
               <option value="">Gender</option>
               <option value="M">Male</option>
               <option value="F">Female</option>
@@ -77,8 +86,8 @@
           <div class="field">
             <label>Degree</label>
             <select
-               name="degree"
-               ng-model="user.profile.degree">
+                    name="degree"
+                    ng-model="user.profile.degree">
               <option value="HS">High School</option>
               <option value="U">Undergraduate/College</option>
               <option value="G">Graduate</option>
@@ -109,7 +118,7 @@
             <!-- <textarea ng-model="user.profile.cv"> -->
             <label> Upload your resume </label>
             <input type="file" id="resume-file"/ >
-             <label> {{user.profile.cv}} </label>
+            <label> {{user.profile.cv}} </label>
           </div>
           <br>
 
@@ -122,7 +131,7 @@
           </div>
         </fieldset>
         <div class="ui error message"></div>
-          
+
       </div>
     </div>
   </div>
