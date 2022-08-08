@@ -50,6 +50,7 @@ angular.module('reg')
       }
 
       function _updateUser(e){
+        console.log("here")
         var file = angular.element('#resume-file')[0].files[0];
 
         if(file && file.size > 5000000) {
