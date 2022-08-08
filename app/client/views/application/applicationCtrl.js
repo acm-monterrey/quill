@@ -103,15 +103,6 @@ angular.module('reg')
                   }
                 ]
               },
-              discordUsername: {
-                identifier: 'discordUsername',
-                rules: [
-                  {
-                    type: 'empty',
-                    prompt: 'Please enter your Discord username.'
-                  }
-                ]
-              },
               school: {
                 identifier: 'school',
                 rules: [
