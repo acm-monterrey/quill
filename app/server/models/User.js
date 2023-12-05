@@ -215,6 +215,12 @@ var schema = new mongoose.Schema({
     max: 140,
   },
 
+  leader: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+
   verified: {
     type: Boolean,
     required: true,

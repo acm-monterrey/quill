@@ -521,7 +521,7 @@ UserController.createOrJoinTeam = function(id, code, callback){
   User.find({
     teamCode: code
   })
-  .select('profile.name')
+  .select('profile.name leader') // Include 'leader' field in the query
   .exec(function(err, users){
     // Check to see if this team is joinable (< team max size)
     if (users.length >= maxTeamSize){
@@ -531,19 +531,110 @@ UserController.createOrJoinTeam = function(id, code, callback){
       });
     }
 
-    // Otherwise, we can add that person to the team.
-    User.findOneAndUpdate({
-      _id: id,
-      verified: true
-    },{
-      $set: {
-        teamCode: code
-      }
-    }, {
-      new: true
-    },
-    callback);
+    let isLeader = false;
 
+    // Check if any existing user in the team is a leader
+    for (const user of users) {
+      if (user.leader) {
+        isLeader = true;
+        break;
+      }
+    }
+
+    // If there's no existing leader, set the new user as the leader.
+    const updateOptions = {
+      teamCode: code,
+      verified: true
+    };
+    
+    if (!isLeader) {
+      updateOptions.leader = true;
+    }
+
+    User.findOneAndUpdate(
+      { _id: id, verified: true },
+      { $set: updateOptions },
+      { new: true },
+      callback
+    );
+  });
+};
+
+/**
+ * Given a team code and email, add a teammate to a team.
+ * @param  {String}   email       Id of the user joining/creating
+ * @param  {String}   code     Code of the proposed team
+ * @param  {Function} callback args(err, users)
+ */
+UserController.addTeammate = function(email, code, callback){
+
+
+  if (!code || !email){
+    return callback({
+      showable: true,
+      message: "Please enter an email."
+    });
+  }
+
+
+  if (typeof code !== 'string' || typeof email !== 'string') {
+    return callback({
+      showable: true,
+      message: "Get outta here, punk!"
+    });
+  }
+
+  User.find({
+    email: email
+  })
+  .select('profile.name email teamCode')
+  .exec(function(err, users){
+    if(users.length === 0){
+      return callback({
+        showable: true,
+        message: "This email is not registered on the site."
+      });
+    }
+    else {
+      User.find({
+        teamCode: code
+      })
+      .select('profile.name email teamCode')
+      .exec(function(err, users){
+        
+        // Check to see if this team is joinable (< team max size)
+        if (users.length >= maxTeamSize){
+          return callback({
+            showable: true,
+            message: "Team is full."
+          });
+        }
+    
+        for (const user of users) {
+          if (user.email == email && user.teamCode) {
+            return callback({
+              showable: true,
+              message: "This user is already on a team"
+            });
+          }
+        }
+    
+        // Otherwise, we can add that person to the team.
+        User.findOneAndUpdate({
+          email: email,
+          verified: true,
+          teamCode: null
+        },{
+          $set: {
+            teamCode: code
+          }
+        }, {
+          new: true
+        },
+        callback);
+    
+      });
+    }
   });
 };
 
@@ -557,7 +648,8 @@ UserController.leaveTeam = function(id, callback){
     _id: id
   },{
     $set: {
-      teamCode: null
+      teamCode: null,
+      leader: false
     }
   }, {
     new: true

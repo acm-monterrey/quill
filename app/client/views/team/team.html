@@ -4,49 +4,37 @@
   </div>
   <div class="ui stackable centered page grid">
     <div class="column">
-      <div
-        class="ui error message"
-        ng-show="error">
+      <div class="ui error message" ng-show="error">
         {{error}}
       </div>
 
       <div class="ui segment">
-        <div
-          ng-show="!user.teamCode && !regIsOpen">
+        <div ng-show="!user.teamCode && !regIsOpen">
           <p>
             {{ TEAM.NO_TEAM_REG_CLOSED }}
           </p>
         </div>
-        <div
-          class="ui form"
-          ng-show="!user.teamCode && regIsOpen">
+        <div class="ui form" ng-show="!user.teamCode && regIsOpen">
 
           <div class="title">
-            Join or Create a Team
+            Create a Team or wait to be added
           </div>
 
           <br>
 
           <div class="field">
-            <input
-              class="ui input"
-              type="text"
-              placeholder="Choose your team name..."
-              ng-model="code">
+            <input class="ui input" type="text" placeholder="Choose your team name..." ng-model="code">
           </div>
 
           <div class="field">
-            <button
-              class="ui fluid pink button"
-              ng-click="joinTeam()">
-              Join or Create Team
+            <button class="ui fluid pink button" ng-click="joinTeam()">
+              Create Team
             </button>
           </div>
 
         </div>
 
-        <div
-          ng-show="user.teamCode">
+        <div ng-show="user.teamCode">
           <div class="form">
             <div class="title">
               Your Team Name:
@@ -55,6 +43,28 @@
           <br>
           <div class="subheader">
             {{user.teamCode}}
+          </div>
+
+          <div class="ui form" ng-show="user.leader">
+
+            <div class="ui divider"></div>
+
+            <div class="title">
+              Add teammate:
+            </div>
+
+            <br>
+
+            <div class="field">
+              <input class="ui input" type="text" placeholder="Enter the email of your teammate..."
+                ng-model="teammate">
+            </div>
+
+            <div class="field">
+              <button class="ui fluid green button" ng-click="addTeammate()">
+                Add
+              </button>
+            </div>
           </div>
 
           <br />
@@ -67,19 +77,12 @@
             </div>
           </div>
 
-          <p
-            ng-repeat="user in teammates"
-            class="item">
+          <p ng-repeat="user in teammates" class="item">
             {{user.profile.name || 'Somebody (has not filled out their profile!)'}}
           </p>
 
-          <div
-            ng-show="regIsOpen">
-            <div class="ui divider"></div>
-
-            <button
-              class="ui fluid red button"
-              ng-click="leaveTeam()">Leave Team</button>
+          <div ng-show="regIsOpen">
+            <button class="ui fluid red button" ng-click="leaveTeam()">Leave Team</button>
           </div>
 
         </div>

@@ -46,6 +46,23 @@ angular.module('reg')
         }
       };
 
+      $scope.addTeammate = function(){
+        if($scope.teammate && $scope.teammate != ''){
+          UserService
+            .addToTeam($scope.teammate,$scope.user.teamCode)
+            .success(function(user){
+              $scope.error = null;
+              $scope.user = user;
+              _populateTeammates();
+            })
+            .error(function(res){
+              $scope.error = res.message;
+            });
+        } else {
+          $scope.error = "Please enter an email"
+        }
+      };
+
       $scope.leaveTeam = function(){
         UserService
           .leaveTeam()
